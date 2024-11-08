@@ -28,9 +28,17 @@ local OrionLib = {
 			Divider = Color3.fromRGB(60, 60, 80),
 			Text = Color3.fromRGB(200, 200, 230),
 			TextDark = Color3.fromRGB(130, 130, 160)
+		},
+		VisualStudioDark = {
+			Main = Color3.fromRGB(30, 30, 30),
+			Second = Color3.fromRGB(40, 40, 40),
+			Stroke = Color3.fromRGB(50, 50, 50),
+			Divider = Color3.fromRGB(45, 45, 45),
+			Text = Color3.fromRGB(230, 230, 230),
+			TextDark = Color3.fromRGB(180, 180, 180)
 		}
 	},
-	SelectedTheme = "Eclipse",
+	SelectedTheme = "VisualStudioDark",
 	Folder = nil,
 	SaveCfg = false
 }
