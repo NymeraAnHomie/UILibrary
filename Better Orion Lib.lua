@@ -1770,4 +1770,26 @@ function OrionLib:Destroy()
 	Orion:Destroy()
 end
 
+if game:GetService("UserInputService").TouchEnabled then
+	local screenGui = Instance.new("ScreenGui", game.CoreGui)
+	local textButton = Instance.new("TextButton")
+	textButton.Size = UDim2.new(0, 50, 0, 50)
+	textButton.Position = UDim2.new(1, -210, 0, 10)
+	textButton.BackgroundColor3 = Color3.fromRGB(27, 27, 29)
+	textButton.Text = ""
+	textButton.TextColor3 = Color3.new(1, 1, 1)
+	textButton.BorderSizePixel = 1
+	textButton.BorderColor3 = Color3.new(0, 0, 0)
+	textButton.Parent = screenGui
+	local topOutline = Instance.new("Frame")
+	topOutline.Size = UDim2.new(1, 0, 0, 2)
+	topOutline.Position = UDim2.new(0, 0, 0, 0)
+	topOutline.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	topOutline.BorderSizePixel = 0
+	topOutline.Parent = textButton
+	textButton.MouseButton1Click:Connect(function()
+	    MainWindow.Visble = not MainWindow.Visible
+	end)
+end
+		
 return OrionLib
