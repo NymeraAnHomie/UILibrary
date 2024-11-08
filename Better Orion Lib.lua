@@ -93,7 +93,7 @@ function OrionLib:IsRunning()
 	if gethui then
 		return Orion.Parent == gethui()
 	else
-		return Orion.Parent == game:GetService("CoreGui")
+		return Orion.Parent == cloneref(game:GetService("CoreGui"))
 	end
 
 end
