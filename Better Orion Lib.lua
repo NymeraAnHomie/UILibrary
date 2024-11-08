@@ -54,8 +54,20 @@ local function GetIcon(IconName)
 	end
 end   
 
+function generateRandomString(length)
+    local characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    local randomString = ""
+    
+    for i = 1, length do
+        local randomIndex = math.random(1, #characters)
+        randomString = randomString .. characters:sub(randomIndex, randomIndex)
+    end
+    
+    return randomString
+end
+
 local Orion = Instance.new("ScreenGui")
-Orion.Name = "Orion"
+Orion.Name = tostring(generateRandomString(16))
 if syn then
 	syn.protect_gui(Orion)
 	Orion.Parent = game.CoreGui
