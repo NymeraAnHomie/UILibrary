@@ -1603,8 +1603,16 @@ function OrionLib:MakeWindow(WindowConfig)
 			    ColorS = (math.clamp(ColorSelection.AbsolutePosition.X - Color.AbsolutePosition.X, 0, Color.AbsoluteSize.X) / Color.AbsoluteSize.X)
 			    ColorV = 1 - (math.clamp(ColorSelection.AbsolutePosition.Y - Color.AbsolutePosition.Y, 0, Color.AbsoluteSize.Y) / Color.AbsoluteSize.Y)
 			
-			    AddConnection(Color.InputBegan, function(input)
+			    -- Handling both mouse and touch input
+			    local function InputStarted(input)
 			        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			            return true
+			        end
+			        return false
+			    end
+			
+			    AddConnection(Color.InputBegan, function(input)
+			        if InputStarted(input) then
 			            if ColorInput then
 			                ColorInput:Disconnect()
 			            end
@@ -1620,7 +1628,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			    end)
 			
 			    AddConnection(Color.InputEnded, function(input)
-			        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        if InputStarted(input) then
 			            if ColorInput then
 			                ColorInput:Disconnect()
 			            end
@@ -1628,7 +1636,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			    end)
 			
 			    AddConnection(Hue.InputBegan, function(input)
-			        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        if InputStarted(input) then
 			            if HueInput then
 			                HueInput:Disconnect()
 			            end
@@ -1645,7 +1653,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			    end)
 			
 			    AddConnection(Hue.InputEnded, function(input)
-			        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        if InputStarted(input) then
 			            if HueInput then
 			                HueInput:Disconnect()
 			            end
