@@ -1788,7 +1788,7 @@ if game:GetService("UserInputService").TouchEnabled then
 	topOutline.BorderSizePixel = 0
 	topOutline.Parent = textButton
 	textButton.MouseButton1Click:Connect(function()
-	    MainWindow.Visble = not MainWindow.Visible
+	    Orion.Enabled = not Orion.Enabled
 	end)
 end
 		
