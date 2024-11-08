@@ -22,15 +22,15 @@ local OrionLib = {
 			TextDark = Color3.fromRGB(150, 150, 150)
 		},
 		Eclipse = {
-			Main = Color3.fromRGB(20, 20, 20),
-			Second = Color3.fromRGB(30, 30, 30),
+			Main = Color3.fromRGB(20, 19, 26),
+			Second = Color3.fromRGB(32, 32, 38),
 			Stroke = Color3.fromRGB(50, 50, 70),
 			Divider = Color3.fromRGB(60, 60, 80),
 			Text = Color3.fromRGB(200, 200, 230),
 			TextDark = Color3.fromRGB(130, 130, 160)
 		}
 	},
-	SelectedTheme = "Default",
+	SelectedTheme = "Eclipse",
 	Folder = nil,
 	SaveCfg = false
 }
