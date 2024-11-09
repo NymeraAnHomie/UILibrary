@@ -9,7 +9,6 @@ local HttpService = game:GetService("HttpService")
 local CoreGui = cloneref(game:GetService("CoreGui"))
 
 local OrionLib = {
-local OrionLib = {
     Elements = {},
     ThemeObjects = {},
     Connections = {},
