@@ -7,6 +7,12 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Nym
 ```
 You can explore the source for themes, or click this link: https://github.com/NymeraAnHomie/Library/blob/main/OrionLib/Source.lua
 
+## Changing the Window Theme
+```lua
+OrionLib.SelectedTheme = "Light"
+```
+
+
 ## Creating a Window
 ```lua
 local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
