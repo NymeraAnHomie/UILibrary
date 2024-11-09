@@ -1802,7 +1802,7 @@ function OrionLib:WindowMobileToggle(MobileToggleConfig)
 		Outline.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		Outline.BorderSizePixel = 0
 		Main.MouseButton1Click:Connect(function()
-		    MainWindow.Visible = not MainWindow.Visible
+		    Orion.Enabled = not Orion.Enabled
 		end)
 		return MobTogg
 	end
