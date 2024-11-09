@@ -14,6 +14,7 @@ local OrionLib = {
     Connections = {},
     Flags = {},
     Themes = {
+	-- Notes: Secound are Tab Holder Background
         Default = {
             Main = Color3.fromRGB(57, 57, 59),
             Second = Color3.fromRGB(34, 34, 35),
