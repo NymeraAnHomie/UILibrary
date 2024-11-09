@@ -9,12 +9,12 @@ local HttpService = game:GetService("HttpService")
 local CoreGui = cloneref(game:GetService("CoreGui"))
 
 local OrionLib = {
+local OrionLib = {
     Elements = {},
     ThemeObjects = {},
     Connections = {},
     Flags = {},
     Themes = {
-        -- Notes: Second is Tab Holder Background
         Default = {
             Main = Color3.fromRGB(57, 57, 59),
             Second = Color3.fromRGB(34, 34, 35),
@@ -78,9 +78,25 @@ local OrionLib = {
             Divider = Color3.fromRGB(110, 25, 20),
             Text = Color3.fromRGB(255, 220, 220),
             TextDark = Color3.fromRGB(200, 100, 100)
+        },
+        Cosmic = {
+            Main = Color3.fromRGB(15, 15, 35),
+            Second = Color3.fromRGB(25, 25, 60),
+            Stroke = Color3.fromRGB(70, 30, 100),
+            Divider = Color3.fromRGB(50, 20, 80),
+            Text = Color3.fromRGB(230, 230, 255),
+            TextDark = Color3.fromRGB(140, 140, 200)
+        },
+        VisualStudioDark = {
+            Main = Color3.fromRGB(37, 37, 38),
+            Second = Color3.fromRGB(45, 45, 48),
+            Stroke = Color3.fromRGB(28, 28, 28),
+            Divider = Color3.fromRGB(63, 63, 70),
+            Text = Color3.fromRGB(220, 220, 220),
+            TextDark = Color3.fromRGB(153, 153, 153)
         }
     },
-    SelectedTheme = "Eclipse",
+    SelectedTheme = "VisualStudioDark",
     Folder = nil,
     SaveCfg = false
 }
