@@ -14,7 +14,7 @@ local OrionLib = {
     Connections = {},
     Flags = {},
     Themes = {
-	-- Notes: Secound are Tab Holder Background
+        -- Notes: Second is Tab Holder Background
         Default = {
             Main = Color3.fromRGB(57, 57, 59),
             Second = Color3.fromRGB(34, 34, 35),
@@ -54,9 +54,33 @@ local OrionLib = {
             Divider = Color3.fromRGB(120, 40, 150),
             Text = Color3.fromRGB(220, 200, 255),
             TextDark = Color3.fromRGB(160, 130, 200)
+        },
+        Forest = {
+            Main = Color3.fromRGB(34, 85, 34),
+            Second = Color3.fromRGB(60, 120, 60),
+            Stroke = Color3.fromRGB(25, 60, 25),
+            Divider = Color3.fromRGB(45, 100, 45),
+            Text = Color3.fromRGB(200, 255, 200),
+            TextDark = Color3.fromRGB(100, 160, 100)
+        },
+        Ocean = {
+            Main = Color3.fromRGB(20, 50, 100),
+            Second = Color3.fromRGB(25, 80, 130),
+            Stroke = Color3.fromRGB(15, 35, 70),
+            Divider = Color3.fromRGB(20, 60, 90),
+            Text = Color3.fromRGB(220, 240, 255),
+            TextDark = Color3.fromRGB(160, 190, 220)
+        },
+        Lava = {
+            Main = Color3.fromRGB(120, 20, 20),
+            Second = Color3.fromRGB(160, 40, 20),
+            Stroke = Color3.fromRGB(90, 15, 15),
+            Divider = Color3.fromRGB(110, 25, 20),
+            Text = Color3.fromRGB(255, 220, 220),
+            TextDark = Color3.fromRGB(200, 100, 100)
         }
     },
-    SelectedTheme = "Nebula",
+    SelectedTheme = "Eclipse",
     Folder = nil,
     SaveCfg = false
 }
