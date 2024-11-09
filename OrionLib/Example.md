@@ -5,7 +5,7 @@ This documentation is for the stable release of Orion Library.
 ```lua
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/OrionLib/Source.lua')))()
 ```
-You can explore the source for themes, or click this link: [![Open File](https://img.shields.io/badge/Open%20File-blue)](https://github.com/NymeraAnHomie/Library/blame/main/OrionLib/Source.lua)
+You can explore the source for themes, or click this link: [![Source](https://img.shields.io/badge/Open%20File-blue)](https://github.com/NymeraAnHomie/Library/blame/main/OrionLib/Source.lua)
 
 ## Creating a Window
 ```lua
