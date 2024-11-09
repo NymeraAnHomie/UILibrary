@@ -23,7 +23,7 @@ local OrionLib = {
 		},
 		Eclipse = {
 			Main = Color3.fromRGB(20, 19, 26),
-			Second = Color3.fromRGB(32, 32, 38),
+			Second = Color3.fromRGB(32, 32, 49),
 			Stroke = Color3.fromRGB(50, 50, 70),
 			Divider = Color3.fromRGB(60, 60, 80),
 			Text = Color3.fromRGB(200, 200, 230),
