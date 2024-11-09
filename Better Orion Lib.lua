@@ -1783,25 +1783,29 @@ function OrionLib:Destroy()
 	Orion:Destroy()
 end
 
-if game:GetService("UserInputService").TouchEnabled then
-	local screenGui = Instance.new("ScreenGui", game.CoreGui)
-	local textButton = Instance.new("TextButton", screenGui)
-	textButton.Size = UDim2.new(0, 50, 0, 50)
-	textButton.Position = UDim2.new(1, -210, 0, 10)
-	textButton.BackgroundColor3 = Color3.fromRGB(27, 27, 29)
-	textButton.Text = ""
-	textButton.TextColor3 = Color3.new(1, 1, 1)
-	textButton.BorderSizePixel = 1
-	textButton.BorderColor3 = Color3.new(0, 0, 0)
-	textButton.AutoButtonColor = false
-	local topOutline = Instance.new("Frame", textButton)
-	topOutline.Size = UDim2.new(1, 0, 0, 2)
-	topOutline.Position = UDim2.new(0, 0, 0, 0)
-	topOutline.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	topOutline.BorderSizePixel = 0
-	textButton.MouseButton1Click:Connect(function()
-	    MainWindow.Visible = not MainWindow.Visible
-	end)
+function OrionLib:WindowMobileToggle(MobileToggleConfig)
+	if UserInputService.TouchEnabled then
+		local MobTogg = Instance.new("ScreenGui", game.CoreGui)
+		local Main = Instance.new("TextButton", MobTogg)
+		Main.Size = UDim2.new(0, 50, 0, 50)
+		Main.AnchorPoint = Vector2.new(1, 0)
+		Main.Position = UDim2.new(1, -10, 0, 10)
+		Main.BackgroundColor3 = Color3.fromRGB(27, 27, 29)
+		Main.Text = ""
+		Main.TextColor3 = Color3.new(1, 1, 1)
+		Main.BorderSizePixel = 1
+		Main.BorderColor3 = Color3.new(0, 0, 0)
+		Main.AutoButtonColor = false
+		local Outline = Instance.new("Frame", Main)
+		Outline.Size = UDim2.new(1, 0, 0, 2)
+		Outline.Position = UDim2.new(0, 0, 0, 0)
+		Outline.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Outline.BorderSizePixel = 0
+		Main.MouseButton1Click:Connect(function()
+		    MainWindow.Visible = not MainWindow.Visible
+		end)
+		return MobTogg
+	end
 end
 		
 return OrionLib
