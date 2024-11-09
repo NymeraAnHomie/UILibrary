@@ -95,7 +95,7 @@ local OrionLib = {
             TextDark = Color3.fromRGB(153, 153, 153)
         }
     },
-    SelectedTheme = "VisualStudioDark",
+    SelectedTheme = "Light",
     Folder = nil,
     SaveCfg = false
 }
