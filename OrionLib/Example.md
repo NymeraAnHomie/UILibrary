@@ -8,6 +8,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Nym
 You can explore the source for themes, or click this link: https://github.com/NymeraAnHomie/Library/blob/main/OrionLib/Source.lua
 
 ## Changing the Window Theme
+Default, Eclipse, Light, Sunset, Nebula, Forest, Ocean, Lava, Cosmic, VisualStudioDark
 ```lua
 OrionLib.SelectedTheme = "Light"
 ```
