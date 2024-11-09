@@ -23,7 +23,7 @@ local OrionLib = {
 			TextDark = Color3.fromRGB(150, 150, 150)
 		},
 		Eclipse = {
-			Main = Color3.fromRGB(20, 19, 26),
+			Main = Color3.fromRGB(28, 27, 36),
 			Second = Color3.fromRGB(32, 32, 49),
 			Stroke = Color3.fromRGB(50, 50, 70),
 			Divider = Color3.fromRGB(60, 60, 80),
@@ -1032,7 +1032,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			    SliderConfig.Default = SliderConfig.Default or 50
 			    SliderConfig.Callback = SliderConfig.Callback or function() end
 			    SliderConfig.ValueName = SliderConfig.ValueName or ""
-			    SliderConfig.Color = SliderConfig.Color or Color3.fromRGB(9, 149, 98)
+			    SliderConfig.Color = SliderConfig.Color or Color3.fromRGB(28, 27, 36) -- Color3.fromRGB(9, 149, 98)
 			    SliderConfig.Flag = SliderConfig.Flag or nil
 			    SliderConfig.Save = SliderConfig.Save or false
 			
