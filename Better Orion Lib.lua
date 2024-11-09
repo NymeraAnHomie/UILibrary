@@ -9,31 +9,55 @@ local HttpService = game:GetService("HttpService")
 local CoreGui = cloneref(game:GetService("CoreGui"))
 
 local OrionLib = {
-	Elements = {},
-	ThemeObjects = {},
-	Connections = {},
-	Flags = {},
-	Themes = {
-		Default = {
-			Main = Color3.fromRGB(57, 57, 59),
-			Second = Color3.fromRGB(34, 34, 35),
-			Stroke = Color3.fromRGB(60, 60, 60),
-			Divider = Color3.fromRGB(60, 60, 60),
-			Text = Color3.fromRGB(240, 240, 240),
-			TextDark = Color3.fromRGB(150, 150, 150)
-		},
-		Eclipse = {
-			Main = Color3.fromRGB(28, 27, 36),
-			Second = Color3.fromRGB(32, 32, 49),
-			Stroke = Color3.fromRGB(50, 50, 70),
-			Divider = Color3.fromRGB(60, 60, 80),
-			Text = Color3.fromRGB(200, 200, 230),
-			TextDark = Color3.fromRGB(130, 130, 160)
-		}
-	},
-	SelectedTheme = "Eclipse",
-	Folder = nil,
-	SaveCfg = false
+    Elements = {},
+    ThemeObjects = {},
+    Connections = {},
+    Flags = {},
+    Themes = {
+        Default = {
+            Main = Color3.fromRGB(57, 57, 59),
+            Second = Color3.fromRGB(34, 34, 35),
+            Stroke = Color3.fromRGB(60, 60, 60),
+            Divider = Color3.fromRGB(60, 60, 60),
+            Text = Color3.fromRGB(240, 240, 240),
+            TextDark = Color3.fromRGB(150, 150, 150)
+        },
+        Eclipse = {
+            Main = Color3.fromRGB(35, 30, 25),
+            Second = Color3.fromRGB(50, 40, 35),
+            Stroke = Color3.fromRGB(100, 75, 50),
+            Divider = Color3.fromRGB(80, 55, 40),
+            Text = Color3.fromRGB(255, 200, 150),
+            TextDark = Color3.fromRGB(170, 130, 100)
+        },
+        Light = {
+            Main = Color3.fromRGB(245, 245, 245),
+            Second = Color3.fromRGB(220, 220, 220),
+            Stroke = Color3.fromRGB(180, 180, 180),
+            Divider = Color3.fromRGB(200, 200, 200),
+            Text = Color3.fromRGB(30, 30, 30),
+            TextDark = Color3.fromRGB(80, 80, 80)
+        },
+        Sunset = {
+            Main = Color3.fromRGB(255, 94, 77),
+            Second = Color3.fromRGB(255, 146, 107),
+            Stroke = Color3.fromRGB(184, 80, 64),
+            Divider = Color3.fromRGB(214, 105, 89),
+            Text = Color3.fromRGB(255, 234, 220),
+            TextDark = Color3.fromRGB(200, 144, 133)
+        },
+        Nebula = {
+            Main = Color3.fromRGB(45, 15, 62),
+            Second = Color3.fromRGB(70, 20, 90),
+            Stroke = Color3.fromRGB(100, 30, 120),
+            Divider = Color3.fromRGB(120, 40, 150),
+            Text = Color3.fromRGB(220, 200, 255),
+            TextDark = Color3.fromRGB(160, 130, 200)
+        }
+    },
+    SelectedTheme = "Light",
+    Folder = nil,
+    SaveCfg = false
 }
 
 --Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
