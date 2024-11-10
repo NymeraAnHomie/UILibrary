@@ -14,7 +14,8 @@ local OrionLib = {
     Connections = {},
     Flags = {},
     Themes = {
-        Default = {
+        -- Notes: Secound RGB In theme are Tab holder bg
+      	Default = {
             Main = Color3.fromRGB(57, 57, 59),
             Second = Color3.fromRGB(34, 34, 35),
             Stroke = Color3.fromRGB(60, 60, 60),
@@ -829,7 +830,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		}), {
 			AddThemeObject(SetProps(MakeElement("Image", TabConfig.Icon), {
 				AnchorPoint = Vector2.new(0, 0.5),
-				Size = UDim2.new(0, 25, 0, 25),
+				Size = UDim2.new(0, 18, 0, 18),
 -- 0, 18, 0, 18
 				Position = UDim2.new(0, 10, 0.5, 0),
 				ImageTransparency = 0.4,
