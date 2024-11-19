@@ -824,7 +824,7 @@ do
 			--
 			local Logo = Instance.new("ImageLabel")
 			Logo.Name = "Logo"
-			Logo.Image = Properties.Logo
+			Logo.Image = Properties.Logo or ""
 			Logo.ScaleType = Enum.ScaleType.Fit
 			Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Logo.BackgroundTransparency = 1
