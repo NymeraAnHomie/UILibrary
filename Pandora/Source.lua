@@ -1,5 +1,5 @@
 -- made by portal (uilib)
--- made by atzlazyblue (main code not the ui maker)
+-- made by atzlazyblue aka nymera (main code not the ui maker)
 
 -- // Custom Fonts
 do 
