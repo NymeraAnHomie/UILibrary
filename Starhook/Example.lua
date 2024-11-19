@@ -5,7 +5,8 @@ local ui = {
 }
 local window = library:New({
     Size = UDim2.new(0, 600, 0, 500),
-		Logo = ""
+		Logo = "",
+		LogoRGB = Color3.fromRGB(255, 255, 255)
 });
 local flags = library.Flags
 local watermark = library:Watermark({Name = ""});
