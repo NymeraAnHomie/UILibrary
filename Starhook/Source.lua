@@ -831,7 +831,7 @@ do
 			Logo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Logo.BorderSizePixel = 0
 			Logo.Position = UDim2.fromOffset(10, -20)
-			Logo.ImageColor3 = Properties.LogoRGB
+			Logo.ImageColor3 = Properties.LogoRGB or Color3.fromRGB(255, 255, 255)
 			Logo.Size = UDim2.fromOffset(90, 90)
 			Logo.Parent = Holder
 			--
