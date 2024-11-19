@@ -9,41 +9,71 @@ local window = library:New({
 local flags = library.Flags
 local watermark = library:Watermark({Name = ""});
 
-window:Seperator({Name = "Star Hook UI Library"}); -- lmao i'm using this as a title you dont have to, but to use the seperator you can do this
+window:Seperator({Name = "Star Hook UI Library"});
+-- // for the logo you have to go the function window in the source and edit it
 
---[[
-    ui.tabs["legit"] = window:Page({Name = "TestTab1", Icon = "http://www.roblox.com/asset/?id=6023426921"});
-    window:Seperator({Name = "Combat"});
-    ui.tabs["combat"] = window:Page({Name = "TestCombatTab", Icon = "http://www.roblox.com/asset/?id=6023426921"}); -- Change the Icon btw.
+ui.tabs["legit"] = window:Page({
+    Name = "Legit",
+    Icon = "http://www.roblox.com/asset/?id=6023426921"
+});
 
-    ---- StarHook uses the following ----
-    http://www.roblox.com/asset/?id=6023426921 - Rage/Legit Icon
-    http://www.roblox.com/asset/?id=6034684930 - World Icon
-    http://www.roblox.com/asset/?id=6031075931 - View Icon
-    http://www.roblox.com/asset/?id=6034754445 - Movement Icon
-    http://www.roblox.com/asset/?id=14760676189 - Anti Aim Icon
-    http://www.roblox.com/asset/?id=6031280882 - Settings Icon
-]]--
+ui.tabs["world"] = window:Page({
+    Name = "World",
+    Icon = "http://www.roblox.com/asset/?id=6034684930"
+});
 
-ui.tabs["legit"] = window:Page({Name = "Test", Icon = "http://www.roblox.com/asset/?id=6023426921"});
+ui.tabs["view"] = window:Page({
+    Name = "View",
+    Icon = "http://www.roblox.com/asset/?id=6031075931"
+});
 
-local dbasdb = ui.tabs["legit"]:Section({Name = "Test", Side = "Left", Size = 420}); -- Section inside of the "legit" tab.
+ui.tabs["movement"] = window:Page({
+    Name = "Movement",
+    Icon = "http://www.roblox.com/asset/?id=6034754445"
+});
 
-local main_toggle = dbasdb:Toggle({Name = "Enabled", Flag = "opritnaga"}); -- Toggle
--- To use the toggle, just do flags["opritnaga"]
-dbasdb:Colorpicker({Name = "Example Color", Flag = "bee_beep_color", Default = Color3.new(0, 255, 0)}); -- Color example, you can change the default color to anything
--- To use the color picker you would just do flags["bee_beep_color"]
-dbasdb:Slider({Name = "Slider Example", Flag = "this_is_a_slider", Default = 1, Minimum = 1, Maximum = 200, Decimals = 0.01, Ending = "%"}); -- Slider Example, you can change everything including the ending to really anything.
--- To use the slider you would just do flags["this_is_a_slider"]
-dbasdb:Textbox({Name = "Prediction", Flag = "this_is_a_textbox", Default = "151", PlaceHolder = "Prediction"});
--- To use the Textbox you just need to do flags["this_is_a_textbox"]
-local debugTextbox = dbasdb:Toggle({Name = "Debug Textbox", Flag = "debug_textBox"});
--- I think you get it.
-game:GetService("RunService").Heartbeat:Connect(function ()
-    if flags["opritnaga"] then
-        print("hello this is enabled")
+ui.tabs["anti_aim"] = window:Page({
+    Name = "Anti Aim",
+    Icon = "http://www.roblox.com/asset/?id=14760676189"
+});
+
+ui.tabs["settings"] = window:Page({
+    Name = "Settings",
+    Icon = "http://www.roblox.com/asset/?id=6031280882"
+});
+
+local section = ui.tabs["legit"]:Section({Name = "Settings", Side = "Left", Size = 420});
+
+section:Toggle({Name = "Enabled", Flag = "feature_enabled"});
+section:Colorpicker({
+    Name = "Choose Color",
+    Flag = "selected_color",
+    Default = Color3.new(0, 1, 0)
+});
+section:Slider({
+    Name = "Adjust Slider",
+    Flag = "slider_value",
+    Default = 50,
+    Minimum = 0,
+    Maximum = 100,
+    Decimals = 1,
+    Ending = "%"
+});
+section:Textbox({
+    Name = "Enter Text",
+    Flag = "text_input",
+    Default = "",
+    PlaceHolder = "Type here..."
+});
+
+game:GetService("RunService").Heartbeat:Connect(function()
+    if flags["feature_enabled"] then
+        print("Feature Enabled");
     end
-    if flags["debug_textBox"] then
-        print(flags["this_is_a_textbox"])
+    if flags["slider_value"] then
+        print("Slider Value: " .. flags["slider_value"]);
     end
-end)
+    if flags["text_input"] then
+        print("User Input: " .. flags["text_input"]);
+    end
+end);
