@@ -1,2 +1,1 @@
-![screenshot](https://r2.e-z.host/35e5b321-49c3-4724-9cc0-ba482312dc74/668awudu.png)
-this is outdated but i lazy to add the updated one
+![screenshot](https://media.discordapp.net/attachments/1183085005904289924/1308421470816436265/1732022357948.jpg?ex=673de1f3&is=673c9073&hm=78ecac9797e2d244e595688ceefde9b9606121472c29e128f3c113b2e160052d&)
