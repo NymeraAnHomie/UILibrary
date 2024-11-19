@@ -10,8 +10,7 @@ local window = library:New({
 local flags = library.Flags
 local watermark = library:Watermark({Name = ""});
 
-window:Seperator({Name = "Star Hook UI Library"});
--- // for the logo you have to go the function window in the source and edit it
+window:Seperator({Name = "Separate"})
 
 ui.tabs["legit"] = window:Page({
     Name = "Legit",
