@@ -406,7 +406,7 @@ do
 			Gradient.Rotation = -90
 			--
 			Window.Name = "Window"
-			Window.Position = UDim2.new(0,-120,0,10)
+			Window.Position = UDim2.new(0,-185,0,10)
 			Window.Size = UDim2.new(0,180,0,133)
 			Window.BackgroundColor3 = Color3.new(0.0431,0.0431,0.0431)
 			Window.BorderColor3 = Color3.new(0.1098,0.1098,0.1098)
