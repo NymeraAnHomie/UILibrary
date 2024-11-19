@@ -4,7 +4,8 @@ local ui = {
 	tabs = {}
 }
 local window = library:New({
-    Size = UDim2.new(0, 600, 0, 500)
+    Size = UDim2.new(0, 600, 0, 500),
+		Logo = ""
 });
 local flags = library.Flags
 local watermark = library:Watermark({Name = ""});
