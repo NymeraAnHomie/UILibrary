@@ -525,6 +525,15 @@ do
 			    b = math.clamp(b, 0, 255)
 			
 			    local NewColor = Color3.fromRGB(r, g, b)
+			    local h, s, v = NewColor:ToHSV()
+			
+			    curhuesizey = h
+			    hue = h
+			    sat = s
+			    val = v
+			
+			    Sat.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
+			
 			    set(NewColor, alpha)
 			end
 			
