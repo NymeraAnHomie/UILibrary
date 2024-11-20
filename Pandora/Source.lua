@@ -87,7 +87,7 @@ do
 		Connections = {};
 		UIFont = menu_font;
 		UIKey = Enum.KeyCode.Insert,
-		FontSize = 11;
+		FontSize = 12;
 	}
 
 	-- // Ignores
