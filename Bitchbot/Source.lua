@@ -1,6 +1,5 @@
--- This has not been tested on any other executors besides krampus (only tested in roblox studio)
--- I cannot guarantee everything works (ex. custom font which i removed)
--- Made by portal | example at bottom
+-- Made by portal
+-- Modified by atzlazyblue aka nymera
 
 if isfile("menu_plex.font") then
 	delfile("menu_plex.font")
