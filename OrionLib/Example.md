@@ -300,7 +300,7 @@ The `Save = <bool>` argument includes the element in the config file.
 Config files are made for every game the library is launched in.
 
 ## Toggle for mobile
-Aleadry a function to check if the Player device is Mobile or Pc.
+There Aleadry a function to check if the Player device is Mobile or Pc.
 ```lua
 local WindowMobToggle = OrionLib:WindowMobileToggle({})
 ```
