@@ -1,5 +1,5 @@
 -- Made by linemaster3
--- Modifyed for mobile (atzlazyblue the skibidi modifyer)
+-- Modifyed for mobile (atzlazyblue aka nymera the skibidi modifyer)
 
 local Drawing = loadstring(game:HttpGet("https://raw.githubusercontent.com/linemaster2/storage/main/Drawing.lua"))();
 
