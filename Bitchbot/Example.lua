@@ -6,22 +6,26 @@ if not Drawing then return end
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Bitchbot/Source.lua"))() do
 	getgenv().Library, Utility, ESP, Flag = {}
-	getgenv().Flag = Library.Flags -- // Flag doe not work why portal
+	getgenv().Flag = Library.Flags -- why tf we cant use flag portal
 	
 	do
 		local Passed, Statement = pcall(function()
 			local Window = Library:Window({Name = "Example Window", Size = Vector2.new(450, 450)})
 			local Combat = Window:Page({Name = "Combat"})
+			local Visual = Window:Page({Name = "Visual"})
 			local Aimbot, Misc = Combat:MultiSection({Sections = {"Aimbot", "Misc"}, Zindex = 5, Side = "Left", Size = 315})
 			local Exploits, Resolver = Combat:MultiSection({Sections = {"Exploits", "Resolver"}, Zindex = 5, Side = "Right", Size = 315})
 			
-			Aimbot:Toggle({Name = "Enable", Callback = function(v)
-			    print("[cb]: you have set the toggle to " .. Value .. ".")
+			local imsosigma = Aimbot:Toggle({Name = "Enable", Risk = false, Callback = function(v)
+			    print("[cb]: you have set the toggle to " .. v .. ".")
 			end})
-			Aimbot:Button({Name = "kys", Callback = function()
+			--imsosigma:Colorpicker({Default = Color3.fromRGB(255, 255, 255), Callback = function(v)
+			--	print("[cb]: You have set the toggle color to" .. v .. ".")
+            --end}) who ever fuck up colorpicker fuck u
+			Aimbot:Button({Name = "Button", Callback = function()
 			    print("[cb]: You have called a button.")
 			end})
-			Aimbot:List({Name = "hit priority", Options = {
+			Aimbot:List({Name = "Hit Priority", Options = {
 				"HumanoidRootPart",
 				"UpperTorso",
 				"LowerTorso",
@@ -41,7 +45,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nymer
 	
 	do
 		local ScreenGui = Instance.new("ScreenGui")
-		ScreenGui.Parent = cloneref(game:GetService("CoreGui"))
+		ScreenGui.Parent = game:GetService("CoreGui")
 		ScreenGui.ResetOnSpawn = false
 		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		
@@ -98,5 +102,3 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nymer
 		end)
 	end
 end
-
-getgenv().Loaded = true
