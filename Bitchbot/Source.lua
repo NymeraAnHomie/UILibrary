@@ -1,55 +1,39 @@
--- Made by portal
--- Modified by atzlazyblue aka nymera
+--// honestly idk who tf made dis
+--// but ill be damn i did not made dis
 
-if isfile("menu_plex.font") then
-	delfile("menu_plex.font")
+local players, run_service, tween_service, workspace, http_service, gui_service, uis, current_list = game:GetService("Players"), game:GetService("RunService"), game:GetService("TweenService"), game:GetService("Workspace"), game:GetService("HttpService"), game:GetService("GuiService"), game:GetService("UserInputService"), {}
+local fontConfig = {
+    name = "Arial",
+    faces = {
+        {
+            name = "Regular",
+            weight = 200,
+            style = "normal",
+        }
+    }
+}
+
+local jsonConfig = game:GetService("HttpService"):JSONEncode(fontConfig)
+
+if not isfile("Arial.json") then
+    writefile("Arial.json", jsonConfig)
 end
 
-writefile("ProggyClean.ttf", game:HttpGet("https://github.com/f1nobe7650/other/raw/main/ProggyClean.ttf"))
+print("waypoint two")
 
--- // Custom Font
-do
-	getsynasset = getcustomasset or getsynasset
-	Font = setreadonly(Font, false);
-	function Font:Register(Name, Weight, Style, Asset)
-		if not isfile(Name .. ".font") then
-			if not isfile(Asset.Id) then
-				writefile(Asset.Id, Asset.Font);
-			end;
-			--
-			local Data = {
-				name = Name,
-				faces = {{
-					name = "Regular",
-					weight = Weight,
-					style = Style,
-					assetId = getsynasset(Asset.Id);
-				}}
-			};
-			--
-			writefile(Name .. ".font", game:GetService("HttpService"):JSONEncode(Data));
-			return getsynasset(Name .. ".font");
-		else 
-			warn("Font already registered");
-		end;
-	end;
-	--
-	function Font:GetRegistry(Name)
-		if isfile(Name .. ".font") then
-			return getsynasset(Name .. ".font");
-		end;
-	end;
+local DrawingFontsEnum = {
+    [0] = Font.new(getcustomasset("Arial.json"), Enum.FontWeight.Regular),
+}
 
-	Font:Register("menu_plex", 400, "normal", {Id = "ProggyClean.ttf", Font = ""});
+function getfontfromindex(fontIndex)
+    return DrawingFontsEnum[fontIndex] or DrawingFontsEnum[0]
 end
 
-local realfont = Font.new(Font:GetRegistry("menu_plex"))
+print("waypoint three")
 
-local Library = {};
-do
-	Library = {
+local Library = {
 		Open = true;
-		Accent = Color3.fromRGB(0, 170, 255);
+		Accent = Color3.fromRGB(125, 154, 197);
 		Pages = {};
 		Sections = {};
 		Flags = {};
@@ -57,13 +41,13 @@ do
 		ThemeObjects = {};
 		Holder = nil;
 		Keys = {
-			[Enum.KeyCode.LeftShift] = "LS",
-			[Enum.KeyCode.RightShift] = "RS",
-			[Enum.KeyCode.LeftControl] = "LC",
-			[Enum.KeyCode.RightControl] = "RC",
-			[Enum.KeyCode.LeftAlt] = "LA",
-			[Enum.KeyCode.RightAlt] = "RA",
-			[Enum.KeyCode.CapsLock] = "CAPS",
+			[Enum.KeyCode.LeftShift] = "lshift",
+			[Enum.KeyCode.RightShift] = "rshift",
+			[Enum.KeyCode.LeftControl] = "lcontrol",
+			[Enum.KeyCode.RightControl] = "rcontrol",
+			[Enum.KeyCode.LeftAlt] = "lalt",
+			[Enum.KeyCode.RightAlt] = "ralt",
+			[Enum.KeyCode.CapsLock] = "caps",
 			[Enum.KeyCode.One] = "1",
 			[Enum.KeyCode.Two] = "2",
 			[Enum.KeyCode.Three] = "3",
@@ -74,16 +58,16 @@ do
 			[Enum.KeyCode.Eight] = "8",
 			[Enum.KeyCode.Nine] = "9",
 			[Enum.KeyCode.Zero] = "0",
-			[Enum.KeyCode.KeypadOne] = "Num1",
-			[Enum.KeyCode.KeypadTwo] = "Num2",
-			[Enum.KeyCode.KeypadThree] = "Num3",
-			[Enum.KeyCode.KeypadFour] = "Num4",
-			[Enum.KeyCode.KeypadFive] = "Num5",
-			[Enum.KeyCode.KeypadSix] = "Num6",
-			[Enum.KeyCode.KeypadSeven] = "Num7",
-			[Enum.KeyCode.KeypadEight] = "Num8",
-			[Enum.KeyCode.KeypadNine] = "Num9",
-			[Enum.KeyCode.KeypadZero] = "Num0",
+			[Enum.KeyCode.KeypadOne] = "num1",
+			[Enum.KeyCode.KeypadTwo] = "num2",
+			[Enum.KeyCode.KeypadThree] = "num3",
+			[Enum.KeyCode.KeypadFour] = "num4",
+			[Enum.KeyCode.KeypadFive] = "num5",
+			[Enum.KeyCode.KeypadSix] = "num6",
+			[Enum.KeyCode.KeypadSeven] = "num7",
+			[Enum.KeyCode.KeypadEight] = "num8",
+			[Enum.KeyCode.KeypadNine] = "num9",
+			[Enum.KeyCode.KeypadZero] = "num0",
 			[Enum.KeyCode.Minus] = "-",
 			[Enum.KeyCode.Equals] = "=",
 			[Enum.KeyCode.Tilde] = "~",
@@ -101,9 +85,9 @@ do
 			[Enum.KeyCode.Plus] = "+",
 			[Enum.KeyCode.Period] = ".",
 			[Enum.KeyCode.Backquote] = "`",
-			[Enum.UserInputType.MouseButton1] = "MB1",
-			[Enum.UserInputType.MouseButton2] = "MB2",
-			[Enum.UserInputType.MouseButton3] = "MB3"
+			[Enum.UserInputType.Touch] = "mouse1",
+			[Enum.UserInputType.MouseButton2] = "mouse2",
+			[Enum.UserInputType.MouseButton3] = "mouse3"
 		};
 		Connections = {};
 		UIKey = Enum.KeyCode.End;
@@ -115,26 +99,26 @@ do
 		Notifs = {};
 		Friends = {};
 		Priorities = {};
+		RainbowSpeed = 0.1
 	}
 
-	-- // Ignores
-	local Flags = {}; -- Ignore
-	local Dropdowns = {}; -- Ignore
-	local Pickers = {}; -- Ignore
-	local VisValues = {}; -- Ignore
+-- // Ignores
+local Flags = {}; -- Ignore
+local Dropdowns = {}; -- Ignore
+local Pickers = {}; -- Ignore
+local VisValues = {} -- Ignore
+local flags = Library.Flags
 
-	-- // Extension
-	Library.__index = Library
-	Library.Pages.__index = Library.Pages
-	Library.Sections.__index = Library.Sections
-	local LocalPlayer = game:GetService('Players').LocalPlayer;
-	local Mouse = LocalPlayer:GetMouse();
-	local TweenService = game:GetService("TweenService");
+Library.__index = Library
+Library.Pages.__index = Library.Pages
+Library.Sections.__index = Library.Sections
+
 
 	-- // Misc Functions
 	do
 		function Library:Connection(Signal, Callback)
 			local Con = Signal:Connect(Callback)
+		table.insert(Library.Connections, Con)
 			return Con
 		end
 		--
@@ -206,55 +190,57 @@ do
 		end
 		--
 		function Library:LoadConfig(Config)
-			local Table = string.split(Config, "\n")
-			local Table2 = {}
-			for Index, Value in pairs(Table) do
-				local Table3 = string.split(Value, ":")
-				--
-				if Table3[1] ~= "ConfigConfig_List" and #Table3 >= 2 then
-					local Value = Table3[2]:sub(2, #Table3[2])
+			for i = 1, 10 do 
+				local Table = string.split(Config, "\n")
+				local Table2 = {}
+				for Index, Value in pairs(Table) do
+					local Table3 = string.split(Value, ":")
 					--
-					if Value:sub(1, 3) == "rgb" then
-						local Table4 = string.split(Value:sub(5, #Value - 1), ",")
+					if Table3[1] ~= "ConfigConfig_List" and #Table3 >= 2 then
+						local Value = Table3[2]:sub(2, #Table3[2])
 						--
-						Value = Table4
-					elseif Value:sub(1, 3) == "key" then
-						local Table4 = string.split(Value:sub(5, #Value - 1), ",")
-						--
-						if Table4[1] == "nil" and Table4[2] == "nil" then
-							Table4[1] = nil
-							Table4[2] = nil
+						if Value:sub(1, 3) == "rgb" then
+							local Table4 = string.split(Value:sub(5, #Value - 1), ",")
+							--
+							Value = Table4
+						elseif Value:sub(1, 3) == "key" then
+							local Table4 = string.split(Value:sub(5, #Value - 1), ",")
+							--
+							if Table4[1] == "nil" and Table4[2] == "nil" then
+								Table4[1] = nil
+								Table4[2] = nil
+							end
+							--
+							Value = Table4
+						elseif Value:sub(1, 4) == "bool" then
+							local Bool = Value:sub(6, #Value - 1)
+							--
+							Value = Bool == "true"
+						elseif Value:sub(1, 5) == "table" then
+							local Table4 = string.split(Value:sub(7, #Value - 1), ",")
+							--
+							Value = Table4
+						elseif Value:sub(1, 6) == "string" then
+							local String = Value:sub(8, #Value - 1)
+							--
+							Value = String
+						elseif Value:sub(1, 6) == "number" then
+							local Number = tonumber(Value:sub(8, #Value - 1))
+							--
+							Value = Number
 						end
 						--
-						Value = Table4
-					elseif Value:sub(1, 4) == "bool" then
-						local Bool = Value:sub(6, #Value - 1)
-						--
-						Value = Bool == "true"
-					elseif Value:sub(1, 5) == "table" then
-						local Table4 = string.split(Value:sub(7, #Value - 1), ",")
-						--
-						Value = Table4
-					elseif Value:sub(1, 6) == "string" then
-						local String = Value:sub(8, #Value - 1)
-						--
-						Value = String
-					elseif Value:sub(1, 6) == "number" then
-						local Number = tonumber(Value:sub(8, #Value - 1))
-						--
-						Value = Number
+						Table2[Table3[1]] = Value
 					end
-					--
-					Table2[Table3[1]] = Value
-				end
-			end
-			--
-			for i, v in pairs(Table2) do
-				if Flags[i] then
-					if typeof(Flags[i]) == "table" then
-						Flags[i]:Set(v)
-					else
-						Flags[i](v)
+				end 
+				--
+				for i, v in pairs(Table2) do
+					if Flags[i] then
+						if typeof(Flags[i]) == "table" then
+							Flags[i]:Set(v)
+						else
+							Flags[i](v)
+						end
 					end
 				end
 			end
@@ -270,8 +256,8 @@ do
 		function Library:IsMouseOverFrame(Frame)
 			local AbsPos, AbsSize = Frame.AbsolutePosition, Frame.AbsoluteSize;
 
-			if Mouse.X >= AbsPos.X and Mouse.X <= AbsPos.X + AbsSize.X
-				and Mouse.Y >= AbsPos.Y and Mouse.Y <= AbsPos.Y + AbsSize.Y then
+			if mouse.X >= AbsPos.X and mouse.X <= AbsPos.X + AbsSize.X
+				and mouse.Y >= AbsPos.Y and mouse.Y <= AbsPos.Y + AbsSize.Y then
 
 				return true;
 			end;
@@ -313,6 +299,53 @@ do
 			return rgb
 		end
 	end;
+
+	function Library:GetDevice()
+		if (gui_service:IsTenFootInterface()) then
+			return "Console"
+		elseif (uis.TouchEnabled and not uis.MouseEnabled) then
+			local DeviceSize = workspace.CurrentCamera.ViewportSize
+			if (DeviceSize.Y >= 600) then
+				return "Tablet"
+			else
+				return "Phone"
+			end
+		else
+			return "Desktop"
+		end
+	end
+
+	function Library:UpdateConfigList(list)
+		local List = {};
+		for idx, file in ipairs(listfiles("camelhook/Configs")) do
+			local FileName = file:gsub("camelhook/Configs\\", ""):gsub(".cfg", "")
+			List[#List + 1] = FileName;
+		end;
+	
+		local IsNew = #List ~= #current_list
+		if not IsNew then
+			for idx, file in ipairs(List) do
+				if file ~= current_list[idx] then
+					IsNew = true;
+						break;
+					end;
+				end;
+			end;
+	
+		if IsNew then
+			current_list = List;
+			list:Refresh(current_list);
+		end;
+	end;
+
+	function Library:New(Class, Properties)
+		local _Instance = type(Class) == 'string' and Instance.new(Class) or Class
+		for Property, Value in next, Properties do
+			_Instance[Property] = Value
+		end
+		return _Instance
+	end
+	
 
 	-- // Colorpicker Element
 	do
@@ -366,7 +399,7 @@ do
 			ColorOutline.Name = "ColorOutline"
 			ColorOutline.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 			ColorOutline.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			ColorOutline.Position = UDim2.new(0,30,0,-20)
+			ColorOutline.Position = UDim2.new(0,-184,0,-20)
 			ColorOutline.Size = UDim2.new(0, 184, 0, 182)
 			ColorOutline.Visible = false
 			ColorOutline.Parent = Icon
@@ -398,7 +431,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -537,10 +570,10 @@ do
 				Square.Position = UDim2.new(math.clamp(1 - sat, 0.000, 1 - 0.030), 0, math.clamp(1 - val, 0.000, 1 - 0.030), 0)
 
 				if flag then
-					Library.Flags[flag] = Library:RGBA(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha)
+					Library.Flags[flag] = hsv
 				end
 
-				callback(Library:RGBA(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha))
+				callback(hsv)
 			end
 
 			local function set(color, a)
@@ -568,10 +601,10 @@ do
 					Square.Position = UDim2.new(math.clamp(1 - sat, 0.000, 1 - 0.030), 0, math.clamp(1 - val, 0.000, 1 - 0.030), 0)
 
 					if flag then
-						Library.Flags[flag] = Library:RGBA(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha)
+						Library.Flags[flag] = hsv
 					end
 
-					callback(Library:RGBA(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha))
+					callback(hsv)
 				end
 			end
 
@@ -580,28 +613,28 @@ do
 			set(default, defaultalpha)
 
 			Sat.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					slidingsaturation = true
 					update()
 				end
 			end)
 
 			Sat.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					slidingsaturation = false
 					update()
 				end
 			end)
 
 			Hue.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					slidinghue = true
 					update()
 				end
 			end)
 
 			Hue.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					slidinghue = false
 					update()
 				end
@@ -627,7 +660,7 @@ do
 			end
 
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
-				if ColorOutline.Visible and Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if ColorOutline.Visible and Input.UserInputType == Enum.UserInputType.Touch then
 					if not Library:IsMouseOverFrame(ColorOutline) and not Library:IsMouseOverFrame(Icon) then
 						ColorOutline.Visible = false
 						parent.ZIndex = 1
@@ -636,7 +669,7 @@ do
 			end)
 
 			Icon.MouseButton1Down:Connect(function()
-				ColorOutline.Visible = true
+				ColorOutline.Visible = not ColorOutline.Visible
 				parent.ZIndex = 5
 
 				if slidinghue then
@@ -731,7 +764,7 @@ do
 
 		local Value = Instance.new("TextLabel")
 		Value.Name = "Value"
-		Value.FontFace = realfont
+		Value.FontFace = getfontfromindex(2)
 		Value.Text = message
 		Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Value.TextSize = Library.FSize
@@ -746,6 +779,7 @@ do
 		Value.Size = UDim2.new(0,0, 1, 0)
 		Value.Parent = Notif
 		Value.AutomaticSize = Enum.AutomaticSize.X
+		Value.RichText = true 
 		table.insert(notification.Objects, Value)
 
 		local UIPadding = Instance.new("UIPadding")
@@ -814,6 +848,44 @@ do
 		return notification
 	end
 
+	function Library:Watermark()
+		local Outline = Instance.new("Frame")
+		Outline.Name = "Outline"
+		Outline.AnchorPoint = Vector2.new(0.5, 0.5)
+		Outline.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+		Outline.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Outline.Position = UDim2.new(0.5, 0, 0.5, 0)
+		Outline.Size = UDim2.new(0, 500, 0, 17)
+		Outline.Parent = Library.ScreenGUI
+
+		local Inline = Instance.new("Frame")
+		Inline.Name = "Inline"
+		Inline.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+		Inline.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Inline.BorderSizePixel = 0
+		Inline.Position = UDim2.new(0, 1, 0, 1)
+		Inline.Size = UDim2.new(1, -2, 1, -2)
+		Inline.Parent = Outline
+
+		local Accent = Library:NewInstance("Frame", true)
+		Accent.Name = "Accent"
+		Accent.BackgroundColor3 = Library.Accent
+		Accent.BorderColor3 = Color3.fromRGB(20, 20, 20)
+		Accent.BorderSizePixel = 0
+		Accent.Position = UDim2.new(0, 0, 0, 0)
+		Accent.Size = UDim2.new(1, 0, 0, 1)
+		Accent.Parent = Inline
+
+		local UIGradient = Instance.new("UIGradient")
+		UIGradient.Name = "UIGradient"
+		UIGradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(145, 145, 145)),
+		})
+		UIGradient.Rotation = 90
+		UIGradient.Parent = Accent
+	end
+
 	do
 		local Pages = Library.Pages;
 		local Sections = Library.Sections;
@@ -824,7 +896,8 @@ do
 				Sections = {};
 				Elements = {};
 				Dragging = { false, UDim2.new(0, 0, 0, 0) };
-				Name = Options.Name or "Monlith";
+				Name = Options.Name or "you dont know judasense";
+                Size = Options.Size or Vector2.new(450,450)
 			};
 			--
 			local ScreenGui = Instance.new("ScreenGui", game:GetService("RunService"):IsStudio() and game.Players.LocalPlayer.PlayerGui or game.CoreGui)
@@ -839,7 +912,7 @@ do
 			Outline.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 			Outline.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Outline.Position = UDim2.new(0.5, 0, 0.5, 0)
-			Outline.Size = UDim2.new(0, 500, 0, 600)
+			Outline.Size = UDim2.new(0, Window.Size.X, 0, Window.Size.Y)
 			Library.Holder = Outline
 			Outline.Text = ""
 			Outline.AutoButtonColor = false
@@ -944,7 +1017,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Window.Name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -957,6 +1030,12 @@ do
 			Title.Position = UDim2.new(0, 4, 0, 3)
 			Title.Size = UDim2.new(1, 0, 0, 16)
 			Title.Parent = Inline
+            Title.RichText = true
+
+			local titlGradient = Instance.new("UIGradient",Title)
+			titlGradient.Offset = Vector2.new(1,0)
+			titlGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(0.1, Library.Accent), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))};
+			tween_service:Create(titlGradient, TweenInfo.new(1.5,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut,-1,true,0), {Offset = Vector2.new(-0.1,0)}):Play()
 
 			Inline.Parent = Outline
 
@@ -981,33 +1060,35 @@ do
 				FadeThing = FadeThing
 			}
 
-			-- // Dragging
-			Library:Connection(Outline.MouseButton1Down, function()
-				local Location = game:GetService("UserInputService"):GetMouseLocation()
-				Window.Dragging[1] = true
-				Window.Dragging[2] = UDim2.new(0, Location.X - Outline.AbsolutePosition.X, 0, Location.Y - Outline.AbsolutePosition.Y)
-			end)
-			Library:Connection(game:GetService("UserInputService").InputEnded, function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Window.Dragging[1] then
-					local Location = game:GetService("UserInputService"):GetMouseLocation()
-					Window.Dragging[1] = false
-					Window.Dragging[2] = UDim2.new(0, 0, 0, 0)
-				end
-			end)
-			Library:Connection(game:GetService("UserInputService").InputChanged, function(Input)
-				local Location = game:GetService("UserInputService"):GetMouseLocation()
-				local ActualLocation = nil
+-- // Dragging
+Library:Connection(Outline.InputBegan, function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+        local Location = Input.Position
+        Window.Dragging[1] = true
+        Window.Dragging[2] = UDim2.new(0, Location.X - Outline.AbsolutePosition.X, 0, Location.Y - Outline.AbsolutePosition.Y)
+    end
+end)
 
-				-- Dragging
-				if Window.Dragging[1] then
-					Outline.Position = UDim2.new(
-						0,
-						Location.X - Window.Dragging[2].X.Offset + (Outline.Size.X.Offset * Outline.AnchorPoint.X),
-						0,
-						Location.Y - Window.Dragging[2].Y.Offset + (Outline.Size.Y.Offset * Outline.AnchorPoint.Y)
-					)
-				end
-			end)
+Library:Connection(game:GetService("UserInputService").InputEnded, function(Input)
+    if (Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch) and Window.Dragging[1] then
+        Window.Dragging[1] = false
+        Window.Dragging[2] = UDim2.new(0, 0, 0, 0)
+    end
+end)
+
+Library:Connection(game:GetService("UserInputService").InputChanged, function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch then
+        local Location = Input.Position
+        if Window.Dragging[1] then
+            Outline.Position = UDim2.new(
+                0,
+                Location.X - Window.Dragging[2].X.Offset + (Outline.Size.X.Offset * Outline.AnchorPoint.X),
+                0,
+                Location.Y - Window.Dragging[2].Y.Offset + (Outline.Size.Y.Offset * Outline.AnchorPoint.Y)
+            )
+        end
+    end
+end)
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
 				if Input.KeyCode == Library.UIKey then
 					Library:SetOpen(not Library.Open)
@@ -1058,7 +1139,7 @@ do
 
 				local Value = Instance.new("TextLabel")
 				Value.Name = "Value"
-				Value.FontFace = realfont
+				Value.FontFace = getfontfromindex(2)
 				Value.Text = "Keybinds"
 				Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 				Value.TextSize = Library.FSize
@@ -1126,7 +1207,7 @@ do
 					--
 					local NewKey = Instance.new("TextLabel")
 					NewKey.Name = "NewKey"
-					NewKey.FontFace = realfont
+					NewKey.FontFace = getfontfromindex(2)
 					NewKey.Text = Page .. ": " .. Name
 					NewKey.TextColor3 = Color3.fromRGB(255, 255, 255)
 					NewKey.TextSize = Library.FSize
@@ -1204,7 +1285,7 @@ do
 
 			local TextLabel = Instance.new("TextLabel")
 			TextLabel.Name = "TextLabel"
-			TextLabel.FontFace = realfont
+			TextLabel.FontFace = getfontfromindex(2)
 			TextLabel.Text = Page.Name
 			TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 			TextLabel.TextSize = Library.FSize
@@ -1230,7 +1311,7 @@ do
 			RealPage.Parent = Page.Window.Elements.Holder
 			RealPage.Visible = false
 
-			local Left = Instance.new("Frame")
+			local Left = Instance.new("ScrollingFrame")
 			Left.Name = "Left"
 			Left.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Left.BackgroundTransparency = 1
@@ -1238,6 +1319,9 @@ do
 			Left.BorderSizePixel = 0
 			Left.Size = UDim2.new(0.5, -6, 1, 0)
 			Left.ZIndex = 2
+			Left.ScrollBarThickness = 0
+			Left.ClipsDescendants = true 
+			Left.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 			local UIListLayout = Instance.new("UIListLayout")
 			UIListLayout.Name = "UIListLayout"
@@ -1247,7 +1331,7 @@ do
 
 			Left.Parent = RealPage
 
-			local Right = Instance.new("Frame")
+			local Right = Instance.new("ScrollingFrame")
 			Right.Name = "Right"
 			Right.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Right.BackgroundTransparency = 1
@@ -1255,6 +1339,9 @@ do
 			Right.BorderSizePixel = 0
 			Right.Position = UDim2.new(0.5, 6, 0, 0)
 			Right.Size = UDim2.new(0.5, -6, 1, 0)
+			Right.ScrollBarThickness = 0
+			Right.ClipsDescendants = true 
+			Right.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 			local UIListLayout1 = Instance.new("UIListLayout")
 			UIListLayout1.Name = "UIListLayout"
@@ -1272,10 +1359,10 @@ do
 					--
 					task.spawn(function()
 						Page.Window.Elements.FadeThing.Visible = true
-						TweenService:Create(Page.Window.Elements.FadeThing, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
+						tween_service:Create(Page.Window.Elements.FadeThing, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {BackgroundTransparency = 0}):Play()
 						task.wait(0.1)
 						RealPage.Visible = Page.Open
-						TweenService:Create(Page.Window.Elements.FadeThing, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
+						tween_service:Create(Page.Window.Elements.FadeThing, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {BackgroundTransparency = 1}):Play()
 						task.wait(0.1)
 						Page.Window.Elements.FadeThing.Visible = false
 					end)
@@ -1380,7 +1467,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Section.Name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -1572,7 +1659,7 @@ do
 
 				local TextLabel = Instance.new("TextLabel")
 				TextLabel.Name = "TextLabel"
-				TextLabel.FontFace = realfont
+				TextLabel.FontFace = getfontfromindex(2)
 				TextLabel.Text = V
 				TextLabel.TextColor3 = Color3.fromRGB(145,145,145)
 				TextLabel.TextSize = Library.FSize
@@ -1628,10 +1715,10 @@ do
 					--
 					task.spawn(function()
 						FadeThing.Visible = true
-						TweenService:Create(FadeThing, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
+						tween_service:Create(FadeThing, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
 						task.wait(0.1)
 						SectionContent.Visible = MultiSection.Open
-						TweenService:Create(FadeThing, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
+						tween_service:Create(FadeThing, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {BackgroundTransparency = 1}):Play()
 						task.wait(0.1)
 						FadeThing.Visible = false
 					end)
@@ -1759,7 +1846,8 @@ do
 			ToggleAccent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			ToggleAccent.BorderSizePixel = 0
 			ToggleAccent.Size = UDim2.new(1, 0, 1, 0)
-			ToggleAccent.Visible = false
+			ToggleAccent.Visible = true
+			ToggleAccent.BackgroundTransparency = 1
 
 			local UIGradient = Instance.new("UIGradient")
 			UIGradient.Name = "UIGradient"
@@ -1776,7 +1864,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Toggle.Name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -1793,7 +1881,11 @@ do
 			-- // Functions
 			local function SetState()
 				Toggle.Toggled = not Toggle.Toggled
-				ToggleAccent.Visible = Toggle.Toggled
+				if Toggle.Toggled then
+					tween_service:Create(ToggleAccent,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{BackgroundTransparency = 0}):Play()
+				else
+					tween_service:Create(ToggleAccent,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{BackgroundTransparency = 1}):Play()
+				end
 				Library.Flags[Toggle.Flag] = Toggle.Toggled
 				Toggle.Callback(Toggle.Toggled)
 			end
@@ -1923,7 +2015,7 @@ do
 
 				local Value = Instance.new("TextLabel")
 				Value.Name = "Value"
-				Value.FontFace = realfont
+				Value.FontFace = getfontfromindex(2)
 				Value.Text = "..."
 				Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 				Value.TextSize = Library.FSize
@@ -1964,7 +2056,7 @@ do
 				Hold.BorderSizePixel = 0
 				Hold.Size = UDim2.new(1, 0, 0.333000004, 0)
 				Hold.ZIndex = 2
-				Hold.FontFace = realfont
+				Hold.FontFace = getfontfromindex(2)
 				Hold.Text = "Hold"
 				Hold.TextColor3 = Keybind.Mode == "Hold" and Color3.fromRGB(255,255,255) or Color3.fromRGB(145,145,145)
 				Hold.TextSize = Library.FSize
@@ -1979,7 +2071,7 @@ do
 				Toggle.Position = UDim2.new(0, 0, 0.333000004, 0)
 				Toggle.Size = UDim2.new(1, 0, 0.333000004, 0)
 				Toggle.ZIndex = 2
-				Toggle.FontFace = realfont
+				Toggle.FontFace = getfontfromindex(2)
 				Toggle.Text = "Toggle"
 				Toggle.TextColor3 = Keybind.Mode == "Toggle" and Color3.fromRGB(255,255,255) or Color3.fromRGB(145,145,145)
 				Toggle.TextSize = Library.FSize
@@ -1994,7 +2086,7 @@ do
 				Always.Position = UDim2.new(0, 0, 0.666999996, 0)
 				Always.Size = UDim2.new(1, 0, 0.333000004, 0)
 				Always.ZIndex = 2
-				Always.FontFace = realfont
+				Always.FontFace = getfontfromindex(2)
 				Always.Text = "Always"
 				Always.TextColor3 = Keybind.Mode == "Always" and Color3.fromRGB(255,255,255) or Color3.fromRGB(145,145,145)
 				Always.TextSize = Library.FSize
@@ -2176,7 +2268,7 @@ do
 				end)
 				--
 				Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
-					if ModeBox.Visible and (Input.UserInputType == Enum.UserInputType.MouseButton1) then
+					if ModeBox.Visible and (Input.UserInputType == Enum.UserInputType.Touch) then
 						if not Library:IsMouseOverFrame(ModeBox) then
 							ModeBox.Visible = false
 							NewToggle.ZIndex = 1
@@ -2321,7 +2413,7 @@ do
 
 			local Value = Instance.new("TextLabel")
 			Value.Name = "Value"
-			Value.FontFace = realfont
+			Value.FontFace = getfontfromindex(2)
 			Value.Text = "0"
 			Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Value.TextSize = Library.FSize
@@ -2338,7 +2430,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Slider.Name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -2377,24 +2469,24 @@ do
 			end
 			--
 			Library:Connection(ToggleFrame.InputBegan, function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					Sliding = true
 					ISlide(input)
 				end
 			end)
 			Library:Connection(ToggleFrame.InputEnded, function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					Sliding = false
 				end
 			end)
 			Library:Connection(ToggleAccent.InputBegan, function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					Sliding = true
 					ISlide(input)
 				end
 			end)
 			Library:Connection(ToggleAccent.InputEnded, function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.Touch then
 					Sliding = false
 				end
 			end)
@@ -2502,7 +2594,7 @@ do
 
 			local Value = Instance.new("TextLabel")
 			Value.Name = "Value"
-			Value.FontFace = realfont
+			Value.FontFace = getfontfromindex(2)
 			Value.Text = "0"
 			Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Value.TextSize = Library.FSize
@@ -2518,19 +2610,18 @@ do
 
 			local ContentOutline = Instance.new("ScrollingFrame")
 			ContentOutline.Name = "ContentOutline"
-			ContentOutline.AutomaticCanvasSize = Enum.AutomaticSize.Y
 			ContentOutline.BottomImage = "rbxassetid://7783554086"
-			ContentOutline.CanvasSize = UDim2.new()
+			ContentOutline.CanvasSize = UDim2.new(1,0,1,0)
+			ContentOutline.AutomaticCanvasSize = Enum.AutomaticSize.Y
 			ContentOutline.MidImage = "rbxassetid://7783554086"
 			ContentOutline.ScrollBarImageColor3 = Color3.fromRGB(30, 30, 30)
-			ContentOutline.ScrollBarThickness = 6
+			ContentOutline.ScrollBarThickness = 1
 			ContentOutline.TopImage = "rbxassetid://7783554086"
 			ContentOutline.Active = true
-			ContentOutline.AutomaticSize = Enum.AutomaticSize.Y
 			ContentOutline.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
 			ContentOutline.BorderColor3 = Color3.fromRGB(20, 20, 20)
 			ContentOutline.Position = UDim2.new(0, 0, 1, 0)
-			ContentOutline.Size = UDim2.new(1, 0, 0, 0)
+			ContentOutline.Size = UDim2.new(1, 0, 0, 50)
 			ContentOutline.Visible = false
 
 			local UIListLayout = Instance.new("UIListLayout")
@@ -2556,7 +2647,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Dropdown.Name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -2579,7 +2670,7 @@ do
 				end
 			end)
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
-				if ContentOutline.Visible and Input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if ContentOutline.Visible and Input.UserInputType == Enum.UserInputType.Touch then
 					if not Library:IsMouseOverFrame(ContentOutline) and not Library:IsMouseOverFrame(ToggleFrame) then
 						ContentOutline.Visible = false
 						NewList.ZIndex = 1
@@ -2665,7 +2756,7 @@ do
 
 					local Disabled = Instance.new("TextLabel")
 					Disabled.Name = "Disabled"
-					Disabled.FontFace = realfont
+					Disabled.FontFace = getfontfromindex(2)
 					Disabled.Text = option
 					Disabled.TextColor3 = Color3.fromRGB(255, 255, 255)
 					Disabled.TextSize = Library.FSize
@@ -2681,7 +2772,7 @@ do
 
 					local Enabled = Library:NewInstance("TextLabel", true)
 					Enabled.Name = "Enabled"
-					Enabled.FontFace = realfont
+					Enabled.FontFace = getfontfromindex(2)
 					Enabled.Text = option
 					Enabled.TextColor3 = Library.Accent
 					Enabled.TextSize = Library.FSize
@@ -2702,16 +2793,6 @@ do
 					Dropdown.OptionInsts[option].button = OptButton
 
 					Count = Count + 1
-
-					if Dropdown.ScrollMax then
-						ContentOutline.AutomaticSize = Enum.AutomaticSize.None
-						if Count < Dropdown.ScrollMax then
-						else
-							ContentOutline.Size = UDim2.new(1,0, 0, 20*Dropdown.ScrollMax)
-						end
-					else
-						ContentOutline.AutomaticSize = Enum.AutomaticSize.Y
-					end
 
 					handleoptionclick(option, OptButton, Enabled)
 				end
@@ -2882,7 +2963,7 @@ do
 
 			local Value = Instance.new("TextLabel")
 			Value.Name = "Value"
-			Value.FontFace = realfont
+			Value.FontFace = getfontfromindex(2)
 			Value.Text = "..."
 			Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Value.TextSize = Library.FSize
@@ -2898,7 +2979,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Keybind.Name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -2938,7 +3019,7 @@ do
 			Hold.BorderSizePixel = 0
 			Hold.Size = UDim2.new(1, 0, 0.333000004, 0)
 			Hold.ZIndex = 2
-			Hold.FontFace = realfont
+			Hold.FontFace = getfontfromindex(2)
 			Hold.Text = "Hold"
 			Hold.TextColor3 = Keybind.Mode == "Hold" and Color3.fromRGB(255,255,255) or Color3.fromRGB(145,145,145)
 			Hold.TextSize = Library.FSize
@@ -2953,7 +3034,7 @@ do
 			Toggle.Position = UDim2.new(0, 0, 0.333000004, 0)
 			Toggle.Size = UDim2.new(1, 0, 0.333000004, 0)
 			Toggle.ZIndex = 2
-			Toggle.FontFace = realfont
+			Toggle.FontFace = getfontfromindex(2)
 			Toggle.Text = "Toggle"
 			Toggle.TextColor3 = Keybind.Mode == "Toggle" and Color3.fromRGB(255,255,255) or Color3.fromRGB(145,145,145)
 			Toggle.TextSize = Library.FSize
@@ -2968,7 +3049,7 @@ do
 			Always.Position = UDim2.new(0, 0, 0.666999996, 0)
 			Always.Size = UDim2.new(1, 0, 0.333000004, 0)
 			Always.ZIndex = 2
-			Always.FontFace = realfont
+			Always.FontFace = getfontfromindex(2)
 			Always.Text = "Always"
 			Always.TextColor3 = Keybind.Mode == "Always" and Color3.fromRGB(255,255,255) or Color3.fromRGB(145,145,145)
 			Always.TextSize = Library.FSize
@@ -3150,7 +3231,7 @@ do
 			end)
 			--
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
-				if ModeBox.Visible and (Input.UserInputType == Enum.UserInputType.MouseButton1) then
+				if ModeBox.Visible and (Input.UserInputType == Enum.UserInputType.Touch) then
 					if not Library:IsMouseOverFrame(ModeBox) then
 						ModeBox.Visible = false
 						NewKey.ZIndex = 1
@@ -3223,7 +3304,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Colorpicker.Name
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -3390,7 +3471,7 @@ do
 
 			local Value = Instance.new("TextBox")
 			Value.Name = "Value"
-			Value.FontFace = realfont
+			Value.FontFace = getfontfromindex(2)
 			Value.Text = Textbox.State
 			Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Value.TextSize = Library.FSize
@@ -3409,7 +3490,7 @@ do
 
 			local Title = Instance.new("TextLabel")
 			Title.Name = "Title"
-			Title.FontFace = realfont
+			Title.FontFace = getfontfromindex(2)
 			Title.Text = Textbox.Name ~= nil and Textbox.Name or ""
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextSize = Library.FSize
@@ -3425,10 +3506,10 @@ do
 
 			-- // Connections
 			Value.Focused:Connect(function()
-				Value.TextColor3 = Library.Accent
+				tween_service:Create(Value,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Library.Accent}):Play()
 			end)
 			Value.FocusLost:Connect(function()
-				Value.TextColor3 = Color3.new(1,1,1)
+				tween_service:Create(Value,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Color3.new(1,1,1)}):Play()
 				Textbox.Callback(Value.Text)
 				Library.Flags[Textbox.Flag] = Value.Text
 			end)
@@ -3440,6 +3521,7 @@ do
 			end
 
 			-- // Return
+			set(Textbox.State)
 			Flags[Textbox.Flag] = set
 			return Textbox
 		end
@@ -3500,7 +3582,7 @@ do
 
 			local Value = Instance.new("TextLabel")
 			Value.Name = "Value"
-			Value.FontFace = realfont
+			Value.FontFace = getfontfromindex(2)
 			Value.Text = Button.Name
 			Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Value.TextSize = Library.FSize
@@ -3516,10 +3598,10 @@ do
 			--
 			Library:Connection(NewButton.MouseButton1Down, function()
 				Button.Callback()
-				Value.TextColor3 = Library.Accent
+				tween_service:Create(Value,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Library.Accent}):Play()
 				task.spawn(function()
 					task.wait(0.1)
-					Value.TextColor3 = Color3.fromRGB(255,255,255)
+					tween_service:Create(Value,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Color3.fromRGB(255,255,255)}):Play()
 				end)
 			end)
 
@@ -3543,6 +3625,7 @@ do
 						or Properties.Pointer
 						or Library.NextFlag()
 				),
+				Viewing = false
 			}
 			--
 			local NewPlayer = Instance.new("Frame")
@@ -3598,8 +3681,8 @@ do
 			Friend.AutoButtonColor = false
 			Friend.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Friend.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			Friend.Position = UDim2.new(1, -105, 1, -35)
-			Friend.Size = UDim2.new(0, 100, 0, 25)
+			Friend.Position = UDim2.new(1, -85, 1, -35)
+			Friend.Size = UDim2.new(0, 75, 0, 25)
 
 			local UIStroke1 = Instance.new("UIStroke")
 			UIStroke1.Name = "UIStroke"
@@ -3611,7 +3694,7 @@ do
 
 			local FriendLabel = Instance.new("TextLabel")
 			FriendLabel.Name = "FriendLabel"
-			FriendLabel.FontFace = realfont
+			FriendLabel.FontFace = getfontfromindex(2)
 			FriendLabel.Text = "Friendly"
 			FriendLabel.TextColor3 = Color3.fromRGB(255,255,255)
 			FriendLabel.TextSize = Library.FSize
@@ -3636,19 +3719,19 @@ do
 
 			local Priority = Instance.new("TextButton")
 			Priority.Name = "Priority"
-			Priority.FontFace = realfont
+			Priority.FontFace = getfontfromindex(2)
 			Priority.Text = ""
 			Priority.TextColor3 = Color3.fromRGB(0, 0, 0)
 			Priority.TextSize = 14
 			Priority.AutoButtonColor = false
 			Priority.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Priority.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			Priority.Position = UDim2.new(1, -105, 1, -70)
-			Priority.Size = UDim2.new(0, 100, 0, 25)
+			Priority.Position = UDim2.new(1, -85, 1, -70)
+			Priority.Size = UDim2.new(0, 75, 0, 25)
 
 			local PriorityLabel = Instance.new("TextLabel")
 			PriorityLabel.Name = "PriorityLabel"
-			PriorityLabel.FontFace = realfont
+			PriorityLabel.FontFace = getfontfromindex(2)
 			PriorityLabel.Text = "Prioritize"
 			PriorityLabel.TextColor3 = Color3.fromRGB(255,255,255)
 			PriorityLabel.TextSize = Library.FSize
@@ -3660,6 +3743,32 @@ do
 			PriorityLabel.Size = UDim2.new(1, 0, 1, 0)
 			PriorityLabel.Parent = Priority
 
+			local Teleport = Instance.new("TextButton",Frame)
+			Teleport.Name = "Priority"
+			Teleport.FontFace = getfontfromindex(2)
+			Teleport.Text = ""
+			Teleport.TextColor3 = Color3.fromRGB(0, 0, 0)
+			Teleport.TextSize = 14
+			Teleport.AutoButtonColor = false
+			Teleport.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Teleport.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Teleport.Position = UDim2.new(1, -165, 1, -70)
+			Teleport.Size = UDim2.new(0, 75, 0, 25)
+
+			local TeleportLabel = Instance.new("TextLabel")
+			TeleportLabel.Name = "PriorityLabel"
+			TeleportLabel.FontFace = getfontfromindex(2)
+			TeleportLabel.Text = "Go To"
+			TeleportLabel.TextColor3 = Color3.fromRGB(255,255,255)
+			TeleportLabel.TextSize = Library.FSize
+			TeleportLabel.TextStrokeTransparency = 0
+			TeleportLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			TeleportLabel.BackgroundTransparency = 1
+			TeleportLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			TeleportLabel.BorderSizePixel = 0
+			TeleportLabel.Size = UDim2.new(1, 0, 1, 0)
+			TeleportLabel.Parent = Teleport
+
 			local DisabledGradient1 = Instance.new("UIGradient")
 			DisabledGradient1.Name = "DisabledGradient"
 			DisabledGradient1.Color = ColorSequence.new({
@@ -3668,6 +3777,50 @@ do
 			})
 			DisabledGradient1.Rotation = 90
 			DisabledGradient1.Parent = Priority
+
+			local DisabledGradient2 = Instance.new("UIGradient")
+			DisabledGradient2.Name = "DisabledGradient"
+			DisabledGradient2.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.fromRGB(47, 47, 47)),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(26, 26, 26)),
+			})
+			DisabledGradient2.Rotation = 90
+			DisabledGradient2.Parent = Teleport
+
+			local Whip = Instance.new("TextButton",Frame)
+			Whip.Name = "Priority"
+			Whip.FontFace = getfontfromindex(2)
+			Whip.Text = ""
+			Whip.TextColor3 = Color3.fromRGB(0, 0, 0)
+			Whip.TextSize = 14
+			Whip.AutoButtonColor = false
+			Whip.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Whip.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Whip.Position = UDim2.new(1, -165, 1, -35)
+			Whip.Size = UDim2.new(0, 75, 0, 25)
+
+			local WhipLabel = Instance.new("TextLabel")
+			WhipLabel.Name = "PriorityLabel"
+			WhipLabel.FontFace = getfontfromindex(2)
+			WhipLabel.Text = "Whip"
+			WhipLabel.TextColor3 = Color3.fromRGB(255,255,255)
+			WhipLabel.TextSize = Library.FSize
+			WhipLabel.TextStrokeTransparency = 0
+			WhipLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			WhipLabel.BackgroundTransparency = 1
+			WhipLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			WhipLabel.BorderSizePixel = 0
+			WhipLabel.Size = UDim2.new(1, 0, 1, 0)
+			WhipLabel.Parent = Whip
+
+			local DisabledGradient3 = Instance.new("UIGradient")
+			DisabledGradient3.Name = "DisabledGradient"
+			DisabledGradient3.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.fromRGB(47, 47, 47)),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(26, 26, 26)),
+			})
+			DisabledGradient3.Rotation = 90
+			DisabledGradient3.Parent = Whip
 
 			local UIStroke2 = Instance.new("UIStroke")
 			UIStroke2.Name = "UIStroke"
@@ -3698,7 +3851,7 @@ do
 
 			local PlayerName1 = Instance.new("TextLabel")
 			PlayerName1.Name = "PlayerName"
-			PlayerName1.FontFace = realfont
+			PlayerName1.FontFace = getfontfromindex(2)
 			PlayerName1.Text = "No Player Selected"
 			PlayerName1.TextColor3 = Color3.fromRGB(255,255,255)
 			PlayerName1.TextSize = Library.FSize
@@ -3715,7 +3868,7 @@ do
 
 			local SectionName = Instance.new("TextLabel")
 			SectionName.Name = "SectionName"
-			SectionName.FontFace = realfont
+			SectionName.FontFace = getfontfromindex(2)
 			SectionName.Text = "Player List"
 			SectionName.TextColor3 = Color3.fromRGB(255,255,255)
 			SectionName.TextSize = Library.FSize
@@ -3757,7 +3910,7 @@ do
 
 			local TeamLabel = Instance.new("TextLabel")
 			TeamLabel.Name = "TeamLabel"
-			TeamLabel.FontFace = realfont
+			TeamLabel.FontFace = getfontfromindex(2)
 			TeamLabel.Text = "Team"
 			TeamLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 			TeamLabel.TextSize = Library.FSize
@@ -3773,7 +3926,7 @@ do
 
 			local NameLabel = Instance.new("TextLabel")
 			NameLabel.Name = "NameLabel"
-			NameLabel.FontFace = realfont
+			NameLabel.FontFace = getfontfromindex(2)
 			NameLabel.Text = "Name"
 			NameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 			NameLabel.TextSize = Library.FSize
@@ -3789,7 +3942,7 @@ do
 
 			local StatusLabel = Instance.new("TextLabel")
 			StatusLabel.Name = "StatusLabel"
-			StatusLabel.FontFace = realfont
+			StatusLabel.FontFace = getfontfromindex(2)
 			StatusLabel.Text = "Status"
 			StatusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 			StatusLabel.TextSize = Library.FSize
@@ -3848,9 +4001,9 @@ do
 					--
 					if Playerlist.CurrentPlayer ~= Playerlist.LastPlayer then
 						Playerlist.LastPlayer = Playerlist.CurrentPlayer;
-						PlayerName1.Text = ("Id : %s\nDisplay Name : %s\nName : %s\nAccount Age : %s"):format(Playerlist.CurrentPlayer.UserId, Playerlist.CurrentPlayer.DisplayName ~= "" and Playerlist.CurrentPlayer.DisplayName or Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.AccountAge)
+						PlayerName1.Text = ("Id : %s\nDisplay Name : %s\nName : %s\nAccount Age : %s\n"):format(Playerlist.CurrentPlayer.UserId, Playerlist.CurrentPlayer.DisplayName ~= "" and Playerlist.CurrentPlayer.DisplayName or Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.AccountAge)
 						--
-						local imagedata = game:GetService("Players"):GetUserThumbnailAsync(Playerlist.CurrentPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+						local imagedata = players:GetUserThumbnailAsync(Playerlist.CurrentPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
 
 						ImageLabel.Image = imagedata
 					end;
@@ -3876,7 +4029,7 @@ do
 
 						local PlayerName = Instance.new("TextLabel")
 						PlayerName.Name = "PlayerName"
-						PlayerName.FontFace = realfont
+						PlayerName.FontFace = getfontfromindex(2)
 						PlayerName.Text = option.Name
 						PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
 						PlayerName.TextSize = Library.FSize
@@ -3893,7 +4046,7 @@ do
 
 						local PlayerStatus = Instance.new("TextLabel")
 						PlayerStatus.Name = "PlayerStatus"
-						PlayerStatus.FontFace = realfont
+						PlayerStatus.FontFace = getfontfromindex(2)
 						PlayerStatus.Text = option == game.Players.LocalPlayer and "Local Player" or table.find(Library.Friends, option) and "Friendly" or table.find(Library.Priorities, option) and "Priority" or "None"
 						PlayerStatus.TextColor3 = option == game.Players.LocalPlayer and Color3.fromRGB(0, 170, 255) or table.find(Library.Friends, option) and Color3.fromRGB(0,255,0) or table.find(Library.Priorities, option) and Color3.fromRGB(255,0,0) or Color3.fromRGB(255,255,255)
 						PlayerStatus.TextSize = Library.FSize
@@ -3909,7 +4062,7 @@ do
 
 						local PlayerAccent = Library:NewInstance("TextLabel", true)
 						PlayerAccent.Name = "PlayerAccent"
-						PlayerAccent.FontFace = realfont
+						PlayerAccent.FontFace = getfontfromindex(2)
 						PlayerAccent.Text = option.Name
 						PlayerAccent.TextColor3 = Library.Accent
 						PlayerAccent.TextSize = Library.FSize
@@ -3927,7 +4080,7 @@ do
 
 						local PlayerTeam = Instance.new("TextLabel")
 						PlayerTeam.Name = "PlayerTeam"
-						PlayerTeam.FontFace = realfont
+						PlayerTeam.FontFace = getfontfromindex(2)
 						PlayerTeam.Text = option:FindFirstChild("Team") and tostring(option.Team.Name) or "No Team"
 						PlayerTeam.TextColor3 = option:FindFirstChild("Team") and option.TeamColor.Color or Color3.fromRGB(255,255,255)
 						PlayerTeam.TextSize = Library.FSize
@@ -3986,6 +4139,8 @@ do
 								local imagedata = game:GetService("Players"):GetUserThumbnailAsync(Playerlist.CurrentPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
 
 								ImageLabel.Image = imagedata
+							else
+								PlayerName1.Text = "No player selected."
 							end;
 						end
 
@@ -3997,7 +4152,7 @@ do
 			end
 			--
 			function Playerlist:Refresh(tbl, dontchange)
-				content = table.clone(tbl)
+				local content = table.clone(tbl)
 
 				for _, opt in next, optioninstances do
 					coroutine.wrap(function()
@@ -4026,11 +4181,11 @@ do
 				if Playerlist.CurrentPlayer ~= nil and not table.find(Library.Priorities, Playerlist.CurrentPlayer) then
 					table.insert(Library.Priorities, Playerlist.CurrentPlayer)
 					optioninstances[Playerlist.CurrentPlayer].status.Text = "Priority"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255, 0, 0)
+					tween_service:Create(optioninstances[Playerlist.CurrentPlayer].status,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Color3.fromRGB(255, 0, 0)}):Play()
 				elseif Playerlist.CurrentPlayer ~= nil and table.find(Library.Priorities, Playerlist.CurrentPlayer) then
 					table.remove(Library.Priorities, table.find(Library.Priorities, Playerlist.CurrentPlayer))
 					optioninstances[Playerlist.CurrentPlayer].status.Text = "None"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255,255,255)
+					tween_service:Create(optioninstances[Playerlist.CurrentPlayer].status,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
 				end
 			end)
 			--
@@ -4041,13 +4196,20 @@ do
 				if Playerlist.CurrentPlayer ~= nil and not table.find(Library.Friends, Playerlist.CurrentPlayer) then
 					table.insert(Library.Friends, Playerlist.CurrentPlayer)
 					optioninstances[Playerlist.CurrentPlayer].status.Text = "Friendly"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(0, 255, 0)
+					tween_service:Create(optioninstances[Playerlist.CurrentPlayer].status,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Color3.fromRGB(0, 255, 0)}):Play()
 				elseif Playerlist.CurrentPlayer ~= nil and table.find(Library.Friends, Playerlist.CurrentPlayer) then
 					table.remove(Library.Friends, table.find(Library.Friends, Playerlist.CurrentPlayer))
 					optioninstances[Playerlist.CurrentPlayer].status.Text = "None"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255,255,255)
+					tween_service:Create(optioninstances[Playerlist.CurrentPlayer].status,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
 				end
 			end)
+
+			Teleport.MouseButton1Click:Connect(function()
+				if Playerlist.CurrentPlayer ~= nil then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Playerlist.CurrentPlayer.Character.HumanoidRootPart.CFrame
+				end
+			end)
+			
 			--
 			createoptions(game.Players:GetPlayers())
 			--
@@ -4063,8 +4225,7 @@ do
 			Playerlist.Page.Elements.Right.Size = UDim2.new(0.5, -5,0.5, -70)
 			Playerlist.Page.Elements.Left.Position = UDim2.new(0, 0,0.5, 75)
 			Playerlist.Page.Elements.Right.Position = UDim2.new(0.5, 5,0.5, 75)
-		end
-	end;
+	end
 end;
 
 return Library
