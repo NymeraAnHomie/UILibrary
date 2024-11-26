@@ -1,8 +1,6 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Bitchbot/Source.lua"))();
 
-local Flags = Library.Flags
-local Pointers = Library.Pointers
-local Utility = Library.Utility
+--local Flags, Pointers, Utility = Library.Flags, Library.Pointers, Library.Utility
  
 local Bodyparts = {}
  
