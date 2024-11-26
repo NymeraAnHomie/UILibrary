@@ -41,7 +41,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nymer
 	
 	do
 		local ScreenGui = Instance.new("ScreenGui")
-		ScreenGui.Parent = game:GetService("CoreGui")
+		ScreenGui.Parent = cloneref(game:GetService("CoreGui"))
 		ScreenGui.ResetOnSpawn = false
 		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		
