@@ -16,13 +16,13 @@ getgenv().OrionLib = {
     Themes = {
         -- Notes: Secound RGB In theme are Tab holder bg
       	Default = {
-            Main = Color3.fromRGB(57, 57, 59),
-            Second = Color3.fromRGB(34, 34, 35),
+	    Main = Color3.fromRGB(25, 25, 25),
+	    Second = Color3.fromRGB(32, 32, 32),
             Stroke = Color3.fromRGB(60, 60, 60),
-            Divider = Color3.fromRGB(60, 60, 60),
-            Text = Color3.fromRGB(240, 240, 240),
-            TextDark = Color3.fromRGB(150, 150, 150)
-        },
+	    Divider = Color3.fromRGB(60, 60, 60),
+	    Text = Color3.fromRGB(240, 240, 240),
+	    TextDark = Color3.fromRGB(150, 150, 150)
+	},
         Eclipse = {
             Main = Color3.fromRGB(35, 30, 25),
             Second = Color3.fromRGB(50, 40, 35),
