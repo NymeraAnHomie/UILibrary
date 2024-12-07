@@ -8,7 +8,7 @@ local Mouse = LocalPlayer:GetMouse()
 local HttpService = game:GetService("HttpService")
 local CoreGui = cloneref(game:GetService("CoreGui"))
 
-local OrionLib = {
+getgenv().OrionLib = {
     Elements = {},
     ThemeObjects = {},
     Connections = {},
@@ -96,7 +96,7 @@ local OrionLib = {
             TextDark = Color3.fromRGB(153, 153, 153)
         }
     },
-    SelectedTheme = "Light",
+    SelectedTheme = "Default",
     Folder = nil,
     SaveCfg = false
 }
@@ -136,9 +136,9 @@ local Orion = Instance.new("ScreenGui")
 Orion.Name = tostring(generateRandomString(16))
 if syn then
 	syn.protect_gui(Orion)
-	Orion.Parent = game.CoreGui
+	Orion.Parent = CoreGui
 else
-	Orion.Parent = gethui() or game.CoreGui
+	Orion.Parent = gethui() or CoreGui
 end
 
 if gethui then
@@ -159,7 +159,7 @@ function OrionLib:IsRunning()
 	if gethui then
 		return Orion.Parent == gethui()
 	else
-		return Orion.Parent == cloneref(game:GetService("CoreGui"))
+		return Orion.Parent == CoreGui
 	end
 
 end
@@ -1873,5 +1873,5 @@ function OrionLib:WindowMobileToggle(MobileToggleConfig)
 		return MobTogg
 	end
 end
-		
+
 return OrionLib
