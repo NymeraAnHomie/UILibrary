@@ -104,7 +104,7 @@ function library:notify(text)
 end
 
 function library:Title(string)
-	self.menu.bg.pre.Text = string
+	menu.bg.pre.Text = string
 end
 
 function library:addTab(name)
