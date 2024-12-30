@@ -28,7 +28,7 @@ getgenv().library = {
 	multiZindex = 200;
 	toInvis = {};
 	libColor = Color3.fromRGB(110, 150, 220);
-	disabledcolor = Color3.fromRGB(233, 0, 0);
+	disabledcolor = Color3.fromRGB(110, 150, 220);
 	blacklisted = {
 		Enum.KeyCode.W,
 		Enum.KeyCode.A,
