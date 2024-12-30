@@ -8,7 +8,7 @@ local mouse          = localPlayer:GetMouse()
 local menu = game:GetObjects("rbxassetid://12702460854")[1]
 menu.bg.Position = UDim2.new(0.5,-menu.bg.Size.X.Offset/2,0.5,-menu.bg.Size.Y.Offset/2)
 menu.Parent = cloneref(game:GetService("CoreGui"))
-menu.bg.pre.Text = 'Xiro<font color="#c375ae">.wtf</font>'
+menu.bg.pre.Text = 'Xiro<font color="#6e96dc">.wtf</font>'
 menu.bg.pre.RichText = true
 menu.bg.pre.TextXAlignment = Enum.TextXAlignment.Center
 menu.bg.pre.TextYAlignment = Enum.TextYAlignment.Center
