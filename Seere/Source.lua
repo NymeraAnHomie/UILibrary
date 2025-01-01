@@ -34,7 +34,8 @@ getgenv().library = {
 		Enum.KeyCode.A,
 		Enum.KeyCode.S,
 		Enum.KeyCode.D,
-		Enum.UserInputType.MouseMovement
+		Enum.UserInputType.MouseMovement,
+		Enum.UserInputType.Touch
 	}
 }
 
