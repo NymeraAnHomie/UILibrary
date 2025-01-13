@@ -5,14 +5,6 @@ local players        = game:GetService("Players")
 local localPlayer    = players.LocalPlayer
 local mouse          = localPlayer:GetMouse()
 
-local menu = game:GetObjects("rbxassetid://12702460854")[1]
-menu.bg.Position = UDim2.new(0.5,-menu.bg.Size.X.Offset/2,0.5,-menu.bg.Size.Y.Offset/2)
-menu.Parent = cloneref(game:GetService("CoreGui"))
-menu.bg.pre.Text = ''
-menu.bg.pre.RichText = true
-menu.bg.pre.TextXAlignment = Enum.TextXAlignment.Center
-menu.bg.pre.TextYAlignment = Enum.TextYAlignment.Center
-
 getgenv().library = {
 	cheatname = "";
 	ext = "";
@@ -38,6 +30,14 @@ getgenv().library = {
 		Enum.UserInputType.Touch
 	}
 }
+
+local menu = game:GetObjects("rbxassetid://12702460854")[1]
+menu.bg.Position = UDim2.new(0.5,-menu.bg.Size.X.Offset/2,0.5,-menu.bg.Size.Y.Offset/2)
+menu.Parent = cloneref(game:GetService("CoreGui"))
+menu.bg.pre.Text = library.cheatname .. library.gamename
+menu.bg.pre.RichText = true
+menu.bg.pre.TextXAlignment = Enum.TextXAlignment.Center
+menu.bg.pre.TextYAlignment = Enum.TextYAlignment.Center
 
 function draggable(a)local b=inputService;local c;local d;local e;local f;local function g(h)if not library.colorpicking then local i=h.Position-e;a.Position=UDim2.new(f.X.Scale,f.X.Offset+i.X,f.Y.Scale,f.Y.Offset+i.Y)end end;a.InputBegan:Connect(function(h)if h.UserInputType==Enum.UserInputType.MouseButton1 or h.UserInputType==Enum.UserInputType.Touch then c=true;e=h.Position;f=a.Position;h.Changed:Connect(function()if h.UserInputState==Enum.UserInputState.End then c=false end end)end end)a.InputChanged:Connect(function(h)if h.UserInputType==Enum.UserInputType.MouseMovement or h.UserInputType==Enum.UserInputType.Touch then d=h end end)b.InputChanged:Connect(function(h)if h==d and c then g(h)end end)end
 draggable(menu.bg)
