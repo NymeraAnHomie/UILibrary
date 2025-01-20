@@ -14,7 +14,7 @@ end})
 Group:addTextbox({text = "Textbox Example", flag = "example_textbox"})
 Group:addSlider({text = "Slider Example", ontop = true, flag = "example_slider", min = 0, max = 100, value = 50}, "suffix")
 Group:addKeybind({flag = "example_keybind", key = Enum.KeyCode.F}) -- work for toggle too like colorpicker
-Group:addList({text = "List Example", flag = "example_list", values = {"Option 1", "Option 2"}, value = "Option 1"})
+Group:addList({text = "List Example", multiselect = true, flag = "example_list", values = {"Option 1", "Option 2"}, value = "Option 1"})
 togg:addColorpicker({text = "Colorpicker Example", flag = "example_colorpicker", color = Color3.new(1, 1, 1)})
 
 ConfigGroup:addConfigbox({flag = "config_box", values = {}})
