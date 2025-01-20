@@ -1,4 +1,5 @@
-local FolderName = "Aisle"
+-- buddy didnt even add decimals value in slider dat crazy
+local FolderName = "skibidi hook real"
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Seere/Source.lua"))()
 
 local Tab = library:addTab("Example Tab")
@@ -13,7 +14,7 @@ Group:addButton({text = "Button Example", callback = function()
 	print("Button clicked")
 end})
 Group:addTextbox({text = "Textbox Example", flag = "example_textbox"})
-Group:addSlider({text = "Slider Example", ontop = true, flag = "example_slider", min = 0, max = 100, value = 50}, "suffix")
+Group:addSlider({text = "Slider Example", ontop = true, flag = "example_slider", min = 0, max = 100, increment = 0.01, value = 50}, "suffix")
 Group:addKeybind({flag = "example_keybind", key = Enum.KeyCode.F}) -- work for toggle too like colorpicker
 Group:addList({text = "List Example", multiselect = true, flag = "example_list", values = {"Option 1", "Option 2"}, value = "Option 1"})
 togg:addColorpicker({text = "Colorpicker Example", flag = "example_colorpicker", color = Color3.new(1, 1, 1)})
