@@ -19,7 +19,7 @@ Group:addKeybind({flag = "example_keybind", key = Enum.KeyCode.F}) -- work for t
 Group:addList({text = "List Example", multiselect = true, flag = "example_list", values = {"Option 1", "Option 2"}, value = "Option 1"})
 togg:addColorpicker({text = "Colorpicker Example", flag = "example_colorpicker", color = Color3.new(1, 1, 1)})
 
-ConfigGroup:addConfigbox({flag = "config_box", flag = "selected_config", values = {}})
+ConfigGroup:addConfigbox({flag = "config_box", values = {}})
 ConfigGroup:addTextbox({text = "Config Name", flag = "config_name"})
 ConfigGroup:addButton({text = "Save Config", callback = library.saveConfig})
 ConfigGroup:addButton({text = "Load Config", callback = library.loadConfig})
