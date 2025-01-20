@@ -1678,107 +1678,92 @@ function contains(list, x)
 	return false
 end
 
-function createFolderIfNotExists()
-    if not isfolder(FolderName) then
-        makefolder(FolderName)
-    end
-end
-
 function library:createConfig()
-    createFolderIfNotExists()
     local name = library.flags["config_name"]
-    if contains(library.options["selected_config"].values, name) then 
-        return library:notify(name..".cfg already exists!") 
-    end
-    if name == "" then 
-        return library:notify("Put a name goofy") 
-    end
+    if contains(library.options["selected_config"].values, name) then return library:notify(name..".cfg already exists!") end
+    if name == "" then return library:notify("Put a name goofy") end
     local jig = {}
-    for i, v in next, library.flags do
+    for i,v in next, library.flags do
         if library.options[i].skipflag then continue end
         if typeof(v) == "Color3" then
-            jig[i] = {v.R, v.G, v.B}
+            jig[i] = {v.R,v.G,v.B}
         elseif typeof(v) == "EnumItem" then
-            jig[i] = {string.split(tostring(v), ".")[2], string.split(tostring(v), ".")[3]}
+            jig[i] = {string.split(tostring(v),".")[2],string.split(tostring(v),".")[3]}
         else
             jig[i] = v
         end
     end
-    writefile(FolderName.."/"..name..".cfg", game:GetService("HttpService"):JSONEncode(jig))
-    library:notify("Successfully created config "..name..".cfg!")
+    writefile(FolderName.."/"..name..".cfg",game:GetService("HttpService"):JSONEncode(jig))
+    library:notify("Succesfully created config "..name..".cfg!")
     library:refreshConfigs()
 end
 
 function library:saveConfig()
-    createFolderIfNotExists()
     local name = library.flags["selected_config"]
     local jig = {}
-    for i, v in next, library.flags do
+    for i,v in next, library.flags do
         if library.options[i].skipflag then continue end
         if typeof(v) == "Color3" then
-            jig[i] = {v.R, v.G, v.B}
+            jig[i] = {v.R,v.G,v.B}
         elseif typeof(v) == "EnumItem" then
-            jig[i] = {string.split(tostring(v), ".")[2], string.split(tostring(v), ".")[3]}
+            jig[i] = {string.split(tostring(v),".")[2],string.split(tostring(v),".")[3]}
         else
             jig[i] = v
         end
     end
-    writefile(FolderName.."/"..name..".cfg", game:GetService("HttpService"):JSONEncode(jig))
-    library:notify("Successfully updated config "..name..".cfg!")
+    writefile(FolderName.."/"..name..".cfg",game:GetService("HttpService"):JSONEncode(jig))
+    library:notify("Succesfully updated config "..name..".cfg!")
     library:refreshConfigs()
 end
 
 function library:loadConfig()
-    createFolderIfNotExists()
     local name = library.flags["selected_config"]
     if not isfile(FolderName.."/"..name..".cfg") then
         library:notify("Config file not found!")
         return
     end
     local config = game:GetService("HttpService"):JSONDecode(readfile(FolderName.."/"..name..".cfg"))
-    for i, v in next, library.options do
-        spawn(function()
-            pcall(function()
-                if config[i] then
-                    if v.type == "colorpicker" then
-                        v.changeState(Color3.new(config[i][1], config[i][2], config[i][3]))
-                    elseif v.type == "keybind" then
-                        v.changeState(Enum[config[i][1]][config[i][2]])
-                    else
-                        if config[i] ~= library.flags[i] then
-                            v.changeState(config[i])
-                        end
-                    end
+    for i,v in next, library.options do
+        spawn(function()pcall(function()
+            if config[i] then
+                if v.type == "colorpicker" then
+                    v.changeState(Color3.new(config[i][1],config[i][2],config[i][3]))
+                elseif v.type == "keybind" then
+                    v.changeState(Enum[config[i][1]][config[i][2]])
                 else
-                    if v.type == "toggle" then
-                        v.changeState(false)
-                    elseif v.type == "slider" then
-                        v.changeState(v.args.value or 0)
-                    elseif v.type == "textbox" or v.type == "list" or v.type == "cfg" then
-                        v.changeState(v.args.value or v.args.text or "")
-                    elseif v.type == "colorpicker" then
-                        v.changeState(v.args.color or Color3.new(1, 1, 1))
-                    elseif v.type == "keybind" then
-                        v.changeState(v.args.key or Enum.KeyCode.Unknown)
+                    if config[i] ~= library.flags[i] then
+                        v.changeState(config[i])
                     end
                 end
-            end)
-        end)
+            else
+                if v.type == "toggle" then
+                    v.changeState(false)
+                elseif v.type == "slider" then
+                    v.changeState(v.args.value or 0)
+                elseif v.type == "textbox" or v.type == "list" or v.type == "cfg" then
+                    v.changeState(v.args.value or v.args.text or "")
+                elseif v.type == "colorpicker" then
+                    v.changeState(v.args.color or Color3.new(1,1,1))
+                elseif option.type == "list" then
+                    v.changeState("")
+                elseif option.type == "keybind" then
+                    v.changeState(v.args.key or Enum.KeyCode.Unknown)
+                end
+            end
+        end)end)
     end
-    library:notify("Successfully loaded config "..name..".cfg!")
+    library:notify("Succesfully loaded config "..name..".cfg!")
 end
 
 function library:refreshConfigs()
-    createFolderIfNotExists()
     local tbl = {}
-    for i, v in next, listfiles(FolderName) do
-        table.insert(tbl, v)
+    for i,v in next, listfiles(FolderName) do
+        table.insert(tbl,v)
     end
     library.options["selected_config"].refresh(tbl)
 end
 
 function library:deleteConfig()
-    createFolderIfNotExists()
     if isfile(FolderName.."/"..library.flags["selected_config"]..".cfg") then
         delfile(FolderName.."/"..library.flags["selected_config"]..".cfg")
         library:refreshConfigs()
