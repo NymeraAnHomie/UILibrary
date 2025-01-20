@@ -1,4 +1,4 @@
--- buddy didnt even add decimals value in slider dat crazy
+-- buddy didnt even add decimals value in slider dat crazy so i gotta add it by ma self
 local FolderName = "skibidi hook real"
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Seere/Source.lua"))()
 
