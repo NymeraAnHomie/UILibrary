@@ -1,4 +1,5 @@
 -- buddy didnt even add decimals value in slider dat crazy so i gotta add it by ma self
+-- swear yall confuse me the most since the old coder didnt know how to use local :pray:
 getgenv().FolderName = "skibidi hook real"
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Seere/Source.lua"))()
 
@@ -19,7 +20,7 @@ Group:addKeybind({flag = "example_keybind", key = Enum.KeyCode.F}) -- work for t
 Group:addList({text = "List Example", multiselect = true, flag = "example_list", values = {"Option 1", "Option 2"}, value = "Option 1"})
 togg:addColorpicker({text = "Colorpicker Example", flag = "example_colorpicker", color = Color3.new(1, 1, 1)})
 
-ConfigGroup:addConfigbox({flag = "config_box", values = {}})
+ConfigGroup:addConfigbox({flag = "selected_config", values = {}})
 ConfigGroup:addTextbox({text = "Config Name", flag = "config_name"})
 ConfigGroup:addButton({text = "Save Config", callback = library.saveConfig})
 ConfigGroup:addButton({text = "Load Config", callback = library.loadConfig})
