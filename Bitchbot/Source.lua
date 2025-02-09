@@ -274,6 +274,34 @@ do
 			end;
 		end;
 		--
+		function Library:SetDraggable(Frame)
+		    local Dragging, DragStart, StartPosition
+		    --
+		    Library:Connection(Frame.InputBegan, function(input)
+		        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		            Dragging = true
+		            DragStart = input.Position
+		            StartPosition = Frame.Position
+		        end
+		    end)
+		    --
+		    Library:Connection(Frame.InputEnded, function(input)
+		        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		            Dragging = false
+		        end
+		    end)
+		    --
+		    Library:Connection(Frame.InputChanged, function(input)
+		        if Dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+		            local Delta = input.Position - DragStart
+			        Frame.Position = UDim2.new(
+			            StartPosition.X.Scale, StartPosition.X.Offset + Delta.X,
+			            StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y
+			        )
+		        end
+		    end)
+		end
+		--
 		function Library:ChangeAccent(Color)
 			Library.Accent = Color
 
@@ -964,32 +992,7 @@ do
 			}
 
 			-- // Dragging
-			Library:Connection(Outline.MouseButton1Down, function()
-				local Location = game:GetService("UserInputService"):GetMouseLocation()
-				Window.Dragging[1] = true
-				Window.Dragging[2] = UDim2.new(0, Location.X - Outline.AbsolutePosition.X, 0, Location.Y - Outline.AbsolutePosition.Y)
-			end)
-			Library:Connection(game:GetService("UserInputService").InputEnded, function(Input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch and Window.Dragging[1] then
-					local Location = game:GetService("UserInputService"):GetMouseLocation()
-					Window.Dragging[1] = false
-					Window.Dragging[2] = UDim2.new(0, 0, 0, 0)
-				end
-			end)
-			Library:Connection(game:GetService("UserInputService").InputChanged, function(Input)
-				local Location = game:GetService("UserInputService"):GetMouseLocation()
-				local ActualLocation = nil
-
-				-- Dragging
-				if Window.Dragging[1] then
-					Outline.Position = UDim2.new(
-						0,
-						Location.X - Window.Dragging[2].X.Offset + (Outline.Size.X.Offset * Outline.AnchorPoint.X),
-						0,
-						Location.Y - Window.Dragging[2].Y.Offset + (Outline.Size.Y.Offset * Outline.AnchorPoint.Y)
-					)
-				end
-			end)
+			Library:SetDraggable(Outline)
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
 				if Input.KeyCode == Library.UIKey then
 					Library:SetOpen(not Library.Open)
