@@ -12,7 +12,7 @@ local Toggle = Aimbot:Toggle({Name = "Enable", Risk = false, Callback = function
     print("[cb]: you have set the toggle to " .. v .. ".")
 end})
 Toggle:Colorpicker({Name = "Color", Default = Color3.fromRGB(255, 255, 255), Callback = function(v)
-	print("[cb]: You have set the toggle color to" .. v .. ".")
+	print("[cb]: You have set the toggle color to" .. tostring(v) .. ".")
 end})
 Aimbot:Button({Name = "Button", Callback = function()
     print("[cb]: You have called a button.")
