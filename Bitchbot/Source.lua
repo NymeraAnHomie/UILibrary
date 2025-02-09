@@ -966,7 +966,7 @@ do
 			-- // Dragging
 			Library:Connection(Outline.InputBegan, function(Input)
 			    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
-			        local Location = UserInputService:GetMouseLocation()
+			        local Location = game:GetService("UserInputService"):GetMouseLocation()
 			        Window.Dragging = {
 			            Active = true,
 			            Offset = Vector2.new(Location.X - Outline.AbsolutePosition.X, Location.Y - Outline.AbsolutePosition.Y)
