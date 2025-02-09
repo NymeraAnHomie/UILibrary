@@ -1,7 +1,7 @@
 -- New example script written by wally
 -- You can suggest changes with a pull request or something
 
-local repo = 'https://github.com/NymeraAnHomie/Library/tree/main/Linoria'
+local repo = 'https://github.com/NymeraAnHomie/Library/tree/main/Linoria/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Source.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
