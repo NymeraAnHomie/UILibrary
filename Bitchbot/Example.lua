@@ -2,7 +2,7 @@
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Bitchbot/Source.lua"))()
 
-local Window = Library:Window({Name = "Example Window", Size = Vector2.new(450, 450)})
+local Window = Library:Window({Name = "Example Window"})
 local Combat = Window:Page({Name = "Combat"})
 local Visual = Window:Page({Name = "Visual"})
 local Aimbot, Misc = Combat:MultiSection({Sections = {"Aimbot", "Misc"}, Zindex = 5, Side = "Left", Size = 315})
