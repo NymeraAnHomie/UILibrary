@@ -275,7 +275,7 @@ do
 		end;
 		--
 		function Library:SetDraggable(Frame, Smoothness)
-		    local Dragging, DragStart, StartPosition, TargetPosition
+		    local Dragging, DragStart, StartPosition, TargetPosition = false, nil, nil, nil
 		
 		    Library:Connection(Frame.InputBegan, function(input)
 		        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -299,6 +299,12 @@ do
 		                StartPosition.X.Scale, StartPosition.X.Offset + Delta.X,
 		                StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y
 		            )
+		        end
+		    end)
+		    --
+		    Library:Connection(game:GetService("RunService").RenderStepped, function()
+		        if Dragging and TargetPosition then
+		            Frame.Position = Frame.Position:Lerp(TargetPosition, Smoothness)
 		        end
 		    end)
 		end
