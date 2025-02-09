@@ -105,7 +105,7 @@ do
 		Connections = {};
 		UIKey = Enum.KeyCode.End;
 		ScreenGUI = nil;
-		FSize = 14;
+		FSize = 12;
 		SettingsPage = nil;
 		VisValues = {};
 		Cooldown = false;
@@ -274,14 +274,15 @@ do
 			end;
 		end;
 		--
-		function Library:SetDraggable(Frame)
-		    local Dragging, DragStart, StartPosition
-		    --
+		function Library:SetDraggable(Frame, Smoothness, Cutoff)
+		    local Dragging, DragStart, StartPosition, TargetPosition
+		
 		    Library:Connection(Frame.InputBegan, function(input)
 		        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 		            Dragging = true
 		            DragStart = input.Position
 		            StartPosition = Frame.Position
+		            TargetPosition = StartPosition
 		        end
 		    end)
 		    --
@@ -291,13 +292,19 @@ do
 		        end
 		    end)
 		    --
-		    Library:Connection(Frame.InputChanged, function(input)
+		    Library:Connection(game:GetService("UserInputService").InputChanged, function(input)
 		        if Dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
 		            local Delta = input.Position - DragStart
-			        Frame.Position = UDim2.new(
-			            StartPosition.X.Scale, StartPosition.X.Offset + Delta.X,
-			            StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y
-			        )
+		            TargetPosition = UDim2.new(
+		                StartPosition.X.Scale, StartPosition.X.Offset + Delta.X,
+		                StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y
+		            )
+		        end
+		    end)
+		    --
+		    Library:Connection(game:GetService("RunService").RenderStepped, function()
+		        if TargetPosition and (Dragging or (Frame.Position - TargetPosition).Magnitude > Cutoff) then
+		            Frame.Position = Frame.Position:Lerp(TargetPosition, Smoothness)
 		        end
 		    end)
 		end
@@ -992,7 +999,7 @@ do
 			}
 
 			-- // Dragging
-			Library:SetDraggable(Outline)
+			Library:SetDraggable(Outline, 0.15, 0.5)
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
 				if Input.KeyCode == Library.UIKey then
 					Library:SetOpen(not Library.Open)
