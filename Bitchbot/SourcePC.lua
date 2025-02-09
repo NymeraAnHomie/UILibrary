@@ -1,7 +1,3 @@
--- This has not been tested on any other executors besides krampus (only tested in roblox studio)
--- I cannot guarantee everything works (ex. custom font which i removed)
--- Made by portal | example at bottom
-
 if isfile("menu_plex.font") then
 	delfile("menu_plex.font")
 end
@@ -50,7 +46,7 @@ local Library = {};
 do
 	Library = {
 		Open = true;
-		Accent = Color3.fromRGB(100, 200, 255);
+		Accent = Color3.fromRGB(255, 255, 255);
 		Pages = {};
 		Sections = {};
 		Flags = {};
@@ -295,22 +291,7 @@ do
 		end
 		--
 		function Library:RGBA(r, g, b, alpha)
-			local rgb = Color3.fromRGB(r, g, b)
-			--[[local mt = table.clone(getrawmetatable(rgb))
-
-			setreadonly(mt, false)
-			local old = mt.__index
-
-			mt.__index = newcclosure(function(self, key)
-				if key:lower() == "transparency" then
-					return alpha
-				end
-
-				return old(self, key)
-			end)
-
-			setrawmetatable(rgb, mt)--]]
-
+			local rgb = Color3.fromRGB(r, g, b)			
 			return rgb
 		end
 	end;
