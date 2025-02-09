@@ -597,40 +597,38 @@ do
 			set(default, defaultalpha)
 
 			Sat.InputBegan:Connect(function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					slidingsaturation = true
-					update()
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        slidingsaturation = true
+			        update()
+			    end
 			end)
-
+			
 			Sat.InputEnded:Connect(function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					slidingsaturation = false
-					update()
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        slidingsaturation = false
+			        update()
+			    end
 			end)
 
 			Hue.InputBegan:Connect(function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					slidinghue = true
-					update()
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        slidinghue = true
+			        update()
+			    end
 			end)
-
+			
 			Hue.InputEnded:Connect(function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					slidinghue = false
-					update()
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        slidinghue = false
+			        update()
+			    end
 			end)
 
 			Library:Connection(game:GetService("UserInputService").InputChanged, function(input)
-				if input.UserInputType == Enum.UserInputType.MouseMovement then
-
+				if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
 					if slidinghue then
 						update()
 					end
-
 					if slidingsaturation then
 						update()
 					end
@@ -644,12 +642,12 @@ do
 			end
 
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
-				if ColorOutline.Visible and Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					if not Library:IsMouseOverFrame(ColorOutline) and not Library:IsMouseOverFrame(Icon) then
-						ColorOutline.Visible = false
-						parent.ZIndex = 1
-					end
-				end
+			    if ColorOutline.Visible and (Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch) then
+			        if not Library:IsMouseOverFrame(ColorOutline) and not Library:IsMouseOverFrame(Icon) then
+			            ColorOutline.Visible = false
+			            parent.ZIndex = 1
+			        end
+			    end
 			end)
 
 			Icon.MouseButton1Down:Connect(function()
@@ -2369,33 +2367,31 @@ do
 			end
 			--
 			Library:Connection(ToggleFrame.InputBegan, function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					Sliding = true
-					ISlide(input)
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        Sliding = true
+			        ISlide(input)
+			    end
 			end)
 			Library:Connection(ToggleFrame.InputEnded, function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					Sliding = false
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        Sliding = false
+			    end
 			end)
 			Library:Connection(ToggleAccent.InputBegan, function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					Sliding = true
-					ISlide(input)
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        Sliding = true
+			        ISlide(input)
+			    end
 			end)
 			Library:Connection(ToggleAccent.InputEnded, function(input)
-				if Input.UserInputType == Enum.UserInputType.MouseButton1 and Input.UserInputType == Enum.UserInputType.Touch then
-					Sliding = false
-				end
+			    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			        Sliding = false
+			    end
 			end)
 			Library:Connection(game:GetService("UserInputService").InputChanged, function(input)
-				if input.UserInputType == Enum.UserInputType.MouseMovement then
-					if Sliding then
-						ISlide(input)
-					end
-				end
+			    if Sliding and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			        ISlide(input)
+			    end
 			end)
 			--
 			function Slider:Set(Value)
