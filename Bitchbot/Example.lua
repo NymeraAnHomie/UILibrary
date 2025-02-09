@@ -1,15 +1,17 @@
+--// u can use flags Library.Flags or smt
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Bitchbot/Source.lua"))()
--- u can use flag i just lazy to put it here
+
 local Window = Library:Window({Name = "Example Window", Size = Vector2.new(450, 450)})
 local Combat = Window:Page({Name = "Combat"})
 local Visual = Window:Page({Name = "Visual"})
 local Aimbot, Misc = Combat:MultiSection({Sections = {"Aimbot", "Misc"}, Zindex = 5, Side = "Left", Size = 315})
 local Exploits, Resolver = Combat:MultiSection({Sections = {"Exploits", "Resolver"}, Zindex = 5, Side = "Right", Size = 315})
 
-Aimbot:Toggle({Name = "Enable", Risk = false, Callback = function(v)
+local Toggle = Aimbot:Toggle({Name = "Enable", Risk = false, Callback = function(v)
     print("[cb]: you have set the toggle to " .. v .. ".")
 end})
-Aimbot:Colorpicker({Name = "Color", Default = Color3.fromRGB(255, 255, 255), Callback = function(v)
+Toggle:Colorpicker({Name = "Color", Default = Color3.fromRGB(255, 255, 255), Callback = function(v)
 	print("[cb]: You have set the toggle color to" .. v .. ".")
 end})
 Aimbot:Button({Name = "Button", Callback = function()
