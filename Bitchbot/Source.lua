@@ -274,7 +274,7 @@ do
 			end;
 		end;
 		--
-		function Library:SetDraggable(Frame, Smoothness, Cutoff)
+		function Library:SetDraggable(Frame, Smoothness)
 		    local Dragging, DragStart, StartPosition, TargetPosition
 		
 		    Library:Connection(Frame.InputBegan, function(input)
@@ -299,12 +299,6 @@ do
 		                StartPosition.X.Scale, StartPosition.X.Offset + Delta.X,
 		                StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y
 		            )
-		        end
-		    end)
-		    --
-		    Library:Connection(game:GetService("RunService").RenderStepped, function()
-		        if TargetPosition and (Dragging or (Frame.Position - TargetPosition).Magnitude > Cutoff) then
-		            Frame.Position = Frame.Position:Lerp(TargetPosition, Smoothness)
 		        end
 		    end)
 		end
@@ -999,7 +993,7 @@ do
 			}
 
 			-- // Dragging
-			Library:SetDraggable(Outline, 0.15, 0.5)
+			Library:SetDraggable(Outline, 0.15)
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
 				if Input.KeyCode == Library.UIKey then
 					Library:SetOpen(not Library.Open)
