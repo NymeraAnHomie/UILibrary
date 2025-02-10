@@ -1,12 +1,14 @@
 --// u can use flags Library.Flags or smt
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Library/refs/heads/main/Bitchbot/Source.lua"))()
-
 local Window = Library:Window({Name = "Example Window"})
-local Combat = Window:Page({Name = "Combat"})
-local Visual = Window:Page({Name = "Visual"})
+
+local Tab = Window:Page({Name = "Tab"})
+local Tab2 = Window:Page({Name = "Tab 2"})
+local settings = Window:Page({Name = "Settings"})
+
 local Aimbot, Misc = Combat:MultiSection({Sections = {"Aimbot", "Misc"}, Zindex = 5, Side = "Left", Size = 315})
-local Exploits, Resolver = Combat:MultiSection({Sections = {"Exploits", "Resolver"}, Zindex = 5, Side = "Right", Size = 315})
+local Drawing = Combat:Section({Name = "Drawing", Zindex = 5, Side = "Right", AutoSize = true})
 
 local Toggle = Aimbot:Toggle({Name = "Enable", Risk = false, Callback = function(v)
     print("[cb]: you have set the toggle to " .. tostring(v) .. ".")
@@ -17,12 +19,7 @@ end})
 Aimbot:Button({Name = "Button", Callback = function()
     print("[cb]: You have called a button.")
 end})
-Aimbot:List({Name = "Hit Priority", Options = {
-	"HumanoidRootPart",
-	"UpperTorso",
-	"LowerTorso",
-	"Head"
-}, Default = "HumanoidRootPart", Callback = function(v)
+Aimbot:List({Name = "Hit Priority", Options = {"HumanoidRootPart", "UpperTorso", "LowerTorso", "Head"}, Default = "HumanoidRootPart", Callback = function(v)
     print("[cb]: Aim part set to " .. v .. ".")
 end})
 Aimbot:Textbox({Name = "Vertical", Default = "0.14", Callback = function(v)
@@ -32,3 +29,19 @@ Aimbot:Textbox({Name = "Horizontal", Default = "0.14", Callback = function(v)
     print("[cb]: Horizontal prediction set to " .. v .. ".")
 end})
 Aimbot:Slider({Name = "Hit Chance", Default = 10, Min = 0, Max = 100, Decimals = 0.01})
+
+local config = settings:Section({Name = "Configuration", Zindex = 5, Side = "Left", AutoSize = true})
+local config_list = config:List({Name = "Config", Flag = "config_list", Options = {}})
+config:Textbox({Name = "Name", Flag = "config_name"})
+config:Button({Name = "Create", Callback = function()
+    writefile(FolderName .. "/configs/" .. flags.config_name .. ".cfg", Library:GetConfig())
+end})
+config:Button({Name = "Load", Callback = function()
+	Library:LoadConfig(readfile(FolderName .. "/configs/" .. flags.config_list .. ".cfg"))
+end})
+config:Button({Name = "Save", Callback = function()
+    writefile(FolderName .. "/configs/" .. flags.config_list .. ".cfg", Library:GetConfig())
+end})
+config:Button({Name = "Refresh", Callback = function()
+	config_list:Refresh(listfiles(FolderName .. "/configs"))
+end})
