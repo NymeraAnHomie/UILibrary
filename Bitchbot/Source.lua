@@ -2,7 +2,7 @@ if isfile("menu_plex.font") then
 	delfile("menu_plex.font")
 end
 
-writefile("ProggyClean.ttf", game:HttpGet("https://github.com/f1nobe7650/other/raw/main/ProggyClean.ttf"))
+writefile("Arial.TTF", game:HttpGet("https://github.com/NymeraAnHomie/Fonts/raw/main/Arial.TTF"))
 
 -- // Custom Font
 do
@@ -37,7 +37,7 @@ do
 		end;
 	end;
 
-	Font:Register("menu_plex", 400, "normal", {Id = "ProggyClean.ttf", Font = ""});
+	Font:Register("menu_plex", 400, "normal", {Id = "Arial.TTF", Font = ""});
 end
 
 local realfont = Font.new(Font:GetRegistry("menu_plex"))
