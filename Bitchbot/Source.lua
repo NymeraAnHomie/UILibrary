@@ -847,7 +847,7 @@ do
 			ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 			Library.ScreenGUI = ScreenGui
 			ScreenGui.DisplayOrder = 100
-
+			
 			local Outline = Instance.new("TextButton")
 			Outline.Name = "Outline"
 			Outline.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1109,6 +1109,10 @@ do
 				-- Functions
 				function NKeyList:SetVisible(State)
 					KeyList.Visible = State;
+				end;
+				--
+				function Library:Unload()
+					ScreenGui:Destroy()
 				end;
 				--
 				function NKeyList:NewKey(Name,Page)
