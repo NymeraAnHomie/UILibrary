@@ -102,6 +102,14 @@ do
 			[Enum.UserInputType.MouseButton2] = "MB2",
 			[Enum.UserInputType.MouseButton3] = "MB3"
 		};
+		BlacklistedKey = {
+			Enum.KeyCode.W, 
+		    Enum.KeyCode.A, 
+		    Enum.KeyCode.S, 
+		    Enum.KeyCode.D, 
+		    Enum.UserInputType.Touch, 
+		    nil
+		};
 		Connections = {};
 		UIKey = Enum.KeyCode.End;
 		ScreenGUI = nil;
@@ -1995,76 +2003,79 @@ do
 				Always.TextStrokeTransparency = 0
 
 				-- // Functions
+				local function isBlacklisted(key)
+				    for _, blacklistedKey in ipairs(Library.BlacklistedKey) do
+				        if key == blacklistedKey then
+				            return true
+				        end
+				    end
+				    return false
+				end
+				
 				local function set(newkey)
-					if string.find(tostring(newkey), "Enum") then
-						if c then
-							c:Disconnect()
-							if Keybind.Flag then
-								Library.Flags[Keybind.Flag] = false
-							end
-							Keybind.Callback(false)
-						end
-						if tostring(newkey):find("Enum.KeyCode.") then
-							newkey = Enum.KeyCode[tostring(newkey):gsub("Enum.KeyCode.", "")]
-						elseif tostring(newkey):find("Enum.UserInputType.") then
-							newkey = Enum.UserInputType[tostring(newkey):gsub("Enum.UserInputType.", "")]
-						end
-						if newkey == Enum.KeyCode.Backspace then
-							Key = nil
-							if Keybind.UseKey then
-								if Keybind.Flag then
-									Library.Flags[Keybind.Flag] = Key
-								end
-								Keybind.Callback(Key)
-							end
-							local text = "None"
-
-							Value.Text = text
-						elseif newkey ~= nil then
-							Key = newkey
-							if Keybind.UseKey then
-								if Keybind.Flag then
-									Library.Flags[Keybind.Flag] = Key
-								end
-								Keybind.Callback(Key)
-							end
-							local text = (Library.Keys[newkey] or tostring(newkey):gsub("Enum.KeyCode.", ""))
-
-							Value.Text = text
-						end
-
-						Library.Flags[Keybind.Flag .. "_KEY"] = newkey
-					elseif table.find({ "Always", "Toggle", "Hold" }, newkey) then
-						if not Keybind.UseKey then
-							Library.Flags[Keybind.Flag .. "_KEY STATE"] = newkey
-							Keybind.Mode = newkey
-							if Keybind.Mode == "Always" then
-								State = true
-								if Keybind.Flag then
-									Library.Flags[Keybind.Flag] = State
-								end
-								Keybind.Callback(true)
-								if not Keybind.Ignore then
-									ListValue:SetVisible(true)
-								end
-							elseif Keybind.Mode == 'Hold' then
-								State = false
-								if Keybind.Flag then
-									Library.Flags[Keybind.Flag] = State
-								end
-								Keybind.Callback(false)
-								if not Keybind.Ignore then
-									ListValue:SetVisible(false)
-								end
-							end
-						end
-					else
-						State = newkey
-						if Keybind.Flag then
-							Library.Flags[Keybind.Flag] = newkey
-						end
-						Keybind.Callback(newkey)
-					end
+				    if string.find(tostring(newkey), "Enum") then
+				        if tostring(newkey):find("Enum.KeyCode.") then
+				            newkey = Enum.KeyCode[tostring(newkey):gsub("Enum.KeyCode.", "")]
+				        elseif tostring(newkey):find("Enum.UserInputType.") then
+				            newkey = Enum.UserInputType[tostring(newkey):gsub("Enum.UserInputType.", "")]
+				        end
+				
+				        if isBlacklisted(newkey) then
+				            return
+				        end
+				
+				        if newkey == Enum.KeyCode.Backspace then
+				            Key = nil
+				            if Keybind.UseKey then
+				                if Keybind.Flag then
+				                    Library.Flags[Keybind.Flag] = Key
+				                end
+				                Keybind.Callback(Key)
+				            end
+				            Value.Text = "None"
+				        else
+				            Key = newkey
+				            if Keybind.UseKey then
+				                if Keybind.Flag then
+				                    Library.Flags[Keybind.Flag] = Key
+				                end
+				                Keybind.Callback(Key)
+				            end
+				            Value.Text = Library.Keys[newkey] or tostring(newkey):gsub("Enum.KeyCode.", "")
+				        end
+				
+				        Library.Flags[Keybind.Flag .. "_KEY"] = newkey
+				    elseif table.find({ "Always", "Toggle", "Hold" }, newkey) then
+				        if not Keybind.UseKey then
+				            Library.Flags[Keybind.Flag .. "_KEY STATE"] = newkey
+				            Keybind.Mode = newkey
+				            if Keybind.Mode == "Always" then
+				                State = true
+				                if Keybind.Flag then
+				                    Library.Flags[Keybind.Flag] = State
+				                end
+				                Keybind.Callback(true)
+				                if not Keybind.Ignore then
+				                    ListValue:SetVisible(true)
+				                end
+				            elseif Keybind.Mode == "Hold" then
+				                State = false
+				                if Keybind.Flag then
+				                    Library.Flags[Keybind.Flag] = State
+				                end
+				                Keybind.Callback(false)
+				                if not Keybind.Ignore then
+				                    ListValue:SetVisible(false)
+				                end
+				            end
+				        end
+				    else
+				        State = newkey
+				        if Keybind.Flag then
+				            Library.Flags[Keybind.Flag] = newkey
+				        end
+				        Keybind.Callback(newkey)
+				    end
 				end
 				--
 				set(Keybind.State)
