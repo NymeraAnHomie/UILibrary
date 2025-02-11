@@ -1501,7 +1501,7 @@ do
 
 			local UIListLayout1 = Instance.new("UIListLayout")
 			UIListLayout1.Name = "UIListLayout"
-			--UIListLayout1.FillDirection = Enum.FillDirection.Horizontal
+			UIListLayout1.FillDirection = Enum.FillDirection.Horizontal
 			UIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
 			UIListLayout1.Parent = Tabs
 
