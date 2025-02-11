@@ -98,7 +98,6 @@ do
 			[Enum.KeyCode.Plus] = "+",
 			[Enum.KeyCode.Period] = ".",
 			[Enum.KeyCode.Backquote] = "`",
-			[Enum.UserInputType.Touch] = "Touch",
 			[Enum.UserInputType.MouseButton1] = "MB1",
 			[Enum.UserInputType.MouseButton2] = "MB2",
 			[Enum.UserInputType.MouseButton3] = "MB3"
@@ -2284,7 +2283,7 @@ do
 			ToggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			ToggleFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			ToggleFrame.Position = UDim2.new(0, 0, 1, -7)
-			ToggleFrame.Size = UDim2.new(1, 0, 0, 7)
+			ToggleFrame.Size = UDim2.new(1, 0, 0, 9)
 			ToggleFrame.Text = ""
 			ToggleFrame.AutoButtonColor = false
 
@@ -2331,6 +2330,7 @@ do
 			Value.Text = "0"
 			Value.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Value.TextSize = Library.FSize
+			Value.TextYAlignment = Enum.TextYAlignment.Top
 			Value.TextStrokeTransparency = 0
 			Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Value.BackgroundTransparency = 1
