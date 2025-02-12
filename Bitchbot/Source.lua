@@ -103,14 +103,15 @@ do
 			[Enum.UserInputType.MouseButton3] = "MB3"
 		};
 		BlacklistedKey = {
-		    Enum.KeyCode.W, 
+			Enum.KeyCode.W, 
 		    Enum.KeyCode.A, 
 		    Enum.KeyCode.S, 
 		    Enum.KeyCode.D, 
-		    Enum.UserInputType.Touch
+		    Enum.UserInputType.Touch, 
+		    nil
 		};
 		Connections = {};
-		UIKey = Enum.KeyCode.Insert;
+		UIKey = Enum.KeyCode.End;
 		ScreenGUI = nil;
 		FSize = 12;
 		SettingsPage = nil;
@@ -1118,10 +1119,6 @@ do
 					KeyList.Visible = State;
 				end;
 				--
-				function Library:Unload()
-					ScreenGui:Destroy()
-				end;
-				--
 				function NKeyList:NewKey(Name,Page)
 					local KeyValue = {}
 					--
@@ -1154,6 +1151,10 @@ do
 
 			function Window:UpdateTitle(str)
 				Title.Text = str
+			end
+			
+			function Library:Unload()
+				ScreenGui:Destroy()
 			end
 
 			-- // Returns
