@@ -110,7 +110,7 @@ do
 		    Enum.UserInputType.Touch
 		};
 		Connections = {};
-		UIKey = Enum.KeyCode.End;
+		UIKey = Enum.KeyCode.Insert;
 		ScreenGUI = nil;
 		FSize = 12;
 		SettingsPage = nil;
