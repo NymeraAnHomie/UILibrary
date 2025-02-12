@@ -103,12 +103,11 @@ do
 			[Enum.UserInputType.MouseButton3] = "MB3"
 		};
 		BlacklistedKey = {
-			Enum.KeyCode.W, 
+		    Enum.KeyCode.W, 
 		    Enum.KeyCode.A, 
 		    Enum.KeyCode.S, 
 		    Enum.KeyCode.D, 
-		    Enum.UserInputType.Touch, 
-		    nil
+		    Enum.UserInputType.Touch
 		};
 		Connections = {};
 		UIKey = Enum.KeyCode.End;
