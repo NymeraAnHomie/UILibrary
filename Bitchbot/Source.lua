@@ -135,7 +135,8 @@ do
 	local LocalPlayer = game:GetService('Players').LocalPlayer;
 	local Mouse = LocalPlayer:GetMouse();
 	local TweenService = game:GetService("TweenService");
-
+	local HttpService = game:GetService("HttpService");
+	
 	-- // Misc Functions
 	do
 		function Library:Connection(Signal, Callback)
@@ -3547,7 +3548,38 @@ do
 						or Properties.Pointer
 						or Library.NextFlag()
 				),
+				Path = (
+					Properties.path
+						or Properties.Path
+						or Properties.Relations
+						or Properties.relations
+						or false
+				),
 			}
+			--
+			function LoadPlayerData(path)
+			    if isfile(path) then
+			        local success, data = pcall(function()
+			            return HttpService:JSONDecode(readfile(path))
+			        end)
+			        if success and type(data) == "table" then
+			            return data
+			        end
+			    end
+			    return {}
+			end
+			
+			function SavePlayerData(path, data)
+			    writefile(path, HttpService:JSONEncode(data))
+			end
+			
+			Playerlist.FilePath = Playerlist.Path .. "/playerlist.json"
+			
+			if not isfile(Playerlist.FilePath) then
+			    writefile(Playerlist.FilePath, "{}")
+			end
+			
+			local PlayerStatuses = LoadPlayerData(Playerlist.FilePath)
 			--
 			local NewPlayer = Instance.new("Frame")
 			NewPlayer.Name = "NewPlayer"
@@ -3895,16 +3927,19 @@ do
 					PlayerName.TextWrapped = true
 
 					local PlayerStatus = Instance.new("TextLabel")
+					local userId = tostring(option.UserId)
+					local savedStatus = PlayerStatuses[userId] or "None"
 					PlayerStatus.Name = "PlayerStatus"
 					PlayerStatus.FontFace = realfont
-					PlayerStatus.Text = (option == game.Players.LocalPlayer and "Local Player") 
-					                    or (table.find(Library.Friends, option) and "Friendly") 
-					                    or (table.find(Library.Priorities, option) and "Priority") 
-					                    or "None"
-					PlayerStatus.TextColor3 = (option == game.Players.LocalPlayer and Color3.fromRGB(0, 170, 255)) 
-					                          or (table.find(Library.Friends, option) and Color3.fromRGB(0, 255, 0)) 
-					                          or (table.find(Library.Priorities, option) and Color3.fromRGB(255, 0, 0)) 
-					                          or Color3.fromRGB(255, 255, 255)
+					PlayerStatus.Text = savedStatus
+					PlayerStatus.TextColor3 = savedStatus == "Friendly" and Color3.fromRGB(0, 255, 0)
+					                     or savedStatus == "Priority" and Color3.fromRGB(255, 0, 0)
+					                     or Color3.fromRGB(255, 255, 255)
+					if savedStatus == "Friendly" and not table.find(Library.Friends, option) then
+					    table.insert(Library.Friends, option)
+					elseif savedStatus == "Priority" and not table.find(Library.Priorities, option) then
+					    table.insert(Library.Priorities, option)
+					end
 					PlayerStatus.TextSize = Library.FSize
 					PlayerStatus.TextStrokeTransparency = 0
 					PlayerStatus.TextXAlignment = Enum.TextXAlignment.Left
@@ -4028,33 +4063,51 @@ do
 			end
 			--
 			Priority.MouseButton1Click:Connect(function()
-				if Playerlist.CurrentPlayer ~= nil and table.find(Library.Friends, Playerlist.CurrentPlayer) then
-					table.remove(Library.Friends, table.find(Library.Friends, Playerlist.CurrentPlayer))
-				end
-				if Playerlist.CurrentPlayer ~= nil and not table.find(Library.Priorities, Playerlist.CurrentPlayer) then
-					table.insert(Library.Priorities, Playerlist.CurrentPlayer)
-					optioninstances[Playerlist.CurrentPlayer].status.Text = "Priority"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255, 0, 0)
-				elseif Playerlist.CurrentPlayer ~= nil and table.find(Library.Priorities, Playerlist.CurrentPlayer) then
-					table.remove(Library.Priorities, table.find(Library.Priorities, Playerlist.CurrentPlayer))
-					optioninstances[Playerlist.CurrentPlayer].status.Text = "None"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255,255,255)
-				end
+			    if Playerlist.CurrentPlayer then
+			        local userId = tostring(Playerlist.CurrentPlayer.UserId)
+			
+			        if table.find(Library.Friends, Playerlist.CurrentPlayer) then
+			            table.remove(Library.Friends, table.find(Library.Friends, Playerlist.CurrentPlayer))
+			        end
+			
+			        if not table.find(Library.Priorities, Playerlist.CurrentPlayer) then
+			            table.insert(Library.Priorities, Playerlist.CurrentPlayer)
+			            optioninstances[Playerlist.CurrentPlayer].status.Text = "Priority"
+			            optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255, 0, 0)
+			            PlayerStatuses[userId] = "Priority"
+			        else
+			            table.remove(Library.Priorities, table.find(Library.Priorities, Playerlist.CurrentPlayer))
+			            optioninstances[Playerlist.CurrentPlayer].status.Text = "None"
+			            optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255, 255, 255)
+			            PlayerStatuses[userId] = nil
+			        end
+			
+			        SavePlayerData(Playerlist.FilePath, PlayerStatuses)
+			    end
 			end)
 			--
 			Friend.MouseButton1Click:Connect(function()
-				if Playerlist.CurrentPlayer ~= nil and table.find(Library.Priorities, Playerlist.CurrentPlayer) then
-					table.remove(Library.Priorities, table.find(Library.Priorities, Playerlist.CurrentPlayer))
-				end
-				if Playerlist.CurrentPlayer ~= nil and not table.find(Library.Friends, Playerlist.CurrentPlayer) then
-					table.insert(Library.Friends, Playerlist.CurrentPlayer)
-					optioninstances[Playerlist.CurrentPlayer].status.Text = "Friendly"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(0, 255, 0)
-				elseif Playerlist.CurrentPlayer ~= nil and table.find(Library.Friends, Playerlist.CurrentPlayer) then
-					table.remove(Library.Friends, table.find(Library.Friends, Playerlist.CurrentPlayer))
-					optioninstances[Playerlist.CurrentPlayer].status.Text = "None"
-					optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255,255,255)
-				end
+			    if Playerlist.CurrentPlayer then
+			        local userId = tostring(Playerlist.CurrentPlayer.UserId)
+			
+			        if table.find(Library.Priorities, Playerlist.CurrentPlayer) then
+			            table.remove(Library.Priorities, table.find(Library.Priorities, Playerlist.CurrentPlayer))
+			        end
+			
+			        if not table.find(Library.Friends, Playerlist.CurrentPlayer) then
+			            table.insert(Library.Friends, Playerlist.CurrentPlayer)
+			            optioninstances[Playerlist.CurrentPlayer].status.Text = "Friendly"
+			            optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(0, 255, 0)
+			            PlayerStatuses[userId] = "Friendly"
+			        else
+			            table.remove(Library.Friends, table.find(Library.Friends, Playerlist.CurrentPlayer))
+			            optioninstances[Playerlist.CurrentPlayer].status.Text = "None"
+			            optioninstances[Playerlist.CurrentPlayer].status.TextColor3 = Color3.fromRGB(255, 255, 255)
+			            PlayerStatuses[userId] = nil
+			        end
+			
+			        SavePlayerData(Playerlist.FilePath, PlayerStatuses)
+			    end
 			end)
 			--
 			createoptions(game.Players:GetPlayers())
