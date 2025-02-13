@@ -111,7 +111,7 @@ do
 		    nil
 		};
 		Connections = {};
-		UIKey = Enum.KeyCode.End;
+		UIKey = Enum.KeyCode.RightShift;
 		ScreenGUI = nil;
 		FSize = 12;
 		SettingsPage = nil;
