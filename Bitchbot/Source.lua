@@ -111,7 +111,7 @@ do
 		    nil
 		};
 		Connections = {};
-		UIKey = Enum.KeyCode.RightShift;
+		UIKey = Enum.KeyCode.Insert;
 		ScreenGUI = nil;
 		FSize = 12;
 		SettingsPage = nil;
@@ -3863,139 +3863,143 @@ do
 			--
 			local function createoptions(tbl)
 				for i, option in next, tbl do
-					if option ~= game.Players.LocalPlayer then
-						optioninstances[option] = {}
+					optioninstances[option] = {}
+					
+					local NewPlayer1 = Instance.new("TextButton")
+					NewPlayer1.Name = "NewPlayer"
+					NewPlayer1.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+					NewPlayer1.Text = ""
+					NewPlayer1.TextColor3 = Color3.fromRGB(0, 0, 0)
+					NewPlayer1.TextSize = 14
+					NewPlayer1.AutoButtonColor = false
+					NewPlayer1.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+					NewPlayer1.BorderColor3 = Color3.fromRGB(20,20,20)
+					NewPlayer1.BorderSizePixel = 2
+					NewPlayer1.Size = UDim2.new(1, 0, 0, 20)
 
-						local NewPlayer1 = Instance.new("TextButton")
-						NewPlayer1.Name = "NewPlayer"
-						NewPlayer1.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
-						NewPlayer1.Text = ""
-						NewPlayer1.TextColor3 = Color3.fromRGB(0, 0, 0)
-						NewPlayer1.TextSize = 14
-						NewPlayer1.AutoButtonColor = false
-						NewPlayer1.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-						NewPlayer1.BorderColor3 = Color3.fromRGB(20,20,20)
-						NewPlayer1.BorderSizePixel = 2
-						NewPlayer1.Size = UDim2.new(1, 0, 0, 20)
+					local PlayerName = Instance.new("TextLabel")
+					PlayerName.Name = "PlayerName"
+					PlayerName.FontFace = realfont
+					PlayerName.Text = option.Name
+					PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
+					PlayerName.TextSize = Library.FSize
+					PlayerName.TextStrokeTransparency = 0
+					PlayerName.TextXAlignment = Enum.TextXAlignment.Left
+					PlayerName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					PlayerName.BackgroundTransparency = 1
+					PlayerName.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					PlayerName.BorderSizePixel = 0
+					PlayerName.Position = UDim2.new(0, 6, 0, 0)
+					PlayerName.Size = UDim2.new(0, 140, 1, 0)
+					PlayerName.Parent = NewPlayer1
+					PlayerName.TextWrapped = true
 
-						local PlayerName = Instance.new("TextLabel")
-						PlayerName.Name = "PlayerName"
-						PlayerName.FontFace = realfont
-						PlayerName.Text = option.Name
-						PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
-						PlayerName.TextSize = Library.FSize
-						PlayerName.TextStrokeTransparency = 0
-						PlayerName.TextXAlignment = Enum.TextXAlignment.Left
-						PlayerName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						PlayerName.BackgroundTransparency = 1
-						PlayerName.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						PlayerName.BorderSizePixel = 0
-						PlayerName.Position = UDim2.new(0, 6, 0, 0)
-						PlayerName.Size = UDim2.new(0, 140, 1, 0)
-						PlayerName.Parent = NewPlayer1
-						PlayerName.TextWrapped = true
+					local PlayerStatus = Instance.new("TextLabel")
+					PlayerStatus.Name = "PlayerStatus"
+					PlayerStatus.FontFace = realfont
+					PlayerStatus.Text = (option == game.Players.LocalPlayer and "Local Player") 
+					                    or (table.find(Library.Friends, option) and "Friendly") 
+					                    or (table.find(Library.Priorities, option) and "Priority") 
+					                    or "None"
+					PlayerStatus.TextColor3 = (option == game.Players.LocalPlayer and Color3.fromRGB(0, 170, 255)) 
+					                          or (table.find(Library.Friends, option) and Color3.fromRGB(0, 255, 0)) 
+					                          or (table.find(Library.Priorities, option) and Color3.fromRGB(255, 0, 0)) 
+					                          or Color3.fromRGB(255, 255, 255)
+					PlayerStatus.TextSize = Library.FSize
+					PlayerStatus.TextStrokeTransparency = 0
+					PlayerStatus.TextXAlignment = Enum.TextXAlignment.Left
+					PlayerStatus.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					PlayerStatus.BackgroundTransparency = 1
+					PlayerStatus.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					PlayerStatus.BorderSizePixel = 0
+					PlayerStatus.Position = UDim2.new(0.667, 6, 0, 0)
+					PlayerStatus.Size = UDim2.new(0, 100, 1, 0)
+					PlayerStatus.Parent = NewPlayer1
 
-						local PlayerStatus = Instance.new("TextLabel")
-						PlayerStatus.Name = "PlayerStatus"
-						PlayerStatus.FontFace = realfont
-						PlayerStatus.Text = option == game.Players.LocalPlayer and "Local Player" or table.find(Library.Friends, option) and "Friendly" or table.find(Library.Priorities, option) and "Priority" or "None"
-						PlayerStatus.TextColor3 = option == game.Players.LocalPlayer and Color3.fromRGB(0, 170, 255) or table.find(Library.Friends, option) and Color3.fromRGB(0,255,0) or table.find(Library.Priorities, option) and Color3.fromRGB(255,0,0) or Color3.fromRGB(255,255,255)
-						PlayerStatus.TextSize = Library.FSize
-						PlayerStatus.TextStrokeTransparency = 0
-						PlayerStatus.TextXAlignment = Enum.TextXAlignment.Left
-						PlayerStatus.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						PlayerStatus.BackgroundTransparency = 1
-						PlayerStatus.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						PlayerStatus.BorderSizePixel = 0
-						PlayerStatus.Position = UDim2.new(0.667, 6, 0, 0)
-						PlayerStatus.Size = UDim2.new(0, 100, 1, 0)
-						PlayerStatus.Parent = NewPlayer1
+					local PlayerAccent = Library:NewInstance("TextLabel", true)
+					PlayerAccent.Name = "PlayerAccent"
+					PlayerAccent.FontFace = realfont
+					PlayerAccent.Text = option.Name
+					PlayerAccent.TextColor3 = Library.Accent
+					PlayerAccent.TextSize = Library.FSize
+					PlayerAccent.TextStrokeTransparency = 0
+					PlayerAccent.TextXAlignment = Enum.TextXAlignment.Left
+					PlayerAccent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					PlayerAccent.BackgroundTransparency = 1
+					PlayerAccent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					PlayerAccent.BorderSizePixel = 0
+					PlayerAccent.Position = UDim2.new(0, 6, 0, 0)
+					PlayerAccent.Size = UDim2.new(0, 140, 1, 0)
+					PlayerAccent.Parent = NewPlayer1
+					PlayerAccent.Visible = false
+					PlayerAccent.TextWrapped = true
 
-						local PlayerAccent = Library:NewInstance("TextLabel", true)
-						PlayerAccent.Name = "PlayerAccent"
-						PlayerAccent.FontFace = realfont
-						PlayerAccent.Text = option.Name
-						PlayerAccent.TextColor3 = Library.Accent
-						PlayerAccent.TextSize = Library.FSize
-						PlayerAccent.TextStrokeTransparency = 0
-						PlayerAccent.TextXAlignment = Enum.TextXAlignment.Left
-						PlayerAccent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						PlayerAccent.BackgroundTransparency = 1
-						PlayerAccent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						PlayerAccent.BorderSizePixel = 0
-						PlayerAccent.Position = UDim2.new(0, 6, 0, 0)
-						PlayerAccent.Size = UDim2.new(0, 140, 1, 0)
-						PlayerAccent.Parent = NewPlayer1
-						PlayerAccent.Visible = false
-						PlayerAccent.TextWrapped = true
+					local PlayerTeam = Instance.new("TextLabel")
+					PlayerTeam.Name = "PlayerTeam"
+					PlayerTeam.FontFace = realfont
+					PlayerTeam.Text = option:FindFirstChild("Team") and tostring(option.Team.Name) or "No Team"
+					PlayerTeam.TextColor3 = option:FindFirstChild("Team") and option.TeamColor.Color or Color3.fromRGB(255,255,255)
+					PlayerTeam.TextSize = Library.FSize
+					PlayerTeam.TextStrokeTransparency = 0
+					PlayerTeam.TextXAlignment = Enum.TextXAlignment.Left
+					PlayerTeam.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					PlayerTeam.BackgroundTransparency = 1
+					PlayerTeam.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					PlayerTeam.BorderSizePixel = 0
+					PlayerTeam.Position = UDim2.new(0.333, 6, 0, 0)
+					PlayerTeam.Size = UDim2.new(0, 100, 1, 0)
+					PlayerTeam.Parent = NewPlayer1
 
-						local PlayerTeam = Instance.new("TextLabel")
-						PlayerTeam.Name = "PlayerTeam"
-						PlayerTeam.FontFace = realfont
-						PlayerTeam.Text = option:FindFirstChild("Team") and tostring(option.Team.Name) or "No Team"
-						PlayerTeam.TextColor3 = option:FindFirstChild("Team") and option.TeamColor.Color or Color3.fromRGB(255,255,255)
-						PlayerTeam.TextSize = Library.FSize
-						PlayerTeam.TextStrokeTransparency = 0
-						PlayerTeam.TextXAlignment = Enum.TextXAlignment.Left
-						PlayerTeam.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						PlayerTeam.BackgroundTransparency = 1
-						PlayerTeam.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						PlayerTeam.BorderSizePixel = 0
-						PlayerTeam.Position = UDim2.new(0.333, 6, 0, 0)
-						PlayerTeam.Size = UDim2.new(0, 100, 1, 0)
-						PlayerTeam.Parent = NewPlayer1
+					local Line1 = Instance.new("Frame")
+					Line1.Name = "Line1"
+					Line1.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+					Line1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Line1.BorderSizePixel = 0
+					Line1.Position = UDim2.new(0.333, 0, 0, 0)
+					Line1.Size = UDim2.new(0, 2, 1, 0)
+					Line1.Parent = NewPlayer1
 
-						local Line1 = Instance.new("Frame")
-						Line1.Name = "Line1"
-						Line1.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-						Line1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						Line1.BorderSizePixel = 0
-						Line1.Position = UDim2.new(0.333, 0, 0, 0)
-						Line1.Size = UDim2.new(0, 2, 1, 0)
-						Line1.Parent = NewPlayer1
+					local Line11 = Instance.new("Frame")
+					Line11.Name = "Line1"
+					Line11.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+					Line11.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Line11.BorderSizePixel = 0
+					Line11.Position = UDim2.new(0.667, 0, 0, 0)
+					Line11.Size = UDim2.new(0, 2, 1, 0)
+					Line11.Parent = NewPlayer1
 
-						local Line11 = Instance.new("Frame")
-						Line11.Name = "Line1"
-						Line11.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-						Line11.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						Line11.BorderSizePixel = 0
-						Line11.Position = UDim2.new(0.667, 0, 0, 0)
-						Line11.Size = UDim2.new(0, 2, 1, 0)
-						Line11.Parent = NewPlayer1
+					NewPlayer1.Parent = List
 
-						NewPlayer1.Parent = List
+					optioninstances[option].button = NewPlayer1
+					optioninstances[option].text = PlayerName
+					optioninstances[option].status = PlayerStatus
+					optioninstances[option].accent = PlayerAccent
+					optioninstances[option].team = PlayerTeam
 
-						optioninstances[option].button = NewPlayer1
-						optioninstances[option].text = PlayerName
-						optioninstances[option].status = PlayerStatus
-						optioninstances[option].accent = PlayerAccent
-						optioninstances[option].team = PlayerTeam
-
-						if option == chosen then
-							chosen = option
-							Library.Flags[Playerlist.Flag] = option
-							Playerlist.CurrentPlayer = option
-							--
-							for opt, tbl in next, optioninstances do
-								if opt ~= option then
-									tbl.accent.Visible = false
-								end
+					if option == chosen then
+						chosen = option
+						Library.Flags[Playerlist.Flag] = option
+						Playerlist.CurrentPlayer = option
+						--
+						for opt, tbl in next, optioninstances do
+							if opt ~= option then
+								tbl.accent.Visible = false
 							end
-							PlayerAccent.Visible = true
+						end
+						PlayerAccent.Visible = true
+						--
+						if Playerlist.CurrentPlayer ~= Playerlist.LastPlayer then
+							Playerlist.LastPlayer = Playerlist.CurrentPlayer;
+							PlayerName1.Text = ("Id : %s\nDisplay Name : %s\nName : %s\nAccount Age : %s"):format(Playerlist.CurrentPlayer.UserId, Playerlist.CurrentPlayer.DisplayName ~= "" and Playerlist.CurrentPlayer.DisplayName or Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.AccountAge)
 							--
-							if Playerlist.CurrentPlayer ~= Playerlist.LastPlayer then
-								Playerlist.LastPlayer = Playerlist.CurrentPlayer;
-								PlayerName1.Text = ("Id : %s\nDisplay Name : %s\nName : %s\nAccount Age : %s"):format(Playerlist.CurrentPlayer.UserId, Playerlist.CurrentPlayer.DisplayName ~= "" and Playerlist.CurrentPlayer.DisplayName or Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.Name, Playerlist.CurrentPlayer.AccountAge)
-								--
-								local imagedata = game:GetService("Players"):GetUserThumbnailAsync(Playerlist.CurrentPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+							local imagedata = game:GetService("Players"):GetUserThumbnailAsync(Playerlist.CurrentPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
 
-								ImageLabel.Image = imagedata
-							end;
-						end
+							ImageLabel.Image = imagedata
+						end;
+					end
 
-						if option ~= game.Players.LocalPlayer then
-							handleoptionclick(option, NewPlayer1, PlayerAccent)
-						end
+					if option ~= game.Players.LocalPlayer then
+						handleoptionclick(option, NewPlayer1, PlayerAccent)
 					end
 				end
 			end
