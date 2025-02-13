@@ -3928,13 +3928,13 @@ do
 
 					local PlayerStatus = Instance.new("TextLabel")
 					local userId = tostring(option.UserId)
-					local savedStatus = PlayerStatuses[userId] or "None"
+					local savedStatus = option == game.Players.LocalPlayer and "Local Player" or PlayerStatuses[userId] or "None"
 					PlayerStatus.Name = "PlayerStatus"
 					PlayerStatus.FontFace = realfont
-					PlayerStatus.Text = savedStatus
-					PlayerStatus.TextColor3 = savedStatus == "Friendly" and Color3.fromRGB(0, 255, 0)
-					                     or savedStatus == "Priority" and Color3.fromRGB(255, 0, 0)
-					                     or Color3.fromRGB(255, 255, 255)
+					PlayerStatus.TextColor3 = (option == game.Players.LocalPlayer and Color3.fromRGB(0, 170, 255))
+	                    or (savedStatus == "Friendly" and Color3.fromRGB(0, 255, 0))
+	                    or (savedStatus == "Priority" and Color3.fromRGB(255, 0, 0))
+	                    or Color3.fromRGB(255, 255, 255) 
 					if savedStatus == "Friendly" and not table.find(Library.Friends, option) then
 					    table.insert(Library.Friends, option)
 					elseif savedStatus == "Priority" and not table.find(Library.Priorities, option) then
