@@ -3931,6 +3931,7 @@ do
 					local savedStatus = option == game.Players.LocalPlayer and "Local Player" or PlayerStatuses[userId] or "None"
 					PlayerStatus.Name = "PlayerStatus"
 					PlayerStatus.FontFace = realfont
+					PlayerStatus.Text = savedStatus
 					PlayerStatus.TextColor3 = (option == game.Players.LocalPlayer and Color3.fromRGB(0, 170, 255))
 	                    or (savedStatus == "Friendly" and Color3.fromRGB(0, 255, 0))
 	                    or (savedStatus == "Priority" and Color3.fromRGB(255, 0, 0))
