@@ -1006,7 +1006,7 @@ do
 			}
 
 			-- // Dragging
-			Library:SetDraggable(Outline, 0.15)
+			Library:SetDraggable(Outline, 0.05)
 			Library:Connection(game:GetService("UserInputService").InputBegan, function(Input)
 				if Input.KeyCode == Library.UIKey then
 					Library:SetOpen(not Library.Open)
