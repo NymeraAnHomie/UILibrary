@@ -313,7 +313,7 @@ do
 		    --
 		    Library:Connection(game:GetService("RunService").RenderStepped, function()
 		        if Dragging and TargetPosition then
-		            Frame.Position = Frame.Position:Lerp(TargetPosition, Smoothness)
+		            Frame.Position = Frame.Position:Lerp(TargetPosition, 1 - Smoothness)
 		        end
 		    end)
 		end
