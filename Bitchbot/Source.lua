@@ -111,7 +111,7 @@ do
 		    nil
 		};
 		Connections = {};
-		UIKey = Enum.KeyCode.Insert;
+		UIKey = Enum.KeyCode.Delete,
 		ScreenGUI = nil;
 		FSize = 12;
 		SettingsPage = nil;
