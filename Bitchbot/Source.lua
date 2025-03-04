@@ -1806,7 +1806,7 @@ do
 			function Toggle:Colorpicker(Properties)
 				local Properties = Properties or {}
 				local Colorpicker = {
-					Name = (Properties.Name or Properties.name) or Toggle.Name,
+					Name = (Properties.Name or Properties.name) or "",
 					State = (
 						Properties.state
 							or Properties.State
