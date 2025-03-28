@@ -2,45 +2,49 @@ if isfile("menu_plex.font") then
 	delfile("menu_plex.font")
 end
 
-writefile("Arial.TTF", game:HttpGet("https://github.com/NymeraAnHomie/Fonts/raw/main/Arial.TTF"))
+if not isfile("Arial.TTF") then
+	writefile("Arial.TTF", game:HttpGet("https://github.com/NymeraAnHomie/Fonts/raw/main/Arial.TTF"))
+end
 
--- // Custom Font
 do
 	getsynasset = getcustomasset or getsynasset
-	Font = setreadonly(Font, false);
-	function Font:Register(Name, Weight, Style, Asset)
+	local FontRegistry = {}
+
+	function RegisterFont(Name, Weight, Style, Asset)
 		if not isfile(Name .. ".font") then
 			if not isfile(Asset.Id) then
-				writefile(Asset.Id, Asset.Font);
-			end;
-			--
+				writefile(Asset.Id, Asset.Font)
+			end
+
 			local Data = {
 				name = Name,
 				faces = {{
 					name = "Regular",
 					weight = Weight,
 					style = Style,
-					assetId = getsynasset(Asset.Id);
+					assetId = getsynasset(Asset.Id)
 				}}
-			};
-			--
-			writefile(Name .. ".font", game:GetService("HttpService"):JSONEncode(Data));
-			return getsynasset(Name .. ".font");
-		else 
-			warn("Font already registered");
-		end;
-	end;
-	--
-	function Font:GetRegistry(Name)
-		if isfile(Name .. ".font") then
-			return getsynasset(Name .. ".font");
-		end;
-	end;
+			}
 
-	Font:Register("menu_plex", 400, "normal", {Id = "Arial.TTF", Font = ""});
+			writefile(Name .. ".font", game:GetService("HttpService"):JSONEncode(Data))
+			FontRegistry[Name] = getsynasset(Name .. ".font")
+			return FontRegistry[Name]
+		else 
+			warn("Font already registered")
+			return getsynasset(Name .. ".font")
+		end
+	end
+
+	function GetRegistry(Name)
+		if isfile(Name .. ".font") then
+			return getsynasset(Name .. ".font")
+		end
+	end
+
+	RegisterFont("menu_plex", 400, "normal", {Id = "Arial.TTF", Font = game:HttpGet("https://github.com/NymeraAnHomie/Fonts/raw/main/Arial.TTF")})
 end
 
-local realfont = Font.new(Font:GetRegistry("menu_plex"))
+local realfont = Font.new(GetRegistry("menu_plex"))
 
 local Library = {};
 do
