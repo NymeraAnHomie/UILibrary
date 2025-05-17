@@ -3965,7 +3965,7 @@ do
 
 		local TextLabel = Instance.new("TextLabel")
 		TextLabel.Name = "TextLabel"
-		TextLabel.Font = Enum.Font.GothamBold
+		TextLabel.Font = menu_font
 		TextLabel.Text = message
 		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TextLabel.TextSize = 13
@@ -4049,4 +4049,4 @@ do
 	end
 end
 
-return Library
+return Library, Notifications
