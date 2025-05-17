@@ -3966,7 +3966,7 @@ do
 
         local TextLabel = Instance.new("TextLabel")
         TextLabel.Name = "TextLabel"
-        TextLabel.Font = menu_font
+        TextLabel.Font = Font.new(getcustomasset("menu_font.font"), Enum.FontWeight.Regular)
         TextLabel.Text = message
         TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         TextLabel.TextSize = 13
