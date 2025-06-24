@@ -619,23 +619,34 @@ do -- Library
 	end;
 
 	function Library:Resize(object, background)
-		local start, objectposition, dragging, currentpos, currentsize
-
-		Library:Connection(object.MouseButton1Down, function(input)
-			dragging = true
-			start = input
+		local dragging = false
+		local startPos = nil
+		local inputObj = nil
+	
+		Library:Connection(object.InputBegan, function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				dragging = true
+				startPos = input.Position
+				inputObj = input
+				inputObj.Changed:Connect(function(prop)
+					if prop == "UserInputState" and inputObj.UserInputState == Enum.UserInputState.End then
+						dragging = false
+					end
+				end)
+			end
 		end)
-		Library:Connection(Mouse.Move, function(input)
-			if dragging then
-				local MouseLocation = game:GetService("UserInputService"):GetMouseLocation()
-				local X = math.clamp(MouseLocation.X - background.AbsolutePosition.X, 550, 9999)
-				local Y = math.clamp((MouseLocation.Y - 36) - background.AbsolutePosition.Y, 600, 9999)
-				currentsize = UDim2.new(0,X,0,Y)
-				background.Size = currentsize
-			end;
+	
+		Library:Connection(UserInputService.InputChanged, function(input)
+			if dragging and input == inputObj then
+				local mousePos = input.Position
+				local relativeX = math.clamp(mousePos.X - background.AbsolutePosition.X, 550, 9999)
+				local relativeY = math.clamp(mousePos.Y - background.AbsolutePosition.Y, 600, 9999)
+				background.Size = UDim2.new(0, relativeX, 0, relativeY)
+			end
 		end)
-		Library:Connection(game:GetService("UserInputService").InputEnded, function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+	
+		Library:Connection(UserInputService.InputEnded, function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 				dragging = false
 			end
 		end)
