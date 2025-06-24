@@ -656,7 +656,7 @@ do -- Library
 		local Pages = Library.Pages;
 		local Sections = Library.Sections;
 		
-		function Library:Window(Options)
+		function Library:Window(Options, A, B)
 			local Window = {
 				Pages = {};
 				Sections = {};
@@ -678,7 +678,7 @@ do -- Library
 			ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			ImageLabel.BorderSizePixel = 0
 			ImageLabel.Position = UDim2.new(0.1, 0, 0.1, 0)
-			ImageLabel.Size = UDim2.new(0, 700, 0, 550)
+			ImageLabel.Size = UDim2.new(0, A, 0, B) or UDim2.new(0, 700, 0, 550)
 
 			local MainFrame = Instance.new("TextButton")
 			MainFrame.Name = "MainFrame"
@@ -701,7 +701,7 @@ do -- Library
 
 			local Logo = Library:NewInstance("ImageLabel", true)
 			Logo.Name = "Logo"
-			Logo.Image = "http://www.roblox.com/asset/?id=17655988165"
+			Logo.Image = Option.Icon or "http://www.roblox.com/asset/?id=17655988165"
 			Logo.ScaleType = Enum.ScaleType.Fit
 			Logo.AnchorPoint = Vector2.new(0, 0.5)
 			Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
