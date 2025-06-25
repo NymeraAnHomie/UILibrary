@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/UILibrary/refs/heads/main/Nebula/Source.lua"))()
 local Flags = Library.Flags -- Flags["Identifier"]
 local Window = Library:Window({
-    Icon = "rbxassetid://0",
+    Icon = "http://www.roblox.com/asset/?id=0",
 }, 650, 725)
 
 -- Library:Toggle(Bool)
