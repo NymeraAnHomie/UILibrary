@@ -701,7 +701,7 @@ do -- Library
 
 			local Logo = Library:NewInstance("ImageLabel", true)
 			Logo.Name = "Logo"
-			Logo.Image = Option.Icon or "http://www.roblox.com/asset/?id=17655988165"
+			Logo.Image = Options.Icon or "http://www.roblox.com/asset/?id=17655988165"
 			Logo.ScaleType = Enum.ScaleType.Fit
 			Logo.AnchorPoint = Vector2.new(0, 0.5)
 			Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
