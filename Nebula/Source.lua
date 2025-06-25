@@ -2013,22 +2013,24 @@ do -- Library
 			Accent.Parent = Frame
 
 			Frame.Parent = NewSlider
-
-			local Title = Instance.new("TextLabel")
-			Title.Name = "Title"
-			Title.FontFace = menu_font
-			Title.Text = Slider.Name
-			Title.TextColor3 = Color3.fromRGB(200, 200, 200)
-			Title.TextSize = Library.FSize
-			Title.TextStrokeTransparency = 0
-			Title.TextXAlignment = Enum.TextXAlignment.Left
-			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			Title.BackgroundTransparency = 1
-			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			Title.BorderSizePixel = 0
-			Title.Size = UDim2.new(1, 0, 0, 12)
-			Title.Parent = NewSlider
-
+			
+			if Slider.Name then
+				local Title = Instance.new("TextLabel")
+				Title.Name = "Title"
+				Title.FontFace = menu_font
+				Title.Text = Slider.Name
+				Title.TextColor3 = Color3.fromRGB(200, 200, 200)
+				Title.TextSize = Library.FSize
+				Title.TextStrokeTransparency = 0
+				Title.TextXAlignment = Enum.TextXAlignment.Left
+				Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Title.BackgroundTransparency = 1
+				Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Title.BorderSizePixel = 0
+				Title.Size = UDim2.new(1, 0, 0, 12)
+				Title.Parent = NewSlider
+			end
+			
 			local Value = Instance.new("TextLabel")
 			Value.Name = "Value"
 			Value.FontFace = menu_font
@@ -2264,22 +2266,23 @@ do -- Library
 			Content.Parent = Frame
 
 			Frame.Parent = NewList
-
-			local Title = Instance.new("TextLabel")
-			Title.Name = "Title"
-			Title.FontFace = menu_font
-			Title.Text = Dropdown.Name
-			Title.TextColor3 = Color3.fromRGB(200, 200, 200)
-			Title.TextSize = Library.FSize
-			Title.TextStrokeTransparency = 0
-			Title.TextXAlignment = Enum.TextXAlignment.Left
-			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			Title.BackgroundTransparency = 1
-			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			Title.BorderSizePixel = 0
-			Title.Size = UDim2.new(1, 0, 0, 12)
-			Title.Parent = NewList
-
+			
+			if Dropdown.Name then
+				local Title = Instance.new("TextLabel")
+				Title.Name = "Title"
+				Title.FontFace = menu_font
+				Title.Text = Dropdown.Name
+				Title.TextColor3 = Color3.fromRGB(200, 200, 200)
+				Title.TextSize = Library.FSize
+				Title.TextStrokeTransparency = 0
+				Title.TextXAlignment = Enum.TextXAlignment.Left
+				Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Title.BackgroundTransparency = 1
+				Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Title.BorderSizePixel = 0
+				Title.Size = UDim2.new(1, 0, 0, 12)
+				Title.Parent = NewList
+			end
 			
 			Library:Connection(Frame.MouseButton1Down, function()
 				Content.Visible = not Content.Visible
