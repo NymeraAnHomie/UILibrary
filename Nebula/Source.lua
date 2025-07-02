@@ -126,10 +126,12 @@ do -- Library
 			Connection:Disconnect()
 		end
 		
-		function Library:Round(Number, Decimals)
-		    Decimals = tonumber(Decimals) or 0
-		    local multiplier = 10 ^ Decimals
-		    return math.floor(Number * multiplier + 0.5) / multiplier
+		function Library:Round(Number, Step)
+			Step = tonumber(Step)
+			if not Step or Step == 0 then
+				return Number
+			end
+			return Step * math.floor(Number / Step + 0.5)
 		end
 		
 		function Library.NextFlag()
