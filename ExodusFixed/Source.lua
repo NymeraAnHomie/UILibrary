@@ -1269,7 +1269,7 @@ function components.separator(section, str, zindex)
 end
 
 function components.button(section, options, zindex)
-    zindex = zindex or 9;
+    zindex = zindex or 9
 
     utility.format(options)
 
@@ -1282,7 +1282,8 @@ function components.button(section, options, zindex)
         Size = newUDim2(1, 0, 0, 15),
         ZIndex = zindex,
         Theme = "Object Background",
-        OutlineTheme = "Object Border"
+        OutlineTheme = "Object Border",
+        Active = true
     })
 
     if options.tooltip then
@@ -1301,7 +1302,11 @@ function components.button(section, options, zindex)
         ZIndex = zindex + 1
     })
 
-    button.MouseButton1Click:Connect(options.callback)
+    button.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            options.callback()
+        end
+    end)
 
     section:Resize()
 
@@ -1316,7 +1321,7 @@ function components.button(section, options, zindex)
 end
 
 function components.toggle(holder, options, zindex)
-    zindex = zindex or 9;
+    zindex = zindex or 9
 
     utility.format(options)
 
@@ -1343,7 +1348,8 @@ function components.toggle(holder, options, zindex)
         Position = newUDim2(0, 0, 0, 2),
         ZIndex = zindex,
         Theme = "Object Background",
-        OutlineTheme = "Object Border"
+        OutlineTheme = "Object Border",
+        Active = true
     })
 
     icon:Create("Image", {
@@ -1354,6 +1360,7 @@ function components.toggle(holder, options, zindex)
     })
 
     holder.text.Position = newUDim2(0, 16, 0, 0)
+    holder.main.Active = true
 
     local disconnect_auto_color = utility.auto_button_color(icon, "Object Background", fromRGB(3, 3, 3), fromRGB(8, 8, 8), holder.main)
     local current_tween = nil
@@ -1384,7 +1391,6 @@ function components.toggle(holder, options, zindex)
                 if not library.keybind_list:Exists(holder.name) then
                     library.keybind_list:Add(holder.name, "Disabled Text")
                 end
-
                 library.keybind_list:Change(holder.name, ("[%s] %s"):format(holder.key_str, holder.name))
             end
 
@@ -1392,7 +1398,6 @@ function components.toggle(holder, options, zindex)
         end
 
         current_tween = library:ChangeThemeObject(icon, holder.toggled and "Accent" or "Object Background")
-
         library.flags[options.flag] = holder.toggled
         options.callback(holder.toggled)
     end
@@ -1402,7 +1407,13 @@ function components.toggle(holder, options, zindex)
     end
 
     holder.toggle = toggle
-    holder.main.MouseButton1Click:Connect(toggle)
+    
+    holder.main.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            toggle()
+        end
+    end)
+
     holder.section:Resize()
 
     local toggle_types = {}
