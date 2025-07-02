@@ -126,8 +126,10 @@ do -- Library
 			Connection:Disconnect()
 		end
 		
-		function Library:Round(Number, Float)
-			return Float * math.floor(Number / Float)
+		function Library:Round(Number, Decimals)
+		    Decimals = tonumber(Decimals) or 0
+		    local multiplier = 10 ^ Decimals
+		    return math.floor(Number * multiplier + 0.5) / multiplier
 		end
 		
 		function Library.NextFlag()
