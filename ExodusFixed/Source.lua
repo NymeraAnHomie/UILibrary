@@ -1,7 +1,3 @@
---[[
-    Render object class thing for UI Libraries
-]]
-
 repeat task.wait() until game:IsLoaded()
 
 -- Localization
@@ -847,16 +843,6 @@ function utility.auto_button_color(button, color, hover, click, holder)
     --local mouse_over = false
     local mouse_down = false
 
-    --[[local enter = holder.MouseEnter:Connect(function()
-        mouse_over = true
-        button.Color = utility.color_add((is_theme and library.theme[color] or color), hover)
-    end)
-
-    local leave = holder.MouseLeave:Connect(function()
-        mouse_over = false
-        button.Color = (is_theme and library.theme[color] or color)
-    end)]]
-
     local down = holder.MouseButton1Down:Connect(function()
         mouse_down = true
         button.Color = utility.color_add((is_theme and library.theme[color] or color), click)
@@ -1117,10 +1103,10 @@ function utility.round(number, float)
 end
 
 function utility.dragify(object, drag_outline)
-    local start, object_position, dragging, currentpos
+    local start, object_position, dragging
 
     library:Connect(object.InputBegan, function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             start = input.Position
             object_position = object.Position
@@ -1129,12 +1115,20 @@ function utility.dragify(object, drag_outline)
                 drag_outline.Visible = true
                 drag_outline.Position = object_position
             end
+
+            input.UserInputState = Enum.UserInputState.Begin
         end
     end)
 
     library:Connect(services.UserInputService.InputChanged, function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
-            local new_position = newUDim2(object_position.X.Scale, object_position.X.Offset + (input.Position - start).X, object_position.Y.Scale, object_position.Y.Offset + (input.Position - start).Y)
+        if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and dragging then
+            local delta = input.Position - start
+            local new_position = newUDim2(
+                object_position.X.Scale,
+                object_position.X.Offset + delta.X,
+                object_position.Y.Scale,
+                object_position.Y.Offset + delta.Y
+            )
 
             if not library.performance_drag then
                 if (object.AbsolutePosition - calculate_udim2(new_position, workspace.CurrentCamera.ViewportSize)).Magnitude > 3 then
@@ -1147,7 +1141,7 @@ function utility.dragify(object, drag_outline)
     end)
 
     library:Connect(services.UserInputService.InputEnded, function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and dragging then 
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and dragging then 
             dragging = false
 
             if library.performance_drag then
@@ -1622,22 +1616,24 @@ function components.slider(holder, options, zindex)
 
     local sliding = false
 
-    slider.MouseButton1Down:Connect(function()
-        sliding = true
-        slide{Position = services.UserInputService:GetMouseLocation()}
-    end)
-
-    library:Connect(services.UserInputService.InputEnded, function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            sliding = false
-        end
-    end)
-
-    library:Connect(services.UserInputService.InputChanged, function(input)
-        if sliding and input.UserInputType == Enum.UserInputType.MouseMovement then
-            slide(input)
-        end
-    end)
+    slider.InputBegan:Connect(function(input)
+	    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+	        sliding = true
+	        slide({Position = input.Position})
+	    end
+	end)
+	
+	library:Connect(services.UserInputService.InputChanged, function(input)
+	    if sliding and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+	        slide(input)
+	    end
+	end)
+	
+	library:Connect(services.UserInputService.InputEnded, function(input)
+	    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+	        sliding = false
+	    end
+	end)
 
     plus.MouseButton1Click:Connect(function()
         set(current_value + options.float)
@@ -1940,7 +1936,8 @@ function components.dropdown(holder, options, zindex)
         Position = newUDim2(0, 0, 0, 18),
         ZIndex = zindex,
         Theme = "Object Background",
-        OutlineTheme = "Object Border"
+        OutlineTheme = "Object Border",
+        Active = true
     })
 
     if options.tooltip then
@@ -1996,14 +1993,12 @@ function components.dropdown(holder, options, zindex)
             if #current > 0 then
                 for _, option in next, current do
                     current_text[#current_text + 1] = option
-
-                    local text = concat(current_text, ", ")
+                    local text = table.concat(current_text, ", ")
                     value_text.Text = text
 
                     if value_text.TextBounds.X > dropdown.AbsoluteSize.X - 48 then
-                        remove(current_text, #current_text)
-                        value_text.Text = concat(current_text, ", ") .. ", ..."
-
+                        table.remove(current_text, #current_text)
+                        value_text.Text = table.concat(current_text, ", ") .. ", ..."
                         return
                     end
                 end
@@ -2016,8 +2011,7 @@ function components.dropdown(holder, options, zindex)
         end
     end
 
-    local set
-    set = function(chosen, ignore)
+    local function set(chosen, ignore)
         if not options.multi then
             local is_config = false
             if chosen:sub(1, 4) == "SET_" then
@@ -2027,7 +2021,7 @@ function components.dropdown(holder, options, zindex)
 
             if chosen ~= current then
                 current = chosen
-                
+
                 for name, option in next, option_objects do
                     if name ~= chosen and option.chosen then
                         option.chosen = false
@@ -2038,31 +2032,24 @@ function components.dropdown(holder, options, zindex)
 
                 update_value()
 
-                local option_object = option_objects[chosen];
-
-                if (option_object) then
+                local option_object = option_objects[chosen]
+                if option_object then
                     option_object.chosen = true
                     option_object.object:Tween(newInfo(library.tween_speed, library.easing_style), {Transparency = 1})
-
                     library:ChangeThemeObject(option_object.text, "Text")
-
                     library.flags[options.flag] = chosen
                     options.callback(chosen)
                 end
             else
                 if not is_config then
                     current = nil
-
                     update_value()
 
-                    local option_object = option_objects[chosen];
-
-                    if (option_object) then
+                    local option_object = option_objects[chosen]
+                    if option_object then
                         option_object.chosen = false
                         option_object.object:Tween(newInfo(library.tween_speed, library.easing_style), {Transparency = 0})
-
                         library:ChangeThemeObject(option_object.text, "Disabled Text")
-                        
                         library.flags[options.flag] = nil
                         options.callback(nil)
                     end
@@ -2074,26 +2061,21 @@ function components.dropdown(holder, options, zindex)
         else
             if typeof(chosen) == "table" then
                 for _, option in next, chosen do
-                    if not find(current, option) then
+                    if not table.find(current, option) then
                         set(option, true)
                     end
                 end
-
                 library.flags[options.flag] = current
                 options.callback(current)
-
                 return
             end
 
-            local idx = find(current, chosen)
-
+            local idx = table.find(current, chosen)
             if not idx then
                 current[#current + 1] = chosen
-
                 update_value()
                 option_objects[chosen].chosen = true
                 option_objects[chosen].object:Tween(newInfo(library.tween_speed, library.easing_style), {Transparency = 1})
-
                 library:ChangeThemeObject(option_objects[chosen].text, "Text")
 
                 if not ignore then
@@ -2101,14 +2083,11 @@ function components.dropdown(holder, options, zindex)
                     options.callback(current)
                 end
             else
-                remove(current, idx)
-
+                table.remove(current, idx)
                 update_value()
                 option_objects[chosen].chosen = false
                 option_objects[chosen].object:Tween(newInfo(library.tween_speed, library.easing_style), {Transparency = 0})
-
                 library:ChangeThemeObject(option_objects[chosen].text, "Disabled Text")
-                
                 library.flags[options.flag] = current
                 options.callback(current)
             end
@@ -2121,9 +2100,10 @@ function components.dropdown(holder, options, zindex)
             ZIndex = zindex + 10,
             Transparency = 0,
             Theme = "Dropdown Option Background",
-            Outline = false
+            Outline = false,
+            Active = true
         })
-        
+
         local text = object:Create("Text", {
             Text = name,
             Font = library.font,
@@ -2134,15 +2114,16 @@ function components.dropdown(holder, options, zindex)
             ZIndex = zindex + 11
         })
 
-        object.MouseButton1Click:Connect(function()
-            set(name)
+        object.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                set(name)
+            end
         end)
-        
+
         local option = {object = object, text = text, chosen = false}
         option_objects[name] = option
 
         content_frame.Size = newUDim2(1, 0, 0, content_holder._list._contentSize + 3)
-
         return option
     end
 
@@ -2162,8 +2143,12 @@ function components.dropdown(holder, options, zindex)
         open_button.Text = content_frame.Visible and "-" or "+"
     end
 
-    dropdown.MouseButton1Click:Connect(open_dropdown)
-    
+    dropdown.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            open_dropdown()
+        end
+    end)
+
     holder.main.Size = newUDim2(1, 0, 0, 33)
     holder.section:Resize()
 
@@ -2189,17 +2174,14 @@ function components.dropdown(holder, options, zindex)
             if current == option then
                 current = nil
                 update_value()
-                
                 library.flags[options.flag] = nil
                 options.callback(nil)
-            end 
+            end
         else
-            local idx = find(current, option)
-
+            local idx = table.find(current, option)
             if idx then
-                remove(current, idx)
+                table.remove(current, idx)
                 update_value()
-                
                 library.flags[options.flag] = current
                 options.callback(current)
             end
@@ -2207,43 +2189,28 @@ function components.dropdown(holder, options, zindex)
     end
 
     function dropdown_types:Refresh(tbl)
-        if not options.multi then
-            for _, option in next, option_objects do
-                option.object:Destroy()
-            end
-
-            clear(option_objects)
-
-            for _, option in next, tbl do
-                create_option(option)
-            end
-
-            current = nil
-            update_value()
-            
-            library.flags[options.flag] = nil
-            options.callback(nil)
-        else
-            for _, option in next, option_objects do
-                option.object:Destroy()
-            end
-
-            clear(option_objects)
-            clear(current)
-
-            for _, option in next, tbl do
-                create_option(option)
-            end
-
-            update_value()
-
-            library.flags[options.flag] = {}
-            options.callback{}
+        for _, option in next, option_objects do
+            option.object:Destroy()
         end
+
+        table.clear(option_objects)
+        if options.multi then
+            table.clear(current)
+        else
+            current = nil
+        end
+
+        for _, option in next, tbl do
+            create_option(option)
+        end
+
+        update_value()
+        library.flags[options.flag] = options.multi and {} or nil
+        options.callback(options.multi and {} or nil)
     end
 
     function dropdown_types:Exists(option)
-        return option_objects[option] and true or false
+        return option_objects[option] ~= nil
     end
 
     utility.format(dropdown_types, true)
@@ -2683,7 +2650,8 @@ function components.list(options)
         ZIndex = 43,
         Theme = "Window Background",
         Position = options.position,
-        Outline = false
+        Outline = false,
+        Active = true
     }, true)
 
     list:Create("Square", {
@@ -2691,7 +2659,8 @@ function components.list(options)
         Position = newUDim2(0, 0, 0, 22),
         ZIndex = 44,
         Theme = "Tab Background",
-        OutlineTheme = "Tab Border"
+        OutlineTheme = "Tab Border",
+        Active = true
     }, true)
 
     library.lists[list] = list
@@ -2701,7 +2670,8 @@ function components.list(options)
         Position = newUDim2(0, -1, 0, -1),
         Theme = "Window Border",
         ZIndex = 42,
-        OutlineTheme = "Black Border"
+        OutlineTheme = "Black Border",
+        Active = true
     }, true)
 
     local title = list:Create("Text", {
@@ -2710,14 +2680,16 @@ function components.list(options)
         Size = library.font_size,
         Position = newUDim2(0, 6, 0, 4),
         Theme = "Text",
-        ZIndex = 44
+        ZIndex = 44,
+        Active = true
     }, true)
 
     local list_content = list:Create("Square", {
         Size = newUDim2(1, 0, 0, 0),
         Position = newUDim2(0, 6, 0, 28),
         Transparency = 0,
-        Outline = false
+        Outline = false,
+        Active = true
     }, true)
 
     list_content:AddList(3)
@@ -2730,6 +2702,7 @@ function components.list(options)
         Theme = "Accent",
         Outline = false,
         ZIndex = 41,
+        Active = true
     }, true)
 
     library.drag_outlines[drag_outline] = true
@@ -2740,20 +2713,18 @@ function components.list(options)
         Theme = "Black Border",
         ZIndex = 40,
         Thickness = 2,
-        Outline = false
+        Outline = false,
+        Active = true
     }, true)
 
     utility.dragify(list, drag_outline)
 
     local function update_flag(no_callback)
         local tbl = {}
-
         for str, _ in next, objects do
             tbl[#tbl + 1] = str
         end
-
         library.flags[options.flag] = tbl
-
         if not no_callback then
             options.callback(tbl)
         end
@@ -2762,17 +2733,23 @@ function components.list(options)
     local function add(str, theme)
         theme = theme or "Text"
 
-        objects[str] = list_content:Create("Square", {
+        local entry_holder = list_content:Create("Square", {
             Size = newUDim2(1, 0, 0, 13),
             Transparency = 0,
-            Outline = false
-        }, true):Create("Text", {
+            Outline = false,
+            Active = true
+        }, true)
+
+        local text_object = entry_holder:Create("Text", {
             Text = str,
             Font = library.font,
             Size = library.font_size,
             Theme = theme,
-            ZIndex = 44
+            ZIndex = 44,
+            Active = true
         }, true)
+
+        objects[str] = text_object
 
         list.Size = newUDim2(0, options.sizex, 0, list_content._list._contentSize + 32)
         drag_outline.Size = newUDim2(0, options.sizex, 0, list_content._list._contentSize + 32)
@@ -2797,21 +2774,27 @@ function components.list(options)
     end
 
     function list_types:Change(object, str)
-        objects[object].Text = str
+        if objects[object] then
+            objects[object].Text = str
+        end
     end
 
     function list_types:ChangeObjectTheme(object, theme)
-        library:ChangeThemeObject(objects[object], theme)
+        if objects[object] then
+            library:ChangeThemeObject(objects[object], theme)
+        end
     end
 
     function list_types:Remove(object)
-        objects[object].Parent:Destroy()
-        objects[object] = nil
+        if objects[object] then
+            objects[object].Parent:Destroy()
+            objects[object] = nil
 
-        list.Size = newUDim2(0, options.sizex, 0, list_content._list._contentSize + 32)
-        drag_outline.Size = newUDim2(0, options.sizex, 0, list_content._list._contentSize + 32)
+            list.Size = newUDim2(0, options.sizex, 0, list_content._list._contentSize + 32)
+            drag_outline.Size = newUDim2(0, options.sizex, 0, list_content._list._contentSize + 32)
 
-        update_flag(true)
+            update_flag(true)
+        end
     end
 
     function list_types:Add(str, theme)
@@ -4230,77 +4213,6 @@ function library:Window(options)
     local window_types = {Visible = options.visible, tab = holder, tab_buttons = {}, text_bounds = 0, double_columns = options.doublecolumns, left_column = left_column};
     self.windows[window] = window_types;
 
-    --[[function window_types:SubTab(name)
-        self.has_subtabs = true
-        local first = #self.tab:GetChildren() == 2
-
-        local tab_button = self.tab:Create("Text", {
-            Text = name,
-            Font = library.font,
-            Size = library.font_size,
-            Center = false,
-            Position = newUDim2(0, self.text_bounds, 0, 0),
-            Theme = first and "Text" or "Disabled Text",
-            ZIndex = 79
-        })
-
-        self.tab_buttons[tab_button] = true
-        self.text_bounds += tab_button.TextBounds.X + 7
-
-        local tab = self.tab:Create("Square", {
-            Size = newUDim2(1, 0, 1, -12),
-            Position = newUDim2(0, 0, 0, 19),
-            Transparency = 0,
-            Visible = first,
-            Outline = false
-        })
-
-        local left_column = tab:Create("Square", {
-            Transparency = 0,
-            Outline = false,
-            Size = newUDim2(1 / 2, -6, 1, 0)
-        });
-
-        left_column:AddList(12);
-
-        local right_column = tab:Create("Square", {
-            Transparency = 0,
-            Outline = false,
-            Size = newUDim2(1 / 2, -6, 1, 0),
-            Position = newUDim2(1 / 2, 6, 0, 0)
-        });
-
-        right_column:AddList(12);
-
-        tab_button.MouseButton1Click:Connect(function()
-            if not tab.Visible then
-                for _, object in next, self.tab:GetChildren() do
-                    if object ~= tab and object._class ~= "Text" then
-                        object.Visible = false
-                    end
-                end
-
-                for object, _ in next, self.tab_buttons do
-                    if object ~= tab_button then
-                        library:ChangeThemeObject(object, "Disabled Text")
-                    end
-                end
-
-                library:ChangeThemeObject(tab_button, "Text")
-                tab.Visible = true
-            end
-        end)
-
-        local column_types = clone(self)
-
-        column_types.has_subtabs = false
-        column_types.SubTab = nil
-        column_types.right_column = right_column
-        column_types.left_column = left_column
-
-        return column_types
-    end]]
-
     function window_types:Section(options)
         if self.has_subtabs then return end
 
@@ -5418,14 +5330,14 @@ function library:Load(options)
             end
         }
 
-        --[[misc:Toggle{
+        misc:Toggle{
             name = "Performance Drag",
             default = library.performance_drag,
             flag = "performance_drag",
             callback = function(value)
                 library.performance_drag = value
             end
-        }]]
+        }
 
         misc:Keybind{
             name = "Menu Key",
