@@ -726,7 +726,7 @@ do -- Library
 			Tabs.BackgroundTransparency = 1
 			Tabs.BorderSizePixel = 0
 			Tabs.BorderColor3 = Color3.new(0,0,0)
-			Tabs.ScrollBarThickness = 2 
+			Tabs.ScrollBarThickness = 0
 			Tabs.ScrollBarImageColor3 = Library.Accent
 			Tabs.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left
 			Tabs.CanvasSize = UDim2.new(0, 0, 1.15, 0)
