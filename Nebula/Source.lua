@@ -3316,7 +3316,7 @@ do -- Library
 			List.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 			List.BorderColor3 = Color3.fromRGB(30, 30, 30)
 			List.Position = UDim2.new(0, 5, 0, 25)
-			List.Size = UDim2.new(1, -10, 0, 225)
+			List.Size = UDim2.new(1, -10, 0, 345)
 
 			local UIListLayout = Instance.new("UIListLayout")
 			UIListLayout.Name = "UIListLayout"
@@ -3486,7 +3486,6 @@ do -- Library
 					local PlayerName = Instance.new("TextLabel")
 					PlayerName.Name = "PlayerName"
 					PlayerName.FontFace = menu_font
-					PlayerName.Text = option.Name
 					PlayerName.TextColor3 = Color3.fromRGB(200, 200, 200)
 					PlayerName.TextSize = Library.FSize
 					PlayerName.TextStrokeTransparency = 0
@@ -3498,6 +3497,21 @@ do -- Library
 					PlayerName.Position = UDim2.new(0, 6, 0, 0)
 					PlayerName.Size = UDim2.new(1, 0, 1, 0)
 					PlayerName.Parent = NewPlayer1
+
+                    local function UpdatePlayerName()
+                        local Team = option.Team
+                        local TeamName = Team and Team.Name or "No Team"
+                        local TeamColor = Team and Team.TeamColor.Color or Color3.fromRGB(200, 200, 200)
+
+                        PlayerName.Text = string.format("%s [%s]", option.Name, TeamName)
+                        PlayerName.TextColor3 = TeamColor
+
+                        if PlayerStatus.Text == "None" then
+                            PlayerStatus.TextColor3 = TeamColor
+                        end
+                    end; UpdatePlayerName()
+
+                    option:GetPropertyChangedSignal("Team"):Connect(UpdatePlayerName)
 
 					local PlayerStatus = Instance.new("TextLabel")
 					PlayerStatus.Name = "PlayerStatus"
