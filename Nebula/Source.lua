@@ -3505,10 +3505,6 @@ do -- Library
 
                         PlayerName.Text = string.format("%s [%s]", option.Name, TeamName)
                         PlayerName.TextColor3 = TeamColor
-
-                        if PlayerStatus.Text == "None" then
-                            PlayerStatus.TextColor3 = TeamColor
-                        end
                     end; UpdatePlayerName()
 
                     option:GetPropertyChangedSignal("Team"):Connect(UpdatePlayerName)
@@ -3528,6 +3524,10 @@ do -- Library
 					PlayerStatus.Position = UDim2.new(0, -25, 0, 0)
 					PlayerStatus.Size = UDim2.new(1, 0, 1, 0)
 					PlayerStatus.Parent = NewPlayer1
+
+                    if PlayerStatus.Text == "None" then
+                        PlayerStatus.TextColor3 = TeamColor
+                    end
 
 					local AccentLine = Library:NewInstance("Frame", true)
 					AccentLine.Name = "AccentLine"
