@@ -2107,7 +2107,7 @@ do -- Library
 			end)
 			
 			Library:Connection(UserInputService.InputChanged, function(input)
-				if Sliding and input == SlidingInput and 
+				if Sliding and 
 				   (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
 					ISlide(input)
 				end
