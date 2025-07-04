@@ -3498,17 +3498,6 @@ do -- Library
 					PlayerName.Size = UDim2.new(1, 0, 1, 0)
 					PlayerName.Parent = NewPlayer1
 
-                    local function UpdatePlayerName()
-                        local Team = option.Team
-                        local TeamName = Team and Team.Name or "No Team"
-                        local TeamColor = Team and Team.TeamColor.Color or Color3.fromRGB(200, 200, 200)
-
-                        PlayerName.Text = string.format("%s [%s]", option.Name, TeamName)
-                        PlayerName.TextColor3 = TeamColor
-                    end; UpdatePlayerName()
-
-                    option:GetPropertyChangedSignal("Team"):Connect(UpdatePlayerName)
-
 					local PlayerStatus = Instance.new("TextLabel")
 					PlayerStatus.Name = "PlayerStatus"
 					PlayerStatus.FontFace = menu_font
@@ -3525,10 +3514,6 @@ do -- Library
 					PlayerStatus.Size = UDim2.new(1, 0, 1, 0)
 					PlayerStatus.Parent = NewPlayer1
 
-                    if PlayerStatus.Text == "None" then
-                        PlayerStatus.TextColor3 = TeamColor
-                    end
-
 					local AccentLine = Library:NewInstance("Frame", true)
 					AccentLine.Name = "AccentLine"
 					AccentLine.BackgroundColor3 = Library.Accent
@@ -3539,6 +3524,21 @@ do -- Library
 					AccentLine.Parent = NewPlayer1
 
 					NewPlayer1.Parent = List
+
+                    local function UpdatePlayerName()
+                        local Team = option.Team
+                        local TeamName = Team and Team.Name or "No Team"
+                        local TeamColor = Team and Team.TeamColor.Color or Color3.fromRGB(200, 200, 200)
+
+                        PlayerName.Text = string.format("%s [%s]", option.Name, TeamName)
+                        PlayerName.TextColor3 = TeamColor
+
+                        if PlayerStatus.Text == "None" then
+                            PlayerStatus.TextColor3 = TeamColor
+                        end
+                    end; UpdatePlayerName()
+
+                    option:GetPropertyChangedSignal("Team"):Connect(UpdatePlayerName)
 
 					optioninstances[option].button = NewPlayer1
 					optioninstances[option].text = PlayerName
