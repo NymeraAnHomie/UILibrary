@@ -1079,7 +1079,7 @@ do -- Library
 			NewPage.Visible = false
 			NewPage.Parent = Page.Window.Elements.Holder
 
-			local Left = Instance.new("Frame")
+			local Left = Instance.new("ScrollingFrame") -- Frame
 			Left.Name = "Left"
 			Left.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Left.BackgroundTransparency = 1
@@ -1094,8 +1094,13 @@ do -- Library
 			UIListLayout.Parent = Left
 
 			Left.Parent = NewPage
+            Left.ScrollBarThickness = 0
+            Left.ScrollingDirection = Enum.ScrollingDirection.Y -- Because Y is Y and elevation
+            Left.HorizontalScrollBarInset = Enum.ScrollBarInset.Always
+            Left.AutomaticCanvasSize = Enum.AutomaticSize.Y -- Because Y is Y and elevation
+            Left.ClipsDescendants = true
 
-			local Right = Instance.new("Frame")
+			local Right = Instance.new("ScrollingFrame") -- Frame
 			Right.Name = "Right"
 			Right.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Right.BackgroundTransparency = 1
@@ -1111,6 +1116,11 @@ do -- Library
 			UIListLayout1.Parent = Right
 
 			Right.Parent = NewPage
+            Right.ScrollBarThickness = 0
+            Right.ScrollingDirection = Enum.ScrollingDirection.Y -- Because Y is Y and elevation
+            Right.HorizontalScrollBarInset = Enum.ScrollBarInset.Always
+            Right.AutomaticCanvasSize = Enum.AutomaticSize.Y -- Because Y is Y and elevation
+            Right.ClipsDescendants = true
 
 			function Page:Turn(bool)
 				Page.Open = bool
@@ -3313,6 +3323,7 @@ do -- Library
 			List.ScrollBarThickness = 8
 			List.TopImage = "rbxassetid://7783554086"
 			List.Active = true
+            List.ClipsDescendants = true
 			List.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 			List.BorderColor3 = Color3.fromRGB(30, 30, 30)
 			List.Position = UDim2.new(0, 5, 0, 25)
