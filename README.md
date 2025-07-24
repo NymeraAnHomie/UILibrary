@@ -1,6 +1,8 @@
 # Library
 - Discord stop removing my picture for ui library huddy
 - Largest Collection of my own modified UI Librarys
+- Side note: Some Folder might not have an example since they fucking unreadable like omg but the source might have lol
+
 ### SOME UIS ARE TAKEN BY PORTAL THE PASTER AND LEAKER OF HES CUSTOMER
 
 ```lua
