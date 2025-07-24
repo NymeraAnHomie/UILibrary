@@ -26,7 +26,7 @@ local color, rgb, hex, hsv, rgbseq, rgbkey, numseq, numkey =
 	NumberSequenceKeypoint.new
 
 local Library = {
-	Directory = "Pulse V4",
+	Directory = "BBotV3lollola",
 	Folders = {
 		"/fonts",
 		"/configs",
@@ -39,6 +39,9 @@ local Library = {
 	EasingStyle = Enum.EasingStyle.Quint,
 	TweeningSpeed = 0.25,
 }
+
+Library = Library or {}
+Library.Directory = Library.Directory or Library.Name or "BBotV3lollola"  -- change this to like yk custom name for ur script
 
 local themes = {
 	preset = {
@@ -363,6 +366,10 @@ function Library:UpdateConfigList()
 	end
 
 	local List = {}
+	
+	if not Library.Directory then
+	    Library.Directory = Library.Directory
+	end
 	
 	if not isfolder(Library.Directory) then
 		makefolder(Library.Directory)
@@ -5152,6 +5159,19 @@ function Notifications:FadeNotifs(path, is_fading)
 				instance,
 				{ BackgroundTransparency = instance.Transparency and 0.6 and is_fading and 1 or 0.6 }
 			)
+		end
+	end
+end
+
+if not isfolder(Library.Directory) then
+	makefolder(Library.Directory)
+end
+
+if Library.Folders then
+	for _, folder in ipairs(Library.Folders) do
+		local fullPath = Library.Directory .. folder
+		if not isfolder(fullPath) then
+			makefolder(fullPath)
 		end
 	end
 end
