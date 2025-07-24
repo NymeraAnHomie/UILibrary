@@ -7,7 +7,7 @@ local Window = Library:Window({
 local MainTab = Window:Tab({ Name = "Main" })
 local CombatTab = Window:Tab({ Name = "Combat" })
 local VisualsTab = Window:Tab({ Name = "Visuals" })
-
+Library:Configs(Window)
 local FarmSection = MainTab:Section({ Name = "Auto Farm", Side = "Left" })
 local PlayerSection = MainTab:Section({ Name = "Player", Side = "Right" })
 
