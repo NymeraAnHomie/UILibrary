@@ -363,7 +363,11 @@ function Library:UpdateConfigList()
 	end
 
 	local List = {}
-
+	
+	if not isfolder(Library.Directory) then
+		makefolder(Library.Directory)
+	end
+	
 	for _, file in listfiles(Library.Directory .. "/configs") do
 		local Name = file:gsub(Library.Directory .. "/configs\\", "")
 			:gsub(".cfg", "")
