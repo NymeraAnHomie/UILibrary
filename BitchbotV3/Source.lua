@@ -249,29 +249,34 @@ end
 
 function Library:Draggify(Parent)
 	local Dragging = false
-	local IntialSize = Parent.Position
 	local InitialPosition
+	local InitialSize
 
-	Parent.InputBegan:Connect(function(Input)
-		if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+	local function onInputBegan(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 			Dragging = true
 			InitialPosition = Input.Position
 			InitialSize = Parent.Position
+			InputService.MouseIconEnabled = false
 		end
-	end)
+	end
 
-	Parent.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+	local function onInputEnded(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 			Dragging = false
+			InputService.MouseIconEnabled = true
 		end
-	end)
+	end
 
-	Library:Connection(InputService.InputChanged, function(Input, game_event)
-		if Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then
+	Parent.InputBegan:Connect(onInputBegan)
+	Parent.InputEnded:Connect(onInputEnded)
+
+	Library:Connection(InputService.InputChanged, function(Input)
+		if Dragging and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
 			local Horizontal = Camera.ViewportSize.X
 			local Vertical = Camera.ViewportSize.Y
 
-			local NewPosition = dim2(
+			local NewPosition = UDim2.new(
 				0,
 				math.clamp(
 					InitialSize.X.Offset + (Input.Position.X - InitialPosition.X),
@@ -3421,6 +3426,7 @@ function Library:Toggle(properties)
 			BorderSizePixel = 0,
 			TextSize = 14,
 			BackgroundColor3 = rgb(255, 255, 255),
+			Active = true,
 		})
 
 		Items.Outline = Library:Create("Frame", {
@@ -3805,36 +3811,40 @@ function Library:Slider(properties)
 		Cfg.Callback(Flags[Cfg.Flag])
 	end
 
-	Items.Outline.MouseButton1Down:Connect(function()
-		Cfg.Dragging = true
+	Items.Outline.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			Cfg.Dragging = true
+		end
 	end)
-
-	Items.Minus.MouseButton1Down:Connect(function()
-		Cfg.Value -= Cfg.Intervals
-
-		Cfg.Set(Cfg.Value)
+	
+	Library:Connection(InputService.InputEnded, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			Cfg.Dragging = false
+		end
 	end)
-
-	Items.Plus.MouseButton1Down:Connect(function()
-		Cfg.Value += Cfg.Intervals
-
-		Cfg.Set(Cfg.Value)
-	end)
-
+	
 	Library:Connection(InputService.InputChanged, function(input)
-		if Cfg.Dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		if Cfg.Dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
 			local Size = (input.Position.X - Items.Outline.AbsolutePosition.X) / Items.Outline.AbsoluteSize.X
 			local Value = ((Cfg.Max - Cfg.Min) * Size) + Cfg.Min
 			Cfg.Set(Value)
 		end
 	end)
-
-	Library:Connection(InputService.InputEnded, function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			Cfg.Dragging = false
+	
+	Items.Minus.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			Cfg.Value -= Cfg.Intervals
+			Cfg.Set(Cfg.Value)
 		end
 	end)
-
+	
+	Items.Plus.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			Cfg.Value += Cfg.Intervals
+			Cfg.Set(Cfg.Value)
+		end
+	end)
+	
 	Cfg.Set(Cfg.Value)
 	ConfigFlags[Cfg.Flag] = Cfg.Set
 
@@ -3875,6 +3885,7 @@ function Library:Dropdown(properties)
 			BorderSizePixel = 0,
 			TextSize = 14,
 			BackgroundColor3 = rgb(255, 255, 255),
+			Active = true,
 		})
 
 		Items.Outline = Library:Create("TextButton", {
@@ -3887,6 +3898,7 @@ function Library:Dropdown(properties)
 			Size = dim2(1, 0, 0, 18),
 			BorderSizePixel = 0,
 			BackgroundColor3 = themes.preset.outline,
+			Active = true,
 		})
 		Library:Themify(Items.Outline, "outline", "BackgroundColor3")
 
@@ -4043,6 +4055,7 @@ function Library:Dropdown(properties)
 			AutomaticSize = Enum.AutomaticSize.XY,
 			TextSize = 12,
 			BackgroundColor3 = rgb(255, 255, 255),
+			Active = true,
 		})
 
 		Library:Create("UIStroke", {
@@ -4112,22 +4125,24 @@ function Library:Dropdown(properties)
 		for _, option in options do
 			local Button = Cfg.RenderOption(option)
 
-			Button.MouseButton1Down:Connect(function()
-				if Cfg.Multi then
-					local Selected = table.find(Cfg.MultiItems, Button.Text)
-
-					if Selected then
-						table.remove(Cfg.MultiItems, Selected)
+			Button.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					if Cfg.Multi then
+						local Selected = table.find(Cfg.MultiItems, Button.Text)
+			
+						if Selected then
+							table.remove(Cfg.MultiItems, Selected)
+						else
+							table.insert(Cfg.MultiItems, Button.Text)
+						end
+			
+						Cfg.Set(Cfg.MultiItems)
 					else
-						table.insert(Cfg.MultiItems, Button.Text)
+						Cfg.SetVisible(false)
+						Cfg.Open = false
+			
+						Cfg.Set(Button.Text)
 					end
-
-					Cfg.Set(Cfg.MultiItems)
-				else
-					Cfg.SetVisible(false)
-					Cfg.Open = false
-
-					Cfg.Set(Button.Text)
 				end
 			end)
 		end
@@ -4172,14 +4187,15 @@ function Library:Dropdown(properties)
 		end)
 	end
 
-	Items.Outline.MouseButton1Click:Connect(function()
-		Cfg.Open = not Cfg.Open
-
-		Cfg.SetVisible(Cfg.Open)
+	Items.Outline.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			Cfg.Open = not Cfg.Open
+			Cfg.SetVisible(Cfg.Open)
+		end
 	end)
 
 	Library:Connection(InputService.InputBegan, function(input, game_event)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 			if not Library:Hovering({ Items.DropdownElements, Items.Dropdown }) then
 				Cfg.SetVisible(false)
 				Cfg.Open = false
@@ -4366,8 +4382,8 @@ function Library:Textbox(properties)
 		Items.Input = Library:Create("TextBox", {
 			FontFace = Library.Font,
 			ClearTextOnFocus = false,
-			Active = false,
-			Selectable = false,
+			Active = true,
+			Selectable = true,
 			PlaceholderColor3 = themes.preset.text_color,
 			PlaceholderText = "Hi!",
 			TextSize = 12,
@@ -4433,7 +4449,7 @@ function Library:Textbox(properties)
 	return setmetatable(Cfg, Library)
 end
 
-function Library:Keybind(properties)
+function Library:Keybind(properties) -- don't need to add mobile support
 	local Cfg = {
 		Flag = properties.Flag or properties.Name,
 		Callback = properties.Callback or function() end,
@@ -4817,6 +4833,7 @@ function Library:Button(properties)
 			AutomaticSize = Enum.AutomaticSize.Y,
 			TextSize = 14,
 			BackgroundColor3 = rgb(255, 255, 255),
+			Active = true,
 		})
 
 		Items.Outline = Library:Create("Frame", {
