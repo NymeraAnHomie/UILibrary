@@ -1007,130 +1007,20 @@ function Library:Keypicker(properties)
 		local OldTab
 
 		if Cfg.Mode == "Animation" then
-			Tabs = { "ColorTab", "AnimationTab" }
-		else
-			Tabs = { "ColorTab" }
-		end
-
-		for _, tab in Tabs do
-			local Temp = {}
-
-			Temp.Button = Library:Create("TextButton", {
-				Parent = Items.Buttons,
-				Name = "\0",
-				Size = dim2(0, 0, 1, 0),
-				BorderColor3 = rgb(0, 0, 0),
-				BorderSizePixel = 0,
-				Text = "",
-				AutomaticSize = Enum.AutomaticSize.X,
-				AutoButtonColor = false,
-				BackgroundColor3 = rgb(255, 255, 255),
-			})
-
-			Temp.Background = Library:Create("TextLabel", {
-				FontFace = Library.Font,
-				TextColor3 = themes.preset.text_color,
-				BorderColor3 = rgb(0, 0, 0),
-				Text = tab:gsub("Tab", ""),
-				Parent = Temp.Button,
-				Name = "\0",
-				BackgroundTransparency = _ == 1 and 1,
-				Size = dim2(0, 0, 1, 0),
-				BorderSizePixel = 0,
-				AutomaticSize = Enum.AutomaticSize.XY,
-				TextSize = 12,
-				BackgroundColor3 = themes.preset.tab_background,
-			})
-			Library:Themify(Temp.Background, "tab_background", "BackgroundColor3")
-
-			Temp.TextPadding = Library:Create("UIPadding", {
-				Parent = Temp.Background,
-				PaddingRight = dim(0, 6),
-				PaddingLeft = dim(0, 5),
-			})
-
-			Library:Create("UIStroke", {
-				Parent = Temp.Background,
-				LineJoinMode = Enum.LineJoinMode.Miter,
-			})
-
-			Temp.Fill = Library:Create("Frame", {
-				BorderColor3 = rgb(0, 0, 0),
-				AnchorPoint = vec2(0, 1),
-				Parent = Temp.Button,
-				Name = "\0",
-				Position = dim2(0, 0, 1, 1),
-				Size = dim2(1, 0, 0, 1),
-				ZIndex = 3,
-				BackgroundTransparency = _ == 1 and 0,
-				BorderSizePixel = 0,
-				BackgroundColor3 = themes.preset.gradient,
-			})
-			Library:Themify(Temp.Fill, "gradient", "BackgroundColor3")
-
-			local gradient = Library:Create("UIGradient", {
-				Rotation = 90,
-				Parent = Temp.Button,
-				Color = rgbseq({ rgbkey(0, themes.preset.inline), rgbkey(1, themes.preset.gradient) }),
-			})
-			Library:SaveGradient(gradient, "Selected")
-
-			Temp.UIStroke = Library:Create("UIStroke", {
-				Color = themes.preset.outline,
-				LineJoinMode = Enum.LineJoinMode.Miter,
-				Parent = Temp.Button,
-				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-			})
-			Library:Themify(Temp.UIStroke, "outline", "Color")
-
-			if _ == 1 then
-				OldTab = Temp
-			end
-
-			Temp.Button.MouseButton1Click:Connect(function()
-				for _, close in Tabs do
-					Items[close].Visible = false
-				end
-
-				if OldTab then
-					Library:Tween(OldTab.Fill, { BackgroundTransparency = 1 })
-					Library:Tween(OldTab.Background, { BackgroundTransparency = 0 })
-				end
-
-				Items[tab].Visible = true
-				Library:Tween(Temp.Fill, { BackgroundTransparency = 0 })
-				Library:Tween(Temp.Background, { BackgroundTransparency = 1 })
-
-				if Items.Dropdown then
-					Items.Dropdown.SetVisible(false)
-					Items.Dropdown.Open = false
-
-					Items.Primary.SetVisible(false)
-					Items.Primary.Open = false
-
-					Items.Secondary.SetVisible(false)
-					Items.Secondary.Open = false
-				end
-
-				Items.Fade.BackgroundTransparency = 0
-				Library:Tween(Items.Fade, { BackgroundTransparency = 1 })
-
-				OldTab = Temp
-			end)
-		end
-	end
-
-	if Cfg.Mode == "Animation" then
 		local Index = setmetatable(Cfg, Library)
+	
 		Items.Dropdown = Index:Dropdown({
 			Name = "Animation",
 			Flag = Cfg.Flag .. "_ANIMATION_TYPE",
 			Options = { "None", "Rainbow", "Fading", "Flashing" },
 		})
+	
 		Items.Primary = Index:Label({ Name = "Primary" })
 			:Keypicker({ Mode = "Keypicker", Flag = Cfg.Flag .. "_PRIMARY_COLOR" })
+	
 		Items.Secondary = Index:Label({ Name = "Secondary" })
 			:Keypicker({ Mode = "Keypicker", Flag = Cfg.Flag .. "_SECONDARY_COLOR" })
+	
 		Index:Slider({
 			Name = "Speed",
 			Min = 0,
@@ -1139,112 +1029,113 @@ function Library:Keypicker(properties)
 			Suffix = "%",
 			Flag = Cfg.Flag .. "_ANIMATION_SPEED",
 		})
-
-		Library:Connection(InputService.InputBegan, function(input, game_event)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				if
-					not Library:Hovering({
-						Items.ColorpickerObject,
-						Items.Dropdown.Items.DropdownElements,
-						Items.Dropdown.Items.Dropdown,
-						Items.Colorpicker,
-						Items.Primary.Items.Colorpicker,
-						Items.Secondary.Items.Colorpicker,
-					})
-				then
+	
+		Library:Connection(InputService.InputBegan, function(Input, GameProcessedEvent)
+			if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+				if not Library:Hovering({
+					Items.ColorpickerObject,
+					Items.Dropdown.Items.DropdownElements,
+					Items.Dropdown.Items.Dropdown,
+					Items.Colorpicker,
+					Items.Primary.Items.Colorpicker,
+					Items.Secondary.Items.Colorpicker,
+				}) then
 					Items.Dropdown.SetVisible(false)
 					Items.Dropdown.Open = false
-
+	
 					Cfg.Open = false
 					Cfg.SetVisible(false)
-
+	
 					Items.Primary.SetVisible(false)
 					Items.Primary.Open = false
-
+	
 					Items.Secondary.SetVisible(false)
 					Items.Secondary.Open = false
 				end
 			end
 		end)
-
+	
 		local Pickers = { Items.Primary, Items.Secondary }
-		for _, picker in Pickers do
-			Library:Connection(InputService.InputBegan, function(input, game_event)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					if not Library:Hovering({ picker.Items.ColorpickerObject, picker.Items.Colorpicker }) then
-						picker.SetVisible(false)
-						picker.Open = false
+		for _, Picker in Pickers do
+			Library:Connection(InputService.InputBegan, function(Input, GameProcessedEvent)
+				if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+					if not Library:Hovering({ Picker.Items.ColorpickerObject, Picker.Items.Colorpicker }) then
+						Picker.SetVisible(false)
+						Picker.Open = false
 					end
 				end
 			end)
 		end
 	end
-
-	function Cfg.SetVisible(bool)
-		Items.Fade.BackgroundTransparency = 0
-		Library:Tween(Items.Fade, { BackgroundTransparency = 1 })
-
-		Items.Colorpicker.Visible = bool
-		Items.Colorpicker.Parent = bool and Library.Items or Library.Other
-		Items.Colorpicker.Position =
-			dim2(0, Items.ColorpickerObject.AbsolutePosition.X + 2, 0, Items.ColorpickerObject.AbsolutePosition.Y + 74)
+	
+	function Cfg.SetVisible(IsVisible)
+		local ScreenSize = Camera.ViewportSize
+		local PickerPosition = Items.ColorpickerObject.AbsolutePosition
+		local PickerSize = Items.Colorpicker.AbsoluteSize
+	
+		local NewX = math.clamp(PickerPosition.X + 2, 0, ScreenSize.X - PickerSize.X)
+		local NewY = math.clamp(PickerPosition.Y + 74, 0, ScreenSize.Y - PickerSize.Y)
+	
+		Items.Colorpicker.Visible = IsVisible
+		Items.Colorpicker.Parent = IsVisible and Library.Items or Library.Other
+		Items.Colorpicker.Position = dim2(0, NewX, 0, NewY)
 	end
-
-	function Cfg.Set(color, alpha)
-		if type(color) == "boolean" then
+	
+	function Cfg.Set(Color, Alpha)
+		if type(Color) == "boolean" then
 			return
 		end
-
-		if color then
-			h, s, v = color:ToHSV()
+	
+		if Color then
+			H, S, V = Color:ToHSV()
 		end
-
-		if alpha then
-			a = alpha
+	
+		if Alpha then
+			A = Alpha
 		end
-
-		local Color = hsv(h, s, v)
-
-		Items.SatValPicker.Position = dim2(s, 0, 1 - v, 0)
-		Items.AlphaPicker.Position = dim2(0, -1, a, -1)
-		Items.HuePicker.Position = dim2(0, -1, h, -1)
-
-		Items.Inner.BackgroundColor3 = hsv(h, s, v)
-		Items.InlineColorPicker.BackgroundColor3 = hsv(h, s, v)
-		Items.Color.BackgroundColor3 = hsv(h, 1, 1)
-
+	
+		local FinalColor = hsv(H, S, V)
+	
+		Items.SatValPicker.Position = dim2(S, 0, 1 - V, 0)
+		Items.AlphaPicker.Position = dim2(0, -1, A, -1)
+		Items.HuePicker.Position = dim2(0, -1, H, -1)
+	
+		Items.Inner.BackgroundColor3 = hsv(H, S, V)
+		Items.InlineColorPicker.BackgroundColor3 = hsv(H, S, V)
+		Items.Color.BackgroundColor3 = hsv(H, 1, 1)
+	
 		Flags[Cfg.Flag] = {
-			Color = Color,
-			Transparency = a,
+			Color = FinalColor,
+			Transparency = A,
 		}
-
-		local Color = Items.InlineColorPicker.BackgroundColor3
+	
+		local DisplayColor = Items.InlineColorPicker.BackgroundColor3
 		Items.RGBInput.Text = string.format(
 			"%s, %s, %s, ",
-			Library:Round(Color.R * 255),
-			Library:Round(Color.G * 255),
-			Library:Round(Color.B * 255)
+			Library:Round(DisplayColor.R * 255),
+			Library:Round(DisplayColor.G * 255),
+			Library:Round(DisplayColor.B * 255)
 		)
-		Items.RGBInput.Text ..= Library:Round(1 - a, 0.01)
-
-		Items.InputAlpha.Text = Library:ConvertHex(Color, 1 - a)
-
-		Cfg.Callback(Color, a)
+		Items.RGBInput.Text ..= Library:Round(1 - A, 0.01)
+	
+		Items.InputAlpha.Text = Library:ConvertHex(DisplayColor, 1 - A)
+	
+		Cfg.Callback(FinalColor, A)
 	end
-
+	
 	function Cfg.UpdateColor()
 		local Mouse = InputService:GetMouseLocation()
-		local offset = vec2(Mouse.X, Mouse.Y - gui_offset)
-
+		local Offset = vec2(Mouse.X, Mouse.Y - GuiOffset)
+	
 		if DraggingSat then
-			s = math.clamp((offset - Items.Sat.AbsolutePosition).X / Items.Sat.AbsoluteSize.X, 0, 1)
-			v = 1 - math.clamp((offset - Items.Sat.AbsolutePosition).Y / Items.Sat.AbsoluteSize.Y, 0, 1)
+			S = math.clamp((Offset - Items.Sat.AbsolutePosition).X / Items.Sat.AbsoluteSize.X, 0, 1)
+			V = 1 - math.clamp((Offset - Items.Sat.AbsolutePosition).Y / Items.Sat.AbsoluteSize.Y, 0, 1)
 		elseif DraggingHue then
-			h = math.clamp((offset - Items.HueSlider.AbsolutePosition).Y / Items.HueSlider.AbsoluteSize.Y, 0, 1)
+			H = math.clamp((Offset - Items.HueSlider.AbsolutePosition).Y / Items.HueSlider.AbsoluteSize.Y, 0, 1)
 		elseif DraggingAlpha then
-			a = math.clamp((offset - Items.AlphaSlider.AbsolutePosition).Y / Items.AlphaSlider.AbsoluteSize.Y, 0, 1)
+			A = math.clamp((Offset - Items.AlphaSlider.AbsolutePosition).Y / Items.AlphaSlider.AbsoluteSize.Y, 0, 1)
 		end
-
+	
 		Cfg.Set()
 	end
 
@@ -1252,45 +1143,51 @@ function Library:Keypicker(properties)
 		Cfg.Open = not Cfg.Open
 		Cfg.SetVisible(Cfg.Open)
 	end)
-
-	InputService.InputChanged:Connect(function(input)
+	
+	InputService.InputChanged:Connect(function(Input)
 		if
 			(DraggingSat or DraggingHue or DraggingAlpha)
-			and input.UserInputType == Enum.UserInputType.MouseMovement
+			and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch)
 		then
 			Cfg.UpdateColor()
 		end
 	end)
-
-	Library:Connection(InputService.InputEnded, function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+	
+	Library:Connection(InputService.InputEnded, function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 			DraggingSat = false
 			DraggingHue = false
 			DraggingAlpha = false
 		end
 	end)
-
-	Items.AlphaSlider.MouseButton1Down:Connect(function()
-		DraggingAlpha = true
-	end)
-
-	Items.HueSlider.MouseButton1Down:Connect(function()
-		DraggingHue = true
-	end)
-
-	Items.Sat.MouseButton1Down:Connect(function()
-		DraggingSat = true
-	end)
-
-	Items.RGBInput.FocusLost:Connect(function()
-		local text = Items.RGBInput.Text
-		local r, g, b, a = Library:Convert(text)
-
-		if r and g and b and a then
-			Cfg.Set(rgb(r, g, b), 1 - a)
+	
+	Items.AlphaSlider.InputBegan:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+			DraggingAlpha = true
 		end
 	end)
-
+	
+	Items.HueSlider.InputBegan:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+			DraggingHue = true
+		end
+	end)
+	
+	Items.Sat.InputBegan:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+			DraggingSat = true
+		end
+	end)
+	
+	Items.RGBInput.FocusLost:Connect(function()
+		local Text = Items.RGBInput.Text
+		local R, G, B, A = Library:Convert(Text)
+	
+		if R and G and B and A then
+			Cfg.Set(rgb(R, G, B), 1 - A)
+		end
+	end)
+	
 	Items.InputAlpha.FocusLost:Connect(function()
 		local Color, Alpha = Library:ConvertFromHex(Items.InputAlpha.Text)
 		Cfg.Set(Color, 1 - Alpha)
