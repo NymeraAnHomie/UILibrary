@@ -2,7 +2,7 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/UILibrary/refs/heads/main/Atlanta/Source.lua"))()
 local window = library:window({
 	name = os.date("(panichook11, nomercy.rip, fijihook.fun, desktopware, templehook, pulse, brick heck ui services) - %b %d %Y"),
-	size = dim2(0, 614, 0, 639),
+	size = UDim.new(0, 614, 0, 639),
 })
 local watermark = library:watermark({
 	default = os.date("(panichook11, nomercy.rip, fijihook.fun, desktopware, templehook, pulse, brick heck ui services) - %b %d %Y - %H:%M:%S"),
