@@ -1,4 +1,4 @@
-local Library = getgenv().library
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/UILibrary/refs/heads/main/Fecurity/Source.lua"))() 
 
 local Window = Library:window({
 	name = "Farm Hub",
