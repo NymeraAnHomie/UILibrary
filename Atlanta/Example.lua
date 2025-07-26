@@ -7,7 +7,7 @@ local window = library:window({
 local watermark = library:watermark({
 	default = os.date("(panichook11, nomercy.rip, fijihook.fun, desktopware, templehook, pulse, brick heck ui services) - %b %d %Y - %H:%M:%S"),
 })
-
+local hex = Color3.fromHex
 local Aimbot = window:tab({ name = "Aimbot" })
 local Misc = window:tab({ name = "Misc" })
 local Visuals = window:tab({ name = "Visuals" })
