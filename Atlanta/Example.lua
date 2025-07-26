@@ -14,6 +14,57 @@ local Visuals = window:tab({ name = "Visuals" })
 local Players = window:tab({ name = "Players" })
 local Settings = window:tab({ name = "Settings" })
 
+local themes = {
+	preset = {
+		["outline"] = rgb(15, 2, 7), --
+		["inline"] = rgb(38, 9, 21), --
+		["accent"] = rgb(175, 50, 100), --
+		["high_contrast"] = rgb(30, 6, 16),
+		["low_contrast"] = rgb(22, 4, 12),
+		["text"] = rgb(136, 136, 136),
+		["text_outline"] = rgb(0, 0, 0),
+		["glow"] = rgb(0, 0, 0),
+	},
+
+	utility = {
+		["outline"] = {
+			["BackgroundColor3"] = {},
+			["Color"] = {},
+		},
+		["inline"] = {
+			["BackgroundColor3"] = {},
+		},
+		["accent"] = {
+			["BackgroundColor3"] = {},
+			["TextColor3"] = {},
+			["ImageColor3"] = {},
+			["ScrollBarImageColor3"] = {},
+		},
+		["contrast"] = {
+			["Color"] = {},
+		},
+		["text"] = {
+			["TextColor3"] = {},
+		},
+		["text_outline"] = {
+			["Color"] = {},
+		},
+		["glow"] = {
+			["ImageColor3"] = {},
+		},
+	},
+
+	find = {
+		["Frame"] = "BackgroundColor3",
+		["TextLabel"] = "TextColor3",
+		["UIGradient"] = "Color",
+		["UIStroke"] = "Color",
+		["ImageLabel"] = "ImageColor3",
+		["TextButton"] = "BackgroundColor3",
+		["ScrollingFrame"] = "ScrollBarImageColor3",
+	},
+}
+
 -- Aimbot
 local column = Aimbot:column()
 local selec, lock, assist = column:multi_section({
