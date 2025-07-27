@@ -203,16 +203,16 @@ for _, path in next, library.folders do
 	makefolder(library.directory .. path)
 end
 
-writefile("Arial.ttf", game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Fonts/main/Arial.TTF"))
+writefile("tahoma.ttf", game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Fonts/main/windows-xp-tahoma.ttf"))
 
 local tahoma = {
-	name = "Arial",
+	name = "tahoma",
 	faces = {
 		{
 			name = "Regular",
 			weight = 400,
 			style = "normal",
-			assetId = getcustomasset("Arial.ttf"),
+			assetId = getcustomasset("tahoma.ttf"),
 		},
 	},
 }
