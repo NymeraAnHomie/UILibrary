@@ -220,11 +220,20 @@
         end
 
         function Library:Tween(Object, Properties, Info)
-            local tween = TweenService:Create(Object, Info or TweenInfo.new(Library.TweeningSpeed, Library.EasingStyle, Enum.EasingDirection.InOut, 0, false, 0), Properties)
-            tween:Play()
-            
-            return tween
-        end
+			if not Object or not Object.Parent then
+				warn("attempted to tween nil or destroyed instance:", Object)
+				return
+			end
+
+			local tween = TweenService:Create(Object, Info or TweenInfo.new(
+				Library.TweeningSpeed,
+				Library.EasingStyle,
+				Enum.EasingDirection.InOut,
+				0, false, 0
+			), Properties)
+			tween:Play()
+			return tween
+		end
         
         function Library:Fade(obj, prop, vis, speed)
             if not (obj and prop) then
@@ -1962,19 +1971,24 @@
                 Cfg.Tween(bool)
             end 
 
-            function Cfg.Tween(bool) 
-                if Library.Tweening then 
-                    return 
-                end 
+            function Cfg.Tween(bool)
+				if Library.Tweening or not Library.Items then
+					return 
+				end
 
-                Library.Tweening = true 
+				Library.Tweening = true 
 
-                if bool then 
-                    Library.Items.Enabled = true
-                end
+				if bool then 
+					if Library.Items then
+						Library.Items.Enabled = true
+					end
+				end
 
-                local Children = Library.Items:GetDescendants()
-                table.insert(Children, Items.Holder)
+				local Children = {}
+				if Library.Items then
+					Children = Library.Items:GetDescendants()
+				end
+				table.insert(Children, Items.Holder)
 
                 local Tween;
                 for _,obj in Children do
