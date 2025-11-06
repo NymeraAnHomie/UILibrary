@@ -4942,8 +4942,7 @@
                 Section:Slider({Name = "Dragging Speed", Min = 0, Max = 1, Decimal = .01, Default = .05, Callback = function(num)
                     Library.DraggingSpeed = num
                 end})
-                Section:Label({Name = "Menu Bind"}):Keybind({Name = "Menu Bind", Key = Enum.KeyCode.E, Callback = function(bool) 
-                    print(bool)
+                Section:Label({Name = "Menu Bind"}):Keybind({Name = "Menu Bind", Key = Enum.KeyCode.Insert, Callback = function(bool) 
                     Window.SetVisible(bool) 
                 end})
                 Window.Tweening = false
@@ -7395,7 +7394,6 @@
             if Cfg.Chams then 
                 local Toggle = self.Section:Toggle({Name = Cfg.Name .. " Chams", Callback = function(bool)
                     Options["ChamsEnabled"] = bool
-                    print("I am real", bool)
                 end, Flag = Cfg.Name .. "_CHAMS"})
 
                 Toggle:Colorpicker({Name = "Fill", Color = rgb(255, 255, 255), Transparency = 1, Callback = function(color, alpha)
