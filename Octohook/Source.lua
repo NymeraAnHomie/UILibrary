@@ -2611,6 +2611,7 @@
         end 
 
         function Library:Section(properties)
+            local rawSize = properties.size or properties.Size
             local Cfg = {
                 Name = properties.name or properties.Name or "Section"; 
                 Side = properties.side or properties.Side or "Left";
@@ -2628,7 +2629,7 @@
                 Items.Outline = Library:Create( "Frame" , {
                     Parent = self.Items.Column;
                     Name = "\0";
-                    Size = dim2(0, 100, 0, 0);
+                    Size = Cfg.Size or dim2(0, 100, 0, 0);
                     BorderColor3 = rgb(0, 0, 0);
                     BorderSizePixel = 0;
                     AutomaticSize = Enum.AutomaticSize.Y;
