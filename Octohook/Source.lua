@@ -2611,15 +2611,12 @@
         end 
 
         function Library:Section(properties)
-            local rawSize = properties.size or properties.Size
             local Cfg = {
                 Name = properties.name or properties.Name or "Section"; 
                 Side = properties.side or properties.Side or "Left";
 
                 -- Fill settings 
-                Size = (typeof(rawSize) == "number" and dim2(0, rawSize, 0, 0))
-                    or (typeof(rawSize) == "UDim2" and rawSize)
-                    or nil,
+                Size = properties.size or properties.Size or nil
                 
                 -- Other
                 Items = {};
@@ -2629,7 +2626,7 @@
                 Items.Outline = Library:Create( "Frame" , {
                     Parent = self.Items.Column;
                     Name = "\0";
-                    Size = Cfg.Size or dim2(0, 100, 0, 0);
+                    Size = dim2(0, Cfg.Size, 0, 0) or dim2(0, 100, 0, 0);
                     BorderColor3 = rgb(0, 0, 0);
                     BorderSizePixel = 0;
                     AutomaticSize = Enum.AutomaticSize.Y;
