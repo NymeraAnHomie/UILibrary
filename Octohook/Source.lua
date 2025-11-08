@@ -25,7 +25,7 @@
 
 -- Library init
     getgenv().Library = {
-        Directory = "octo",
+        Directory = "hobblehaxx",
         Folders = {
             "/fonts",
             "/configs",
