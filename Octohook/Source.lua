@@ -4950,7 +4950,7 @@
                     Library.DraggingSpeed = num
                 end})
                 Section:Label({Name = "Menu Bind"}):Keybind({Name = "Menu Bind", Key = Enum.KeyCode.Delete, Callback = function(bool) 
-                    Window.SetVisible(bool) 
+                    Window.SetMenuVisible(bool)
                 end})
                 Window.Tweening = false
                 Section:Toggle({Name = "Toggle Watermark", Callback = function(bool)
