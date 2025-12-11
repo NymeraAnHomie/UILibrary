@@ -744,17 +744,20 @@ local Library do
     end
     
     Library.SafeCall = function(self, Function, ...)
-        local Arguements = { ... }
-        local Success, Result = pcall(Function, TableUnpack(Arguements))
-
-        if not Success then
-            Library:Notification("Error caught in function, report this to the devs:\n"..Result, 5, FromRGB(255, 0, 0))
-            warn(Result)
-            return false
-        end
-
-        return Success
-    end
+	    local Arguments = {...}
+	    local Success, Result = pcall(function()
+	        return Function(table.unpack(Arguments))
+	    end)
+	
+	    if not Success then
+	        local Trace = debug.traceback(Result, 2)
+	        Library:Notification("Error caught in function, report this to the devs:\n"..Trace, 5, Color3.fromRGB(255,0,0))
+	        warn(Trace)
+	        return false
+	    end
+	
+	    return Success
+	end
 
     Library.Connect = function(self, Event, Callback, Name)
         Name = Name or StringFormat("Connection_%s_%s", self.UnnamedConnections + 1, HttpService:GenerateGUID(false))
