@@ -750,7 +750,9 @@ local Library do
 	    end)
 	
 	    if not Success then
-	        local Trace = debug.traceback(Result, 2)
+	        local ErrorMessage = tostring(Result)
+	        local Trace = debug.traceback(ErrorMessage, 2)
+	
 	        Library:Notification("Error caught in function, report this to the devs:\n"..Trace, 5, Color3.fromRGB(255,0,0))
 	        warn(Trace)
 	        return false
