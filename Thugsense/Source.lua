@@ -828,7 +828,7 @@ local Library do
         local Decoded = HttpService:JSONDecode(Config)
 
         local Success, Result = Library:SafeCall(function()
-            for Index, Value in Decoded do 
+            for Index, Value in pairs(Decoded) do 
                 local SetFunction = Library.SetFlags[Index]
 
                 if not SetFunction then
