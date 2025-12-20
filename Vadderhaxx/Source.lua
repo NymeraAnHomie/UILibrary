@@ -2949,7 +2949,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.inline
+                        BackgroundColor3 = themes.preset.a
                     });	library:apply_theme(inline, "inline", "BackgroundColor3")
                     
                     local background = library:create("Frame", {
@@ -2958,17 +2958,22 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.background
+                        BackgroundColor3 = themes.preset.c
                     });	library:apply_theme(background, "background", "BackgroundColor3")
                     
-                    local text = library:create("TextLabel", {
-                        Parent = background;
+                    local text = library:create("TextButton", {
                         FontFace = library.font;
+                        TextColor3 = rgb(255, 255, 255);
+                        BorderColor3 = rgb(0, 0, 0);
                         Text = cfg.name;
-                        TextColor3 = rgb(170, 170, 170);
+                        Parent = background;
                         BackgroundTransparency = 1;
                         Size = dim2(1, 0, 1, 0);
+                        BorderSizePixel = 0;
+                        AutomaticSize = Enum.AutomaticSize.Y;
                         TextSize = 12;
+                        AutoButtonColor = false;
+                        BackgroundColor3 = rgb(255, 255, 255)
                     });
                 -- 
 
