@@ -2562,7 +2562,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.c;
+                        BackgroundColor3 = themes.preset.inline
                     });	library:apply_theme(inline, "inline", "BackgroundColor3")
 
                     local background = library:create("Frame", {
