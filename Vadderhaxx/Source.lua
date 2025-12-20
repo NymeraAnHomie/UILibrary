@@ -517,7 +517,7 @@
                     BackgroundColor3 = rgb(255, 255, 255)
                 }); library:resizify(a); library:draggify(a); a.Position = dim2(0, a.AbsolutePosition.Y, 0, a.AbsolutePosition.Y)
 
-                library:connection(UserInputService.InputBegan, function(input, gp)
+                library:connection(uis.InputBegan, function(input, gp)
                     if input.KeyCode == library.menubind then
                         a.Visible = not a.Visible
                     end
