@@ -2949,7 +2949,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.c
+                        BackgroundColor3 = themes.preset.a
                     });	library:apply_theme(inline, "inline", "BackgroundColor3")
                     
                     local background = library:create("Frame", {
@@ -2958,7 +2958,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.a
+                        BackgroundColor3 = themes.preset.c
                     });	library:apply_theme(background, "background", "BackgroundColor3")
                     
                     local text = library:create("TextButton", {
