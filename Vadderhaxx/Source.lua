@@ -2939,6 +2939,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, 0, 0, 20);
                         BorderSizePixel = 0;
+                        AutoButtonColor = false;
                         BackgroundColor3 = rgb(12, 12, 12)
                     });	library:apply_theme(button, "outline", "BackgroundColor3")
                     
@@ -2971,6 +2972,7 @@
                         BorderSizePixel = 0;
                         AutomaticSize = Enum.AutomaticSize.Y;
                         TextSize = 12;
+                        AutoButtonColor = false;
                         BackgroundColor3 = rgb(255, 255, 255)
                     });
                 -- 
