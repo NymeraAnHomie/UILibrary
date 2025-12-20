@@ -63,7 +63,6 @@
 
 -- Library init
     getgenv().library = {
-        menubind = Enum.KeyCode.Home,
         directory = "vaderhaxx",
         folders = {
             "/fonts",
@@ -518,14 +517,10 @@
                 }); library:resizify(a); library:draggify(a); a.Position = dim2(0, a.AbsolutePosition.Y, 0, a.AbsolutePosition.Y)
 
                 library:connection(uis.InputBegan, function(input, gp)
-                    if input.KeyCode == library.menubind then
+                    if input.KeyCode == Enum.KeyCode.Home then
                         a.Visible = not a.Visible
                     end
                 end)
-
-                function cfg.change_menubind(abc)
-                    library.menubind = abc
-                end
 
                 library:create("UIStroke", {
                     Parent = a;
