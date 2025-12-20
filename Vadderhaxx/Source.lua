@@ -2562,7 +2562,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.inline
+                        BackgroundColor3 = themes.preset.b
                     });	library:apply_theme(inline, "inline", "BackgroundColor3")
 
                     local background = library:create("Frame", {
@@ -2571,7 +2571,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.background
+                        BackgroundColor3 = themes.preset.c
                     });	library:apply_theme(background, "background", "BackgroundColor3")
 
                     local input = library:create("TextBox", {
@@ -2949,7 +2949,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.c
+                        BackgroundColor3 = themes.preset.b
                     });	library:apply_theme(inline, "inline", "BackgroundColor3")
                     
                     local background = library:create("Frame", {
