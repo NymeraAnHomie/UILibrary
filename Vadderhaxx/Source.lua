@@ -518,14 +518,19 @@
                 }); library:resizify(a); library:draggify(a); a.Position = dim2(0, a.AbsolutePosition.Y, 0, a.AbsolutePosition.Y)
 
                 library:connection(uis.InputBegan, function(input, gp)
-                    if gp then return end
+    print(input, input.UserInputType, input.KeyCode)  -- debug
 
-                    if input.UserInputType == Enum.UserInputType.Keyboard then
-                        if input.KeyCode == library.menubind then
-                            a.Visible = not a.Visible
-                        end
-                    end
-                end)
+    if gp then return end
+
+    if input.UserInputType == Enum.UserInputType.Keyboard then
+        print("Keyboard detected:", input.KeyCode)
+        if input.KeyCode == library.menubind then
+            print("Toggling visibility")
+            a.Visible = not a.Visible
+        end
+    end
+end)
+
 
                 function cfg.change_menubind(abc)
                     library.menubind = abc
