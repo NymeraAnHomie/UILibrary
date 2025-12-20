@@ -171,7 +171,6 @@
         
     library.__index = library
 
-    makefolder(library.directory)
     for _, path in next, library.folders do 
         makefolder(library.directory .. path)
     end
@@ -423,7 +422,10 @@
             return floor(number * multiplier + 0.5) / multiplier
         end 
 
-        function library:apply_theme(instance, theme, property) 
+        function library:apply_theme(instance, theme, property)
+            themes.utility[theme] = themes.utility[theme] or {}
+            themes.utility[theme][property] = themes.utility[theme][property] or {}
+
             insert(themes.utility[theme][property], instance)
         end
 
