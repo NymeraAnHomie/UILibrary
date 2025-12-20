@@ -518,19 +518,10 @@
                 }); library:resizify(a); library:draggify(a); a.Position = dim2(0, a.AbsolutePosition.Y, 0, a.AbsolutePosition.Y)
 
                 library:connection(uis.InputBegan, function(input, gp)
-    print(input, input.UserInputType, input.KeyCode)  -- debug
-
-    if gp then return end
-
-    if input.UserInputType == Enum.UserInputType.Keyboard then
-        print("Keyboard detected:", input.KeyCode)
-        if input.KeyCode == library.menubind then
-            print("Toggling visibility")
-            a.Visible = not a.Visible
-        end
-    end
-end)
-
+                    if input.KeyCode == library.menubind then
+                        a.Visible = not a.Visible
+                    end
+                end)
 
                 function cfg.change_menubind(abc)
                     library.menubind = abc
@@ -2897,11 +2888,17 @@ end)
                         task.wait()
                         toggle_text.Text = "..."	
 
-                        cfg.binding = library:connection(uis.InputBegan, function(keycode, game_event)  
-                            cfg.set(keycode.KeyCode)
+                        cfg.binding = library:connection(uis.InputBegan, function(input, game_event)
+                            if game_event then return end
 
-                            cfg.binding:Disconnect() 
-                            cfg.binding = nil
+                            if input.UserInputType == Enum.UserInputType.Keyboard then
+                                cfg.set(input.KeyCode)
+                            end
+
+                            if cfg.binding then
+                                cfg.binding:Disconnect()
+                                cfg.binding = nil
+                            end
                         end)
                     end)
 
