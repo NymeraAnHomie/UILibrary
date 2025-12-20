@@ -518,8 +518,12 @@
                 }); library:resizify(a); library:draggify(a); a.Position = dim2(0, a.AbsolutePosition.Y, 0, a.AbsolutePosition.Y)
 
                 library:connection(uis.InputBegan, function(input, gp)
-                    if input.KeyCode == library.menubind then
-                        a.Visible = not a.Visible
+                    if gp then return end
+
+                    if input.UserInputType == Enum.UserInputType.Keyboard then
+                        if input.KeyCode == library.menubind then
+                            a.Visible = not a.Visible
+                        end
                     end
                 end)
 
