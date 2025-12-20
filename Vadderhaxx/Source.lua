@@ -889,6 +889,7 @@
         function library:watermark(options)
             local cfg = {
                 name = options.name or "nebulahax";
+                visible = false
             }
             
             -- Instances
@@ -966,6 +967,11 @@
                 });
             --
 
+            function cfg.set_visible(state)
+                cfg.visible = state
+                outline.Visible = state
+            end
+
             function cfg.update_text(text)
                 misc_text.Text = "[ "
                 
@@ -973,11 +979,12 @@
                     misc_text.Text ..= " "
                 end  
                 
-                misc_text.Text ..= " ] fps: 1000 objects rendeed: 1000"
+                misc_text.Text ..= " ] fps: 1000 objects rendered: 1000"
                 menu_title.Text = "[ " .. cfg.name .. " ]"
             end 
 
             cfg.update_text("a")
+            cfg.set_visible(false)
 
             task.spawn(function()
                 while true do
@@ -998,7 +1005,7 @@
             end)
 
             return setmetatable(cfg, library)
-        end 
+        end
 
         local notifications = {notifs = {}} 
 
