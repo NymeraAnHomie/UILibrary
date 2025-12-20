@@ -2961,19 +2961,14 @@
                         BackgroundColor3 = themes.preset.background
                     });	library:apply_theme(background, "background", "BackgroundColor3")
                     
-                    local text = library:create("TextButton", {
-                        FontFace = library.font;
-                        TextColor3 = rgb(170, 170, 170);
-                        BorderColor3 = rgb(0, 0, 0);
-                        Text = cfg.name;
+                    local text = library:create("TextLabel", {
                         Parent = background;
+                        FontFace = library.font;
+                        Text = cfg.name;
+                        TextColor3 = rgb(170, 170, 170);
                         BackgroundTransparency = 1;
                         Size = dim2(1, 0, 1, 0);
-                        BorderSizePixel = 0;
-                        AutomaticSize = Enum.AutomaticSize.Y;
                         TextSize = 12;
-                        AutoButtonColor = false;
-                        BackgroundColor3 = rgb(255, 255, 255)
                     });
                 -- 
 
