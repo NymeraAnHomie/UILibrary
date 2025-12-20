@@ -653,6 +653,10 @@
                     AutomaticSize = Enum.AutomaticSize.XY;
                     BackgroundColor3 = rgb(255, 255, 255)
                 }); library:resizify(keybindlist); library:draggify(keybindlist);
+
+                function cfg.set_visible_keybinds_list(abc)
+                    keybindlist.Visible = abc
+                end
                 
                 library:create("UIStroke", {
                     Parent = keybindlist;
@@ -886,7 +890,9 @@
                     PaddingBottom = dim(0, 2);
                     PaddingRight = dim(0, 2);
                     Parent = keybindlist
-                });                 
+                });        
+                
+                cfg.set_visible_keybinds_list(false)
             -- 
 
             return setmetatable(cfg, library)
