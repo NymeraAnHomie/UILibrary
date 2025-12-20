@@ -86,13 +86,13 @@
             accent = rgb(255, 200, 69),
             text = rgb(255, 255, 255),
             text_outline = rgb(0, 0, 0),
-            a = Color3.fromRGB(0, 0, 0),
-            b = Color3.fromRGB(56, 56, 56),
-            c = Color3.fromRGB(46, 46, 46),
-            d = Color3.fromRGB(12, 12, 12),
-            e = Color3.fromRGB(21, 21, 21),
-            f = Color3.fromRGB(84, 84, 84),
-            g = Color3.fromRGB(54, 54, 54),
+            a = rgb(0, 0, 0),
+            b = rgb(56, 56, 56),
+            c = rgb(46, 46, 46),
+            d = rgb(12, 12, 12),
+            e = rgb(21, 21, 21),
+            f = rgb(84, 84, 84),
+            g = rgb(54, 54, 54),
         },
 
         utility = {
@@ -2562,7 +2562,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.inline
+                        BackgroundColor3 = themes.preset.c;
                     });	library:apply_theme(inline, "inline", "BackgroundColor3")
 
                     local background = library:create("Frame", {
@@ -2576,12 +2576,12 @@
 
                     local input = library:create("TextBox", {
                         FontFace = library.font;
-                        TextColor3 = rgb(170, 170, 170);
+                        TextColor3 = themes.preset.text;
                         BorderColor3 = rgb(0, 0, 0);
                         Text = "";
                         Parent = background;
                         BackgroundTransparency = 1;
-                        PlaceholderColor3 = rgb(170, 170, 170);
+                        PlaceholderColor3 = themes.preset.text;
                         Size = dim2(1, 0, 1, 0);
                         BorderSizePixel = 0;
                         TextSize = 12;
@@ -2949,7 +2949,7 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.a
+                        BackgroundColor3 = themes.preset.c
                     });	library:apply_theme(inline, "inline", "BackgroundColor3")
                     
                     local background = library:create("Frame", {
@@ -2958,12 +2958,12 @@
                         BorderColor3 = rgb(0, 0, 0);
                         Size = dim2(1, -2, 1, -2);
                         BorderSizePixel = 0;
-                        BackgroundColor3 = themes.preset.c
+                        BackgroundColor3 = themes.preset.a
                     });	library:apply_theme(background, "background", "BackgroundColor3")
                     
                     local text = library:create("TextButton", {
                         FontFace = library.font;
-                        TextColor3 = rgb(255, 255, 255);
+                        TextColor3 = themes.preset.text;
                         BorderColor3 = rgb(0, 0, 0);
                         Text = cfg.name;
                         Parent = background;
