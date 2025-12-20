@@ -1442,7 +1442,7 @@
                         Text = cfg.name;
                         Parent = label;
                         AutomaticSize = Enum.AutomaticSize.XY;
-                        Position = dim2(0, 9, 0, -1);
+                        Position = dim2(0, 0, 0, -1);
                         BackgroundTransparency = 1;
                         TextXAlignment = Enum.TextXAlignment.Left;
                         BorderSizePixel = 0;
@@ -1815,7 +1815,7 @@
                             Text = cfg.name;
                             Parent = object;
                             AutomaticSize = Enum.AutomaticSize.XY;
-                            Position = dim2(0, 8, 0, 2);
+                            Position = dim2(0, 0, 0, 2);
                             BackgroundTransparency = 1;
                             TextXAlignment = Enum.TextXAlignment.Left;
                             BorderSizePixel = 0;
@@ -1827,9 +1827,9 @@
                         local dropdown_holder = library:create("TextButton", {
                             Parent = object;
                             Text = "";
-                            Position = dim2(0, 8, 0, 17);
+                            Position = dim2(0, 0, 0, 17);
                             BorderColor3 = rgb(0, 0, 0);
-                            Size = dim2(1, -14, 0, 18);
+                            Size = dim2(1, 0, 0, 18);
                             BorderSizePixel = 0;
                             BackgroundColor3 = rgb(12, 12, 12)
                         });	library:apply_theme(dropdown_holder, "d", "BackgroundColor3")
