@@ -63,7 +63,7 @@
 
 -- Library init
     getgenv().library = {
-        directory = "rezeware",
+        directory = "vaderhaxx",
         folders = {
             "/fonts",
             "/configs",
@@ -171,6 +171,7 @@
         
     library.__index = library
 
+    makefolder(library.directory)
     for _, path in next, library.folders do 
         makefolder(library.directory .. path)
     end
