@@ -2882,12 +2882,6 @@
                         
                         items.Position = dim_offset(keybind_element.AbsolutePosition.X, keybind_element.AbsolutePosition.Y + keybind_element.AbsoluteSize.Y + 60)
                     end
-
-                    local function get_input_key(input)
-                        return input.UserInputType == Enum.UserInputType.Keyboard
-                            and input.KeyCode
-                            or input.UserInputType
-                    end
                 -- 
                 
                 -- Connections
@@ -2900,8 +2894,6 @@
 
                             if input.UserInputType == Enum.UserInputType.Keyboard then
                                 cfg.set(input.KeyCode)
-                            elseif input.UserInputType.Name:find("MouseButton") then
-                                cfg.set(input.UserInputType)
                             end
 
                             if cfg.binding then
@@ -2919,7 +2911,7 @@
 
                     library:connection(uis.InputBegan, function(input, game_event) 
                         if not game_event then 
-                            if get_input_key(input) == cfg.key then
+                            if input.KeyCode == cfg.key then 
                                 if cfg.mode == "Toggle" then 
                                     cfg.active = not cfg.active
                                     cfg.set(cfg.active)
@@ -2929,7 +2921,7 @@
                             end
                         end
                     end)
-                    
+
                     library:connection(uis.InputEnded, function(input, game_event) 
                         if game_event then 
                             return 
