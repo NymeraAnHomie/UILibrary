@@ -1574,7 +1574,7 @@ end
                 -- Functions 
                     function cfg.set(bool)
                         cfg.enabled = bool
-                        Flags[cfg.flag] = bool
+                        flags[cfg.flag] = bool
 
                         f.BackgroundColor3 = bool and themes.preset.accent or themes.preset.f
                         cfg.callback(bool)
