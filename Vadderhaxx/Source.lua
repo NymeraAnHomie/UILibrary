@@ -492,7 +492,7 @@ function library:window(properties)
     }
 
     library.gui = library:create("ScreenGui", {
-        Parent = gethui(),
+        Parent = coregui,
         Name = "\0",
         Enabled = true,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
