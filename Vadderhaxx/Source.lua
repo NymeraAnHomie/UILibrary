@@ -8,7 +8,7 @@ local gui_service = game:GetService("GuiService")
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
 local stats = game:GetService("Stats")
-local coregui = game:GetService("CoreGui")
+local coregui = cloneref(game:GetService("CoreGui"))
 local debris = game:GetService("Debris")
 local tween_service = game:GetService("TweenService")
 local sound_service = game:GetService("SoundService")
@@ -492,7 +492,7 @@ function library:window(properties)
     }
 
     library.gui = library:create("ScreenGui", {
-        Parent = coregui,
+        Parent = gethui(),
         Name = "\0",
         Enabled = true,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
