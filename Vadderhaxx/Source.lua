@@ -1,6 +1,3 @@
--- REASON: Discontinued nobody wanted to buy it either... I can see why vaderhaxx was super ugly lol 
--- Code from around october of 2024
-
 -- Variables 
 local uis = game:GetService("UserInputService") 
 local players = game:GetService("Players") 
@@ -1575,10 +1572,8 @@ end
                     function cfg.set(bool)
                         cfg.enabled = bool
                         flags[cfg.flag] = bool
-
                         f.BackgroundColor3 = bool and themes.preset.accent or themes.preset.f
                         cfg.callback(bool)
-
                         if cfg.folding then
                             elements.Visible = bool
                         end
