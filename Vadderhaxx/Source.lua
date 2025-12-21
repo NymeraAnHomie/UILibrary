@@ -2594,6 +2594,7 @@ end
                         Text = "";
                         Parent = background;
                         BackgroundTransparency = 1;
+                        PlaceholderText = cfg.placeholder;
                         PlaceholderColor3 = themes.preset.text;
                         Size = dim2(1, 0, 1, 0);
                         BorderSizePixel = 0;
