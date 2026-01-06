@@ -221,7 +221,7 @@ for _, path in next, library.folders do
 	makefolder(library.directory .. path)
 end 
 
-writefile("ffff.ttf", game:HttpGet("https://github.com/weasely111/beta/raw/refs/heads/main/fs-tahoma-8px.ttf"))
+writefile("ffff.ttf", game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Fonts/main/Arial.TTF"))
 
 local tahoma = {
 	name = "SmallestPixel7",
