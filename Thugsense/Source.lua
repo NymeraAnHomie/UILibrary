@@ -835,18 +835,17 @@ local Library do
         return HttpService:JSONEncode(Config)
     end
 
-    Library.LoadConfig = function(self, Config)
-        local Decoded = HttpService:JSONDecode(Config)
+    Library.LoadConfig = function(self, ConfigText)
+        local Decoded = HttpService:JSONDecode(ConfigText)
 
-        local Success, Result = Library:SafeCall(function()
-            for Index, Value in pairs(Decoded) do 
+        local Success = Library:SafeCall(function()
+            for Index, Value in pairs(Decoded) do
                 local SetFunction = Library.SetFlags[Index]
-
                 if not SetFunction then
                     continue
                 end
 
-                if type(Value) == "table" and Value.Key then 
+                if type(Value) == "table" and Value.Key then
                     SetFunction(Value)
                 elseif type(Value) == "table" and Value.Color then
                     SetFunction(Value.Color, Value.Alpha)
@@ -856,23 +855,47 @@ local Library do
             end
         end)
 
-        if Success then 
-            Library:Notification("Successfully loaded config", 5, Color3.fromRGB(0, 255, 0))
+        if Success then
+            Library:Notification(
+                "Successfully loaded config",
+                5,
+                Color3.fromRGB(0, 255, 0)
+            )
         end
     end
 
     Library.DeleteConfig = function(self, Config)
-        if isfile(Library.Folders.Configs .. "/" .. Config) then 
-            delfile(Library.Folders.Configs .. "/" .. Config)
-            Library:Notification("Deleted config " .. Config .. ".json", 5, Color3.fromRGB(0, 255, 0))
+        local file = Config:sub(-5) == ".json" and Config or (Config .. ".json")
+        local path = self.Folders.Configs .. "/" .. file
+
+        if isfile(path) then
+            delfile(path)
+
+            Library:Notification(
+                "Deleted config " .. file,
+                5,
+                Color3.fromRGB(0, 255, 0)
+            )
+        else
+            Library:Notification(
+                "Config " .. file .. " does not exist",
+                3,
+                Color3.fromRGB(255, 0, 0)
+            )
         end
     end
 
     Library.SaveConfig = function(self, Config)
-        if isfile(Library.Folders.Directory .. "/" .. Library.Folders.Configs .. "/" .. Config .. ".json") then
-            writefile(Library.Folders.Directory .. "/" .. Library.Folders.Configs .. "/" .. Config .. ".json", Library:GetConfig())
-            Library:Notification("Saved config " .. Config .. ".json", 5, Color3.fromRGB(0, 255, 0))
-        end
+        local file = Config:sub(-5) == ".json" and Config or (Config .. ".json")
+        local path = self.Folders.Configs .. "/" .. file
+
+        writefile(path, self:GetConfig())
+
+        Library:Notification(
+            "Saved config " .. file,
+            5,
+            Color3.fromRGB(0, 255, 0)
+        )
     end
 
     Library.RefreshConfigsList = function(self, Element)
