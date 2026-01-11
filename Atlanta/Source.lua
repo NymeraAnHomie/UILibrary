@@ -222,7 +222,7 @@
 		makefolder(library.directory .. path)
 	end 
 
-	writefile("font.ttf", game:HttpGet("https://github.com/weasely111/beta/raw/refs/heads/main/fs-tahoma-8px.ttf"))
+	writefile("font.ttf", game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Fonts/main/windows-xp-tahoma.ttf"))
 
     local asset = getcustomasset("font.ttf")
     assert(asset, "fail: load font asset")
