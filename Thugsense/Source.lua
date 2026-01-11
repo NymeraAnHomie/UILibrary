@@ -715,19 +715,23 @@ local Library do
     end
 
     Library.Unload = function(self)
-        for Index, Value in self.Connections do 
-            Value.Connection:Disconnect()
+        for _, Connection in pairs(self.Connections) do
+            if Connection then
+                Connection:Disconnect()
+            end
         end
 
-        for Index, Value in self.Threads do 
-            coroutine.close(Value)
+        for _, Thread in pairs(self.Threads) do
+            if coroutine.status(Thread) ~= "dead" then
+                coroutine.close(Thread)
+            end
         end
 
-        if self.Holder then 
+        if self.Holder then
             self.Holder:Clean()
         end
 
-        Library = nil 
+        Library = nil
         getgenv().Library = nil
     end
 
