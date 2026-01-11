@@ -206,7 +206,7 @@ local Library do
             ["Text Border"] = FromRGB(0, 0, 0)
         },
 
-        MenuKeybind = Enum.KeyCode.Z, 
+        MenuKeybind = Enum.KeyCode.Home, 
 
         Tween = {
             Time = 0.3,
@@ -215,9 +215,9 @@ local Library do
         },
 
         Folders = {
-            Directory = "Rezeware",
-            Configs = "Rezeware/Configs",
-            Assets = "Rezeware/Assets"
+            Directory = "Milkhook",
+            Configs = "Milkhook/Configs",
+            Assets = "Milkhook/Assets"
         },
 
         Images = { -- you're welcome to reupload the images and replace it with your own links
