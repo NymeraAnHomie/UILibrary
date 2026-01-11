@@ -715,9 +715,11 @@ local Library do
     end
 
     Library.Unload = function(self)
-        for _, Connection in pairs(self.Connections) do
-            if Connection then
-                Connection:Disconnect()
+        for _, v in pairs(self.Connections) do
+            if typeof(v) == "RBXScriptConnection" then
+                v:Disconnect()
+            elseif type(v) == "table" and typeof(v.Connection) == "RBXScriptConnection" then
+                v.Connection:Disconnect()
             end
         end
 
