@@ -69,7 +69,7 @@
 
 -- library init
 	local library = {
-		directory = "Milkhook",
+		directory = "Atlanta",
 		folders = {
 			"/fonts",
 			"/configs",
@@ -222,26 +222,23 @@
 		makefolder(library.directory .. path)
 	end 
 
-	writefile("font.ttf", game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Fonts/main/windows-xp-tahoma.ttf"))
+	writefile("ffff.ttf", game:HttpGet("https://github.com/weasely111/beta/raw/refs/heads/main/fs-tahoma-8px.ttf"))
 
-    local asset = getcustomasset("font.ttf")
-    assert(asset, "fail: load font asset")
+	local tahoma = {
+		name = "SmallestPixel7",
+		faces = {
+			{
+				name = "Regular",
+				weight = 400,
+				style = "normal",
+				assetId = getcustomasset("ffff.ttf")
+			}
+		}
+	}
 
-    local fontDef = {
-        name = "SmallestPixel7",
-        faces = {
-            {
-                name = "Regular",
-                weight = 400,
-                style = "normal",
-                assetId = asset
-            }
-        }
-    }
+	writefile("dddd.ttf", http_service:JSONEncode(tahoma))
 
-    writefile("font.json", http_service:JSONEncode(fontDef))
-
-    library.font = Font.new(getcustomasset("font.json"), Enum.FontWeight.Regular)
+	library.font = Font.new(getcustomasset("dddd.ttf"), Enum.FontWeight.Regular)
 
 	local config_holder 
 -- 
@@ -1243,54 +1240,42 @@
 				Name = "" 
 			})
 
-			local function set_sgui_children_visible(state)
-				for _, child in ipairs(sgui:GetChildren()) do
-					if child ~= dock_outline then
-						child.Visible = state
-					end
-				end
-			end
-
-			function window.set_menu_visibility(bool)
-				window.opened = bool
-
-				if bool then
-					for _, gui in opened do
-						gui.Enabled = true
-					end
-					table.clear(opened)
+			function window.set_menu_visibility(bool) 
+				window.opened = bool 
+				
+				if bool then 
+					for _,gui in opened do 
+						gui.Enabled = true 
+						opened = {}
+					end 
 				else
-					for _, gui in library.guis do
-						if gui.Enabled then
+					for _,gui in library.guis do 
+						if gui.Enabled then 
 							gui.Enabled = false
 							table.insert(opened, gui)
 						end
 					end
 				end
 
-				set_sgui_children_visible(bool)
+				library:tween(blur, {Size = bool and (flags["Blur Size"] or 15) or 0})
 
-				dock_outline.Visible = bool
-
-				library:tween(blur, {
-					Size = bool and (flags["Blur Size"] or 15) or 0
-				})
+				dock_outline.Visible = bool;
 
 				sgui.Enabled = true
 				notif_holder.Enabled = true
 				tooltip_sgui.Enabled = true
 				library.cache.Enabled = false
 
-				for _, tooltip in tooltip_sgui:GetChildren() do
-					tooltip.Visible = false
-				end
+				for _,tooltip in tooltip_sgui:GetChildren() do 
+					tooltip.Visible = false;
+				end 
 
-				if library.current_element_open then
+				if library.current_element_open then 
 					library.current_element_open.set_visible(false)
-					library.current_element_open.open = false
-					library.current_element_open = nil
+					library.current_element_open.open = false 
+					library.current_element_open = nil 
 				end
-			end
+			end 
 
 			-- dock init
 				dock_outline = library:create("Frame", {
@@ -1803,6 +1788,20 @@
 						blur:Destroy()
 					end})
 			-- 
+					
+			-- esp preview
+				local holder = library:panel({
+					name = "ESP Preview", 
+					anchor_point = vec2(0, 0),
+					size = dim2(0, 300, 0, 325),
+					position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
+					image = "rbxassetid://77684377836328",
+				})  
+				
+				local items = holder.items
+				
+				local column = setmetatable(items, library):column() 
+				window.esp_section = column:section({name = "Main"})
 			--  
 
 			-- playerlist 
