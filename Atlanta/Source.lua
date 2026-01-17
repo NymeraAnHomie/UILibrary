@@ -442,11 +442,12 @@
 			return enum_table
 		end
 
-		function library:tween(obj, properties) 
-			local tween = tween_service:Create(obj, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0), properties):Play()
-				
+		function library:tween(obj, properties)
+			if not obj then return nil end
+			local tween = tween_service:Create(obj, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), properties)
+			tween:Play()
 			return tween
-		end 
+		end
 
 		function library:config_list_update() 
 			if not config_holder then return end 
