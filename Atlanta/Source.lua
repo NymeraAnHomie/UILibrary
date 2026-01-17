@@ -69,7 +69,7 @@
 
 -- library init
 	local library = {
-		directory = "Atlanta",
+		directory = "Milkhook",
 		folders = {
 			"/fonts",
 			"/configs",
@@ -1243,42 +1243,54 @@
 				Name = "" 
 			})
 
-			function window.set_menu_visibility(bool) 
-				window.opened = bool 
-				
-				if bool then 
-					for _,gui in opened do 
-						gui.Enabled = true 
-						opened = {}
-					end 
+			local function set_sgui_children_visible(state)
+				for _, child in ipairs(sgui:GetChildren()) do
+					if child ~= dock_outline then
+						child.Visible = state
+					end
+				end
+			end
+
+			function window.set_menu_visibility(bool)
+				window.opened = bool
+
+				if bool then
+					for _, gui in opened do
+						gui.Enabled = true
+					end
+					table.clear(opened)
 				else
-					for _,gui in library.guis do 
-						if gui.Enabled then 
+					for _, gui in library.guis do
+						if gui.Enabled then
 							gui.Enabled = false
 							table.insert(opened, gui)
 						end
 					end
 				end
 
-				library:tween(blur, {Size = bool and (flags["Blur Size"] or 15) or 0})
+				set_sgui_children_visible(bool)
 
-				dock_outline.Visible = bool;
+				dock_outline.Visible = bool
+
+				library:tween(blur, {
+					Size = bool and (flags["Blur Size"] or 15) or 0
+				})
 
 				sgui.Enabled = true
 				notif_holder.Enabled = true
 				tooltip_sgui.Enabled = true
 				library.cache.Enabled = false
 
-				for _,tooltip in tooltip_sgui:GetChildren() do 
-					tooltip.Visible = false;
-				end 
-
-				if library.current_element_open then 
-					library.current_element_open.set_visible(false)
-					library.current_element_open.open = false 
-					library.current_element_open = nil 
+				for _, tooltip in tooltip_sgui:GetChildren() do
+					tooltip.Visible = false
 				end
-			end 
+
+				if library.current_element_open then
+					library.current_element_open.set_visible(false)
+					library.current_element_open.open = false
+					library.current_element_open = nil
+				end
+			end
 
 			-- dock init
 				dock_outline = library:create("Frame", {
