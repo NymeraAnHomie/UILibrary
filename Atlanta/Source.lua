@@ -69,7 +69,7 @@
 
 -- library init
 	local library = {
-		directory = "Atlanta",
+		directory = "Milkhook",
 		folders = {
 			"/fonts",
 			"/configs",
@@ -222,23 +222,26 @@
 		makefolder(library.directory .. path)
 	end 
 
-	writefile("ffff.ttf", game:HttpGet("https://github.com/weasely111/beta/raw/refs/heads/main/fs-tahoma-8px.ttf"))
+	writefile("font.ttf", game:HttpGet("https://raw.githubusercontent.com/NymeraAnHomie/Fonts/main/windows-xp-tahoma.ttf"))
 
-	local tahoma = {
-		name = "SmallestPixel7",
-		faces = {
-			{
-				name = "Regular",
-				weight = 400,
-				style = "normal",
-				assetId = getcustomasset("ffff.ttf")
-			}
-		}
-	}
+    local asset = getcustomasset("font.ttf")
+    assert(asset, "fail: load font asset")
 
-	writefile("dddd.ttf", http_service:JSONEncode(tahoma))
+    local fontDef = {
+        name = "SmallestPixel7",
+        faces = {
+            {
+                name = "Regular",
+                weight = 400,
+                style = "normal",
+                assetId = asset
+            }
+        }
+    }
 
-	library.font = Font.new(getcustomasset("dddd.ttf"), Enum.FontWeight.Regular)
+    writefile("font.json", http_service:JSONEncode(fontDef))
+
+    library.font = Font.new(getcustomasset("font.json"), Enum.FontWeight.Regular)
 
 	local config_holder 
 -- 
@@ -1788,20 +1791,6 @@
 						blur:Destroy()
 					end})
 			-- 
-					
-			-- esp preview
-				local holder = library:panel({
-					name = "ESP Preview", 
-					anchor_point = vec2(0, 0),
-					size = dim2(0, 300, 0, 325),
-					position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
-					image = "rbxassetid://77684377836328",
-				})  
-				
-				local items = holder.items
-				
-				local column = setmetatable(items, library):column() 
-				window.esp_section = column:section({name = "Main"})
 			--  
 
 			-- playerlist 
