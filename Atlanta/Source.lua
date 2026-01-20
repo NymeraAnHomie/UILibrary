@@ -1908,8 +1908,13 @@
 			})
 			
 			function cfg.change_text(input)
+				if type(input) == "table" then
+					input = table.concat(input, ", ")
+				else
+					input = tostring(input or "")
+				end
 				text.Text = "  ".. input .."  "
-			end 
+			end
 
 			function cfg.set_visible(bool) 
 				watermark_outline.Visible = bool
