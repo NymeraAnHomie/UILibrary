@@ -1641,7 +1641,7 @@
 
 				task.spawn(function()
 					while task.wait(0.6) do
-						watermark:change_text(string.format("Milkhook - v1.13b - DEV - %s", os.date("%b %d %Y - %H:%M:%S")))
+						watermark.change_text(string.format("Milkhook - v1.13b - DEV - %s", os.date("%b %d %Y - %H:%M:%S")))
 					end
 				end)
 				
