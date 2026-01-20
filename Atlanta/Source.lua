@@ -1639,15 +1639,17 @@
 					image = "rbxassetid://115194686863276",
 				})
 
+				library.version = library.version or {1, 1, 3, "b"}
+
 				local watermark = library:watermark({default = "loading..."})
-				local version_str = table.concat(library.version, ".")
 
 				task.spawn(function()
-					while task.wait(.6) do
+					while task.wait(0.6) do
+						local version_str = table.concat(library.version, ".")
 						watermark:change_text("Milkhook - v" .. version_str .. " - DEV - " .. os.date("%b %d %Y - %H:%M:%S"))
 					end
 				end)
-
+				
 				local items = style.items
 
 				local column = setmetatable(items, library):column() 
