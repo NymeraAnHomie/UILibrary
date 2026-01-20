@@ -97,6 +97,8 @@
 		instances = {}; 
 		drawings = {};
 
+
+		version = {1, 1, 3, "b"},
 		display_orders = 0; 
 	}
 
@@ -1637,11 +1639,12 @@
 					image = "rbxassetid://115194686863276",
 				})
 
-				local watermark = library:watermark({default = os.date('Atlanta |  - %b %d %Y - %H:%M:%S')})  
+				local watermark = library:watermark({default = "loading..."})
+				local version_str = table.concat(library.version, ".")
 
 				task.spawn(function()
-					while task.wait(1) do
-						watermark:change_text(os.date("Milkhook - v1.1.3b - DEV - %b %d %Y - %H:%M:%S"))
+					while task.wait(.6) do
+						watermark:change_text("Milkhook - v" .. version_str .. " - DEV - " .. os.date("%b %d %Y - %H:%M:%S"))
 					end
 				end)
 
