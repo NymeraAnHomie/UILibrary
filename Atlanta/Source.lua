@@ -1638,6 +1638,30 @@
 					position = dim2(0, main_window.items.main_holder.AbsolutePosition.X + main_window.items.main_holder.AbsoluteSize.X + 2, 0, main_window.items.main_holder.AbsolutePosition.Y),
 					image = "rbxassetid://115194686863276",
 				})
+-- FUCK YOU NIGGA
+-- FUCK YOU NIGGA
+-- FUCK YOU NIGGA
+-- FUCK YOU NIGGA
+-- FUCK YOU NIGGA
+-- FUCK YOU NIGGA
+-- FUCK YOU NIGGA
+-- FUCK YOU NIGGA
+-- FUCK YOU WHOEVER WROTE THIS SHIT
+				local function getVersionString(version)
+					if not version then
+						return "v?.?.?"
+					elseif type(version) == "string" then
+						return version 
+					elseif type(version) == "table" then
+						local parts = {}
+						for _, v in ipairs(version) do
+							table.insert(parts, tostring(v))
+						end
+						return "v" .. table.concat(parts, ".")
+					else
+						return tostring(version)
+					end
+				end
 
 				library.version = library.version or {1, 1, 3, "b"}
 
@@ -1645,8 +1669,10 @@
 
 				task.spawn(function()
 					while task.wait(0.6) do
-						local version_str = table.concat(library.version, ".")
-						watermark:change_text("Milkhook - v" .. version_str .. " - DEV - " .. os.date("%b %d %Y - %H:%M:%S"))
+						local version_str = getVersionString(library.version)
+						watermark:change_text(
+							"Milkhook - " .. version_str .. " - DEV - " .. os.date("%b %d %Y - %H:%M:%S")
+						)
 					end
 				end)
 				
