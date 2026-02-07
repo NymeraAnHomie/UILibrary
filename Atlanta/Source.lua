@@ -69,7 +69,7 @@ local concat = table.concat
 
 -- library init
 local library = {
-	directory = "Milkhook",
+	directory = "Suprahook",
 	folders = {
 		"/fonts",
 		"/configs",
