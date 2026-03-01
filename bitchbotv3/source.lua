@@ -1158,10 +1158,15 @@
                     Transparency = a 
                 }
                 
-                local Color = Items.InlineColorPicker.BackgroundColor3 -- Overwriting to format<<
-                Items.RGBInput.Text = string.format("%s, %s, %s, ", Library:Round(Color.R * 255), Library:Round(Color.G * 255), Library:Round(Color.B * 255))
-                Items.RGBInput.Text ..= Library:Round(1 - a, 0.01)
-                
+                local Color = Items.InlineColorPicker.BackgroundColor3
+                local alphaValue = (type(a) == "number") and a or 0  -- ensure alpha is numeric
+                Items.RGBInput.Text = string.format("%s, %s, %s, %s", 
+                    Library:Round(Color.R * 255), 
+                    Library:Round(Color.G * 255), 
+                    Library:Round(Color.B * 255), 
+                    Library:Round(1 - alphaValue, 0.01)
+                )
+
                 Items.InputAlpha.Text = Library:ConvertHex(Color, 1 - a)
 
                 Cfg.Callback(Color, a)
@@ -4070,7 +4075,6 @@
 
             Library:Connection(InputService.InputBegan, function(input, game_event)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    print("clicked")
                     if (Items.DropdownElements.Visible) and not Library:Hovering({Items.DropdownElements, Items.Dropdown}) then
                         Cfg.SetVisible(false)
                         Cfg.Open = false
