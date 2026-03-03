@@ -4622,7 +4622,7 @@
                 Cfg.SetVisible(Cfg.Open)
             end)
 
-            Library:Connection(InputService.InputBegan, function(input, game_event) 
+            Library:Connection(InputService.InputBegan, function(input) 
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     if (Items.Dropdown.Items.DropdownElements.Visible and Items.ModeHolder.Visible) and not (Library:Hovering(Items.Dropdown.Items.DropdownElements) or Library:Hovering(Items.ModeHolder)) then 
                         Items.Dropdown.SetVisible(false)
@@ -4633,7 +4633,7 @@
                     end 
                 end 
                 
-                if not game_event then
+                do
                     local selected_key = input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode or input.UserInputType
 
                     if selected_key == Cfg.Key then 
@@ -4647,17 +4647,11 @@
                 end
             end)    
 
-            Library:Connection(InputService.InputEnded, function(input, game_event) 
-                if game_event then 
-                    return 
-                end 
-
+            Library:Connection(InputService.InputEnded, function(input)
                 local selected_key = input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode or input.UserInputType
-    
-                if selected_key == Cfg.Key then
-                    if Cfg.Mode == "Hold" then 
-                        Cfg.Set(false)
-                    end
+
+                if selected_key == Cfg.Key and Cfg.Mode == "Hold" then
+                    Cfg.Set(false)
                 end
             end)
             
