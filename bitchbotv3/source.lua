@@ -4786,7 +4786,7 @@
             end})
 
             window.Tweening = true
-            Section:Label({Name = "Menu Bind"}):Keybind({Name = "Menu Bind", ShowInList = false, Callback = function(bool) 
+            Section:Label({Name = "Menu Bind"}):Keybind({Name = "Menu Bind", Key = Enum.KeyCode.Home, ShowInList = false, Callback = function(bool) 
                 if window.Tweening then
                     return 
                 end 
