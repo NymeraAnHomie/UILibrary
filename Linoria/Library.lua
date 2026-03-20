@@ -15,7 +15,8 @@ local ScreenGui = Instance.new('ScreenGui');
 ProtectGui(ScreenGui);
 
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global;
-ScreenGui.Parent = CoreGui;
+ScreenGui.Parent = gethui();
+ScreenGui.Name = "\0"
 
 local Toggles = {};
 local Options = {};
@@ -1042,8 +1043,6 @@ do
         local ToggleLabel = self.TextLabel;
         local Container = self.Container;
 
-        assert(Info.Default, 'AddKeyPicker: Missing default value.');
-
         local KeyPicker = {
             Value = Info.Default;
             Toggled = false;
@@ -1213,32 +1212,37 @@ do
 
         function KeyPicker:GetState()
             if KeyPicker.Mode == 'Always' then
-                return true;
+                return true
             elseif KeyPicker.Mode == 'Hold' then
                 if KeyPicker.Value == 'None' then
-                    return false;
+                    return false
                 end
 
-                local Key = KeyPicker.Value;
+                local Key = KeyPicker.Value
 
-                if Key == 'MB1' or Key == 'MB2' then
-                    return Key == 'MB1' and InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
-                        or Key == 'MB2' and InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2);
+                if Key == 'MB1' then
+                    return InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
+                elseif Key == 'MB2' then
+                    return InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2)
                 else
-                    return InputService:IsKeyDown(Enum.KeyCode[KeyPicker.Value]);
-                end;
+                    local KeyEnum = Enum.KeyCode[Key]
+                    return KeyEnum and InputService:IsKeyDown(KeyEnum) or false
+                end
             else
-                return KeyPicker.Toggled;
-            end;
-        end;
+                return KeyPicker.Toggled
+            end
+        end
 
         function KeyPicker:SetValue(Data)
-            local Key, Mode = Data[1], Data[2];
-            DisplayLabel.Text = Key;
-            KeyPicker.Value = Key;
-            ModeButtons[Mode]:Select();
-            KeyPicker:Update();
-        end;
+            local Key, Mode = Data[1], Data[2]
+            Key = Key or "None"
+            DisplayLabel.Text = Key
+            KeyPicker.Value = Key
+            if Mode and ModeButtons[Mode] then
+                ModeButtons[Mode]:Select()
+            end
+            KeyPicker:Update()
+        end
 
         function KeyPicker:OnClick(Callback)
             KeyPicker.Clicked = Callback
@@ -1263,60 +1267,57 @@ do
         end
 
         local Picking = false;
-
         PickOuter.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
-                Picking = true;
+                Picking = true
+                DisplayLabel.Text = ''
 
-                DisplayLabel.Text = '';
-
-                local Break;
-                local Text = '';
+                local BreakLoop = false
 
                 task.spawn(function()
-                    while (not Break) do
-                        if Text == '...' then
-                            Text = '';
-                        end;
+                    local Text = ''
+                    while not BreakLoop do
+                        Text = Text == '...' and '' or Text .. '.'
+                        DisplayLabel.Text = Text
+                        wait(0.4)
+                    end
+                end)
 
-                        Text = Text .. '.';
-                        DisplayLabel.Text = Text;
+                wait(0.2)
 
-                        wait(0.4);
-                    end;
-                end);
-
-                wait(0.2);
-
-                local Event;
+                local Event
                 Event = InputService.InputBegan:Connect(function(Input)
-                    local Key;
+                    if not Picking then return end
 
+                    local Key
                     if Input.UserInputType == Enum.UserInputType.Keyboard then
-                        Key = Input.KeyCode.Name;
+                        Key = Input.KeyCode.Name
+                        -- Press Escape to set None
+                        if Key == "Escape" then
+                            Key = "None"
+                        end
                     elseif Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        Key = 'MB1';
+                        Key = 'MB1'
                     elseif Input.UserInputType == Enum.UserInputType.MouseButton2 then
-                        Key = 'MB2';
-                    end;
+                        Key = 'MB2'
+                    end
 
-                    Break = true;
-                    Picking = false;
+                    BreakLoop = true
+                    Picking = false
 
-                    DisplayLabel.Text = Key;
-                    KeyPicker.Value = Key;
+                    DisplayLabel.Text = Key
+                    KeyPicker.Value = Key
 
                     Library:SafeCallback(KeyPicker.ChangedCallback, Input.KeyCode or Input.UserInputType)
                     Library:SafeCallback(KeyPicker.Changed, Input.KeyCode or Input.UserInputType)
+                    Library:AttemptSave()
 
-                    Library:AttemptSave();
-
-                    Event:Disconnect();
-                end);
+                    Event:Disconnect()
+                end)
             elseif Input.UserInputType == Enum.UserInputType.MouseButton2 and not Library:MouseIsOverOpenedFrame() then
-                ModeSelectOuter.Visible = true;
-            end;
-        end);
+                ModeSelectOuter.Visible = true
+            end
+        end)
 
         Library:GiveSignal(InputService.InputBegan:Connect(function(Input)
             if (not Picking) then
