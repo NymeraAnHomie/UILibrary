@@ -1062,7 +1062,7 @@ do
         local PickOuter = Library:Create('Frame', {
             BackgroundColor3 = Color3.new(0, 0, 0);
             BorderColor3 = Color3.new(0, 0, 0);
-            Size = UDim2.new(0, 28, 0, 15);
+            Size = UDim2.new(0, 36, 0, 15);
             ZIndex = 6;
             Parent = ToggleLabel;
         });
@@ -1292,7 +1292,6 @@ do
                     local Key
                     if Input.UserInputType == Enum.UserInputType.Keyboard then
                         Key = Input.KeyCode.Name
-                        -- Press Escape to set None
                         if Key == "Escape" then
                             Key = "None"
                         end
