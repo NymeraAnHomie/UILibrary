@@ -1188,6 +1188,8 @@ do
 
             local State = KeyPicker:GetState();
 
+            if KeyPicker.Value == "None" then return end
+
             ContainerLabel.Text = string.format('[%s] %s (%s)', KeyPicker.Value, Info.Text, KeyPicker.Mode);
 
             ContainerLabel.Visible = true;
@@ -1301,6 +1303,7 @@ do
                     elseif Input.UserInputType == Enum.UserInputType.MouseButton2 then
                         Key = 'MB2'
                     end
+
 
                     BreakLoop = true
                     Picking = false
