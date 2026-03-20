@@ -897,98 +897,97 @@ do
             ColorPicker:Display();
         end;
 
-        local ActiveDrag = nil -- "SV", "Hue", "Trans"
-
         SatVibMap.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                ActiveDrag = "SV"
+                local Holding = true
+
+                local Conn
+                Conn = Input.Changed:Connect(function()
+                    if Input.UserInputState == Enum.UserInputState.End then
+                        Holding = false
+                        Conn:Disconnect()
+                        Library:AttemptSave()
+                    end
+                end)
+
+                while Holding do
+                    local MinX = SatVibMap.AbsolutePosition.X
+                    local MaxX = MinX + SatVibMap.AbsoluteSize.X
+                    local MouseX = math.clamp(Mouse.X, MinX, MaxX)
+
+                    local MinY = SatVibMap.AbsolutePosition.Y
+                    local MaxY = MinY + SatVibMap.AbsoluteSize.Y
+                    local MouseY = math.clamp(Mouse.Y, MinY, MaxY)
+
+                    ColorPicker.Sat = (MouseX - MinX) / (MaxX - MinX)
+                    ColorPicker.Vib = 1 - ((MouseY - MinY) / (MaxY - MinY))
+
+                    ColorPicker:Display()
+
+                    RenderStepped:Wait()
+                end
             end
         end)
 
         HueSelectorInner.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                ActiveDrag = "Hue"
-            end
-        end)
+                local Holding = true
 
-        if TransparencyBoxInner then
-            TransparencyBoxInner.InputBegan:Connect(function(Input)
-                if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    ActiveDrag = "Trans"
-                end
-            end)
-        end
+                local Conn
+                Conn = Input.Changed:Connect(function()
+                    if Input.UserInputState == Enum.UserInputState.End then
+                        Holding = false
+                        Conn:Disconnect()
+                        Library:AttemptSave()
+                    end
+                end)
 
-        InputService.InputEnded:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                if ActiveDrag then
-                    ActiveDrag = nil
-                    Library:AttemptSave()
+                while Holding do
+                    local MinY = HueSelectorInner.AbsolutePosition.Y
+                    local MaxY = MinY + HueSelectorInner.AbsoluteSize.Y
+                    local MouseY = math.clamp(Mouse.Y, MinY, MaxY)
+
+                    ColorPicker.Hue = ((MouseY - MinY) / (MaxY - MinY))
+                    ColorPicker:Display()
+
+                    RenderStepped:Wait()
                 end
             end
         end)
 
         DisplayFrame.InputBegan:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                if ActiveDrag then return end
-
-                if not Library:MouseIsOverOpenedFrame() then
-                    if PickerFrameOuter.Visible then
-                        ColorPicker:Hide()
-                    else
-                        ContextMenu:Hide()
-                        ColorPicker:Show()
-                    end
-                end
-
-            elseif Input.UserInputType == Enum.UserInputType.MouseButton2 then
-                if ActiveDrag then return end
-
-                if not Library:MouseIsOverOpenedFrame() then
-                    ContextMenu:Show()
+            if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
+                if PickerFrameOuter.Visible then
                     ColorPicker:Hide()
-                end
+                else
+                    ContextMenu:Hide()
+                    ColorPicker:Show()
+                end;
+            elseif Input.UserInputType == Enum.UserInputType.MouseButton2 and not Library:MouseIsOverOpenedFrame() then
+                ContextMenu:Show()
+                ColorPicker:Hide()
             end
-        end)
+        end);
 
-        InputService.InputChanged:Connect(function(Input)
-            if Input.UserInputType ~= Enum.UserInputType.MouseMovement then
-                return
-            end
+        if TransparencyBoxInner then
+            TransparencyBoxInner.InputBegan:Connect(function(Input)
+                if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
+                        local MinX = TransparencyBoxInner.AbsolutePosition.X;
+                        local MaxX = MinX + TransparencyBoxInner.AbsoluteSize.X;
+                        local MouseX = math.clamp(Mouse.X, MinX, MaxX);
 
-            if ActiveDrag == "SV" then
-                local Min = SatVibMap.AbsolutePosition
-                local Size = SatVibMap.AbsoluteSize
+                        ColorPicker.Transparency = 1 - ((MouseX - MinX) / (MaxX - MinX));
 
-                local X = math.clamp(Input.Position.X, Min.X, Min.X + Size.X)
-                local Y = math.clamp(Input.Position.Y, Min.Y, Min.Y + Size.Y)
+                        ColorPicker:Display();
 
-                ColorPicker.Sat = (X - Min.X) / Size.X
-                ColorPicker.Vib = 1 - ((Y - Min.Y) / Size.Y)
+                        RenderStepped:Wait();
+                    end;
 
-                ColorPicker:Display()
-
-            elseif ActiveDrag == "Hue" then
-                local MinY = HueSelectorInner.AbsolutePosition.Y
-                local MaxY = MinY + HueSelectorInner.AbsoluteSize.Y
-
-                local Y = math.clamp(Input.Position.Y, MinY, MaxY)
-
-                ColorPicker.Hue = (Y - MinY) / (MaxY - MinY)
-
-                ColorPicker:Display()
-
-            elseif ActiveDrag == "Trans" and TransparencyBoxInner then
-                local MinX = TransparencyBoxInner.AbsolutePosition.X
-                local MaxX = MinX + TransparencyBoxInner.AbsoluteSize.X
-
-                local X = math.clamp(Input.Position.X, MinX, MaxX)
-
-                ColorPicker.Transparency = 1 - ((X - MinX) / (MaxX - MinX))
-
-                ColorPicker:Display()
-            end
-        end)
+                    Library:AttemptSave();
+                end;
+            end);
+        end;
 
         Library:GiveSignal(InputService.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -2131,41 +2130,33 @@ do
             Library:SafeCallback(Slider.Changed, Slider.Value);
         end;
 
-        local Dragging = false
-
         SliderInner.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
-                Dragging = true
-            end
-        end)
+                local mPos = Mouse.X;
+                local gPos = Fill.Size.X.Offset;
+                local Diff = mPos - (Fill.AbsolutePosition.X + gPos);
 
-        InputService.InputEnded:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                Dragging = false
-                Library:AttemptSave()
-            end
-        end)
+                while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
+                    local nMPos = Mouse.X;
+                    local nX = math.clamp(gPos + (nMPos - mPos) + Diff, 0, Slider.MaxSize);
 
-        InputService.InputChanged:Connect(function(Input)
-            if Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then
-                local X = math.clamp(
-                    Input.Position.X - SliderInner.AbsolutePosition.X,
-                    0,
-                    Slider.MaxSize
-                )
+                    local nValue = Slider:GetValueFromXOffset(nX);
+                    local OldValue = Slider.Value;
+                    Slider.Value = nValue;
 
-                local NewValue = Slider:GetValueFromXOffset(X)
-                local OldValue = Slider.Value
+                    Slider:Display();
 
-                Slider.Value = NewValue
-                Slider:Display()
+                    if nValue ~= OldValue then
+                        Library:SafeCallback(Slider.Callback, Slider.Value);
+                        Library:SafeCallback(Slider.Changed, Slider.Value);
+                    end;
 
-                if NewValue ~= OldValue then
-                    Library:SafeCallback(Slider.Callback, Slider.Value)
-                    Library:SafeCallback(Slider.Changed, Slider.Value)
-                end
-            end
-        end)
+                    RenderStepped:Wait();
+                end;
+
+                Library:AttemptSave();
+            end;
+        end);
 
         Slider:Display();
         Groupbox:AddBlank(Info.BlankSize or 6);
