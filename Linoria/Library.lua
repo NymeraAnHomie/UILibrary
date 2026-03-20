@@ -897,25 +897,43 @@ do
             ColorPicker:Display();
         end;
 
-        local DragSV = false
-        local DragHue = false
-        local DragTrans = false
-        
+        local ActiveDrag = nil -- "SV", "Hue", "Trans"
+
         SatVibMap.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                DragSV = true
+                ActiveDrag = "SV"
             end
         end)
 
+        HueSelectorInner.InputBegan:Connect(function(Input)
+            if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                ActiveDrag = "Hue"
+            end
+        end)
+
+        if TransparencyBoxInner then
+            TransparencyBoxInner.InputBegan:Connect(function(Input)
+                if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    ActiveDrag = "Trans"
+                end
+            end)
+        end
+
         InputService.InputEnded:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                DragSV = false
-                Library:AttemptSave()
+                if ActiveDrag then
+                    ActiveDrag = nil
+                    Library:AttemptSave()
+                end
             end
         end)
 
         InputService.InputChanged:Connect(function(Input)
-            if DragSV and Input.UserInputType == Enum.UserInputType.MouseMovement then
+            if Input.UserInputType ~= Enum.UserInputType.MouseMovement then
+                return
+            end
+
+            if ActiveDrag == "SV" then
                 local Min = SatVibMap.AbsolutePosition
                 local Size = SatVibMap.AbsoluteSize
 
@@ -926,69 +944,28 @@ do
                 ColorPicker.Vib = 1 - ((Y - Min.Y) / Size.Y)
 
                 ColorPicker:Display()
-            end
-        end)
 
-        HueSelectorInner.InputBegan:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                DragHue = true
-            end
-        end)
-
-        InputService.InputChanged:Connect(function(Input)
-            if DragHue and Input.UserInputType == Enum.UserInputType.MouseMovement then
+            elseif ActiveDrag == "Hue" then
                 local MinY = HueSelectorInner.AbsolutePosition.Y
                 local MaxY = MinY + HueSelectorInner.AbsoluteSize.Y
 
                 local Y = math.clamp(Input.Position.Y, MinY, MaxY)
 
                 ColorPicker.Hue = (Y - MinY) / (MaxY - MinY)
+
+                ColorPicker:Display()
+
+            elseif ActiveDrag == "Trans" and TransparencyBoxInner then
+                local MinX = TransparencyBoxInner.AbsolutePosition.X
+                local MaxX = MinX + TransparencyBoxInner.AbsoluteSize.X
+
+                local X = math.clamp(Input.Position.X, MinX, MaxX)
+
+                ColorPicker.Transparency = 1 - ((X - MinX) / (MaxX - MinX))
+
                 ColorPicker:Display()
             end
         end)
-
-        DisplayFrame.InputBegan:Connect(function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
-                if PickerFrameOuter.Visible then
-                    ColorPicker:Hide()
-                else
-                    ContextMenu:Hide()
-                    ColorPicker:Show()
-                end;
-            elseif Input.UserInputType == Enum.UserInputType.MouseButton2 and not Library:MouseIsOverOpenedFrame() then
-                ContextMenu:Show()
-                ColorPicker:Hide()
-            end
-        end);
-
-        if TransparencyBoxInner then
-            TransparencyBoxInner.InputBegan:Connect(function(Input)
-                if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    DragTrans = true
-                end
-            end)
-
-            InputService.InputEnded:Connect(function(Input)
-                if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    if DragTrans then
-                        DragTrans = false
-                        Library:AttemptSave()
-                    end
-                end
-            end)
-
-            InputService.InputChanged:Connect(function(Input)
-                if DragTrans and Input.UserInputType == Enum.UserInputType.MouseMovement then
-                    local MinX = TransparencyBoxInner.AbsolutePosition.X
-                    local MaxX = MinX + TransparencyBoxInner.AbsoluteSize.X
-
-                    local X = math.clamp(Input.Position.X, MinX, MaxX)
-
-                    ColorPicker.Transparency = 1 - ((X - MinX) / (MaxX - MinX))
-                    ColorPicker:Display()
-                end
-            end)
-        end
 
         Library:GiveSignal(InputService.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 then
