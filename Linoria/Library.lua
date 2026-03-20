@@ -162,39 +162,47 @@ function Library:CreateLabel(Properties, IsHud)
 end;
 
 function Library:MakeDraggable(Instance, Cutoff)
+    local Dragging = false
+    local DragInput, DragStart, StartPos
+
     Instance.Active = true
 
     Instance.InputBegan:Connect(function(Input)
-        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local ObjPos = Vector2.new(
-                Mouse.X - Instance.AbsolutePosition.X,
-                Mouse.Y - Instance.AbsolutePosition.Y
-            )
+        if Input.UserInputType == Enum.UserInputType.MouseButton1 
+        or Input.UserInputType == Enum.UserInputType.Touch then
+            
+            local ObjPosY = Input.Position.Y - Instance.AbsolutePosition.Y
+            if ObjPosY > (Cutoff or 40) then return end
 
-            if ObjPos.Y > (Cutoff or 40) then
-                return
-            end
+            Dragging = true
+            DragStart = Input.Position
+            StartPos = Instance.Position
 
-            local Holding = true
-
-            local Conn
-            Conn = Input.Changed:Connect(function()
+            Input.Changed:Connect(function()
                 if Input.UserInputState == Enum.UserInputState.End then
-                    Holding = false
-                    Conn:Disconnect()
+                    Dragging = false
                 end
             end)
+        end
+    end)
 
-            while Holding do
-                Instance.Position = UDim2.new(
-                    0,
-                    Mouse.X - ObjPos.X + (Instance.Size.X.Offset * Instance.AnchorPoint.X),
-                    0,
-                    Mouse.Y - ObjPos.Y + (Instance.Size.Y.Offset * Instance.AnchorPoint.Y)
-                )
+    Instance.InputChanged:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseMovement 
+        or Input.UserInputType == Enum.UserInputType.Touch then
+            DragInput = Input
+        end
+    end)
 
-                RenderStepped:Wait()
-            end
+    InputService.InputChanged:Connect(function(Input)
+        if Input == DragInput and Dragging then
+            local Delta = Input.Position - DragStart
+
+            Instance.Position = UDim2.new(
+                StartPos.X.Scale,
+                StartPos.X.Offset + Delta.X,
+                StartPos.Y.Scale,
+                StartPos.Y.Offset + Delta.Y
+            )
         end
     end)
 end
