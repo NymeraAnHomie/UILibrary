@@ -1062,7 +1062,7 @@ do
         local PickOuter = Library:Create('Frame', {
             BackgroundColor3 = Color3.new(0, 0, 0);
             BorderColor3 = Color3.new(0, 0, 0);
-            Size = UDim2.new(0, 36, 0, 15);
+            Size = UDim2.new(0, 28, 0, 15);
             ZIndex = 6;
             Parent = ToggleLabel;
         });
@@ -1267,23 +1267,13 @@ do
         end
 
         local Picking = false;
+
         PickOuter.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
                 Picking = true
                 DisplayLabel.Text = ''
 
-                local BreakLoop = false
-
-                task.spawn(function()
-                    local Text = ''
-                    while not BreakLoop do
-                        Text = Text == '...' and '' or Text .. '.'
-                        DisplayLabel.Text = Text
-                        wait(0.4)
-                    end
-                end)
-
-                wait(0.2)
+                wait(0.1)
 
                 local Event
                 Event = InputService.InputBegan:Connect(function(Input)
@@ -1301,7 +1291,6 @@ do
                         Key = 'MB2'
                     end
 
-                    BreakLoop = true
                     Picking = false
 
                     DisplayLabel.Text = Key
