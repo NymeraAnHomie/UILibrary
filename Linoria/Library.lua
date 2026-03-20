@@ -1188,7 +1188,9 @@ do
 
             local State = KeyPicker:GetState();
 
-            if KeyPicker.Value == "None" then return end
+            if KeyPicker.Value == "None" then
+                ContainerLabel.Text = string.format('[%s] %s (%s)', "None", Info.Text, KeyPicker.Mode);
+            end
 
             ContainerLabel.Text = string.format('[%s] %s (%s)', KeyPicker.Value, Info.Text, KeyPicker.Mode);
 
