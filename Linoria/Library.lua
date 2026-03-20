@@ -1271,9 +1271,20 @@ do
         PickOuter.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
                 Picking = true
-                DisplayLabel.Text = '...'
+                DisplayLabel.Text = ''
 
-                wait(0.1)
+                local BreakLoop = false
+
+                task.spawn(function()
+                    local Text = ''
+                    while not BreakLoop do
+                        Text = Text == '...' and '' or Text .. '.'
+                        DisplayLabel.Text = Text
+                        wait(0.4)
+                    end
+                end)
+
+                wait(0.2)
 
                 local Event
                 Event = InputService.InputBegan:Connect(function(Input)
@@ -1291,6 +1302,7 @@ do
                         Key = 'MB2'
                     end
 
+                    BreakLoop = true
                     Picking = false
 
                     DisplayLabel.Text = Key
