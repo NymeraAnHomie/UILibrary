@@ -928,6 +928,29 @@ do
             end
         end)
 
+        DisplayFrame.InputBegan:Connect(function(Input)
+            if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                if ActiveDrag then return end
+
+                if not Library:MouseIsOverOpenedFrame() then
+                    if PickerFrameOuter.Visible then
+                        ColorPicker:Hide()
+                    else
+                        ContextMenu:Hide()
+                        ColorPicker:Show()
+                    end
+                end
+
+            elseif Input.UserInputType == Enum.UserInputType.MouseButton2 then
+                if ActiveDrag then return end
+
+                if not Library:MouseIsOverOpenedFrame() then
+                    ContextMenu:Show()
+                    ColorPicker:Hide()
+                end
+            end
+        end)
+
         InputService.InputChanged:Connect(function(Input)
             if Input.UserInputType ~= Enum.UserInputType.MouseMovement then
                 return
