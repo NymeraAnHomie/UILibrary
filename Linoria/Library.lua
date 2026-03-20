@@ -1183,36 +1183,30 @@ do
 
         function KeyPicker:Update()
             if Info.NoUI then
-                return;
-            end;
-
-            local State = KeyPicker:GetState();
-
-            if KeyPicker.Value == "None" then
-                ContainerLabel.Text = string.format('[%s] %s (%s)', "None", Info.Text, KeyPicker.Mode);
+                return
             end
 
-            ContainerLabel.Text = string.format('[%s] %s (%s)', KeyPicker.Value, Info.Text, KeyPicker.Mode);
+            local State = KeyPicker:GetState()
+            local valueText = KeyPicker.Value or "None"
 
-            ContainerLabel.Visible = true;
-            ContainerLabel.TextColor3 = State and Library.AccentColor or Library.FontColor;
-
-            Library.RegistryMap[ContainerLabel].Properties.TextColor3 = State and 'AccentColor' or 'FontColor';
+            ContainerLabel.Text = string.format('[%s] %s (%s)', valueText, Info.Text, KeyPicker.Mode)
+            ContainerLabel.Visible = true
+            ContainerLabel.TextColor3 = State and Library.AccentColor or Library.FontColor
+            Library.RegistryMap[ContainerLabel].Properties.TextColor3 = State and 'AccentColor' or 'FontColor'
 
             local YSize = 0
             local XSize = 0
-
             for _, Label in next, Library.KeybindContainer:GetChildren() do
                 if Label:IsA('TextLabel') and Label.Visible then
-                    YSize = YSize + 18;
+                    YSize = YSize + 18
                     if (Label.TextBounds.X > XSize) then
                         XSize = Label.TextBounds.X
                     end
-                end;
-            end;
+                end
+            end
 
             Library.KeybindFrame.Size = UDim2.new(0, math.max(XSize + 10, 210), 0, YSize + 23)
-        end;
+        end
 
         function KeyPicker:GetState()
             if KeyPicker.Mode == 'Always' then
