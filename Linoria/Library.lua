@@ -162,32 +162,42 @@ function Library:CreateLabel(Properties, IsHud)
 end;
 
 function Library:MakeDraggable(Instance, Cutoff)
-    Instance.Active = true;
+    Instance.Active = true
 
     Instance.InputBegan:Connect(function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
             local ObjPos = Vector2.new(
                 Mouse.X - Instance.AbsolutePosition.X,
                 Mouse.Y - Instance.AbsolutePosition.Y
-            );
+            )
 
             if ObjPos.Y > (Cutoff or 40) then
-                return;
-            end;
+                return
+            end
 
-            while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
+            local Holding = true
+
+            local Conn
+            Conn = Input.Changed:Connect(function()
+                if Input.UserInputState == Enum.UserInputState.End then
+                    Holding = false
+                    Conn:Disconnect()
+                end
+            end)
+
+            while Holding do
                 Instance.Position = UDim2.new(
                     0,
                     Mouse.X - ObjPos.X + (Instance.Size.X.Offset * Instance.AnchorPoint.X),
                     0,
                     Mouse.Y - ObjPos.Y + (Instance.Size.Y.Offset * Instance.AnchorPoint.Y)
-                );
+                )
 
-                RenderStepped:Wait();
-            end;
-        end;
+                RenderStepped:Wait()
+            end
+        end
     end)
-end;
+end
 
 function Library:AddToolTip(InfoStr, HoverInstance)
     local X, Y = Library:GetTextBounds(InfoStr, Library.Font, 14);
