@@ -1271,7 +1271,7 @@ do
         PickOuter.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
                 Picking = true
-                DisplayLabel.Text = ''
+                DisplayLabel.Text = '...'
 
                 wait(0.1)
 
