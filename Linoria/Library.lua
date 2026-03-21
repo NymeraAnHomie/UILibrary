@@ -1181,6 +1181,8 @@ do
             ModeButtons[Mode] = ModeButton;
         end;
 
+        KeyPicker._LastState = ParentObj.Value
+
         function KeyPicker:Update()
             if Info.NoUI then
                 return
@@ -1190,8 +1192,11 @@ do
             local valueText = KeyPicker.Value or "None"
 
             if ParentObj and ParentObj.Type == "Toggle" and not KeyPicker.SyncToggleState then
-                if ParentObj.Value ~= State then
-                    ParentObj:SetValue(State)
+                if KeyPicker.Value ~= "None" then
+                    if KeyPicker._LastState ~= State then
+                        KeyPicker._LastState = State
+                        ParentObj:SetValue(State)
+                    end
                 end
             end
 
