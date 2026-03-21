@@ -1192,7 +1192,11 @@ do
             local valueText = KeyPicker.Value or "None"
 
             if ParentObj and ParentObj.Type == "Toggle" and not KeyPicker.SyncToggleState then
-                if KeyPicker.Value ~= "None" then
+                if KeyPicker.Mode == "Always" then
+                    if ParentObj.Value ~= true then
+                        ParentObj:SetValue(true)
+                    end
+                elseif KeyPicker.Value ~= "None" then
                     if KeyPicker._LastState ~= State then
                         KeyPicker._LastState = State
                         ParentObj:SetValue(State)
