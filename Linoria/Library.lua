@@ -3567,6 +3567,12 @@ function Library:CreateWindow(...)
         Toggled = (not Toggled);
         ModalElement.Modal = Toggled;
 
+        if Toggled then
+            InputService.MouseIconEnabled = true
+        else
+            InputService.MouseIconEnabled = false
+        end
+
         for _, Desc in next, Outer:GetDescendants() do
             local Properties = {};
 
