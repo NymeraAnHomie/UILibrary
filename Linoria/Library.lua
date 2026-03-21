@@ -1189,6 +1189,12 @@ do
             local State = KeyPicker:GetState()
             local valueText = KeyPicker.Value or "None"
 
+            if ParentObj and ParentObj.Type == "Toggle" and not KeyPicker.SyncToggleState then
+                if ParentObj.Value ~= State then
+                    ParentObj:SetValue(State)
+                end
+            end
+
             ContainerLabel.Text = string.format('[%s] %s (%s)', valueText, Info.Text, KeyPicker.Mode)
             ContainerLabel.Visible = true
             ContainerLabel.TextColor3 = State and Library.AccentColor or Library.FontColor
